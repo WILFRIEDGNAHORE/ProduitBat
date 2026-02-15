@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredVendorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\UserDashboardController;
+use App\Http\Controllers\User\UserVendorRequest;
+use App\Http\Controllers\User\UserVendorRequestController;
 use App\Http\Controllers\Vendor\VendorDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -10,8 +13,13 @@ Route::get('/', function () {
 });
 
 
+Route::get('vendor/register', [RegisteredVendorController::class, 'create'])->name('vendor.register.index');
+Route::post('vendor/register/store', [RegisteredVendorController::class, 'store'])->name('vendor.register.store');
 
 Route::group(['middleware' => ['auth', 'verified', 'check_role:user'], 'prefix' => 'user', 'as' => 'user.'], function(){
+
+    Route::resource('vendor-request', UserVendorRequestController::class);
+    
     Route::get('dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 });
 
