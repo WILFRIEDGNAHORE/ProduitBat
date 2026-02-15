@@ -16,9 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->nullable();
             $table->text('image')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('contact')->nullable();
             $table->string('email')->unique();
             $table->enum('role', ['admin', 'vendor', 'user'])->default('user');
+            $table->boolean('vendor_request')->default(0);
+
+            $table->text('document')->nullable();
             $table->boolean('is_user')->default(1);
              $table->enum('user_status', ['active', 'inactive', 'banned', 'is_vendor'])->default('active');
 
