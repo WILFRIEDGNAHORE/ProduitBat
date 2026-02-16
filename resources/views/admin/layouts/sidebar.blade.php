@@ -275,6 +275,9 @@
                               </a>
                               <div class="collapse" id="sidebarSellers">
                                    <ul class="nav sub-navbar-nav">
+                                    <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="{{ route('admin.vendor-request.index') }}">Vendor Requests</a>
+                                        </li>
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="seller-list.html">List</a>
                                         </li>
