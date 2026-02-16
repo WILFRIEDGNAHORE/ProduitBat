@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Admin\VendorRequestController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
@@ -35,7 +36,7 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
-    
+    Route::resource('vendor-request', VendorRequestController::class);
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::get('verify-email', EmailVerificationPromptController::class)
