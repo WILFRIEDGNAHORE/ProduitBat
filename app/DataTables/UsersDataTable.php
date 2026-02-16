@@ -23,36 +23,33 @@ class UsersDataTable extends DataTable
     {
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
-                $show = '<a href="#" class="btn btn-primary">
-                        Show
-                      </a>';
-                $edit = '<a href="#" class="btn btn-warning mx-2">
+                $edit = '<a href="'.route('admin.vendor-request.edit', $query->id).'" class="btn btn-warning mx-2">
                         Edit
                       </a>';
-                $delete = '<a href="#" class="btn btn-danger">
+                $delete = '<a href="'.route('admin.vendor-request.destroy', $query->id).'" class="btn btn-danger">
                         Delete
                       </a>';
 
-                      return $show.$edit.$delete;
+                      return $edit.$delete;
             })
 
 
             ->addColumn('vendor_request', function ($query) {
                 if ($query->vendor_request === 0) {
-                    return '<span class="badge bg-orange-lt">No</span>';
+                    return '<span class="badge bg-danger">No</span>';
                 } elseif ($query->vendor_request === 1) {
-                    return '<span class="badge bg-purple-lt">Yes</span>';
+                    return '<span class="badge bg-success">Yes</span>';
                 }
             })
 
 
             ->addColumn('vendor_status', function ($query) {
                 if ($query->vendor_status === 'pending') {
-                    return '<span class="badge bg-orange-lt">Pending</span>';
+                    return '<span class="badge bg-warning">Pending</span>';
                 } elseif ($query->vendor_status === 'rejected') {
-                    return '<span class="badge bg-red text-red-fg">Rejected</span>';
+                    return '<span class="badge bg-danger">Rejected</span>';
                 } elseif ($query->vendor_status === 'banned') {
-                    return '<span class="badge bg-red text-red-fg">Banned</span>';
+                    return '<span class="badge bg-dark">Banned</span>';
                 }
             })
 

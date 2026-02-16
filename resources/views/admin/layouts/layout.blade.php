@@ -23,6 +23,8 @@
 
      <!-- App css (Require in all Page) -->
      <link href="{{asset('admin_assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+
 
      <!-- Theme Config js (Require in all Page) -->
      <script src="{{asset('admin_assets/js/config.js')}}"></script>
@@ -74,9 +76,13 @@
 
      <!-- Vendor Javascript (Require in all Page) -->
      <script src="{{asset('admin_assets/js/vendor.js')}}"></script>
+     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
      <!-- App Javascript (Require in all Page) -->
      <script src="{{asset('admin_assets/js/app.js')}}"></script>
+     @stack('scripts')
+
 
 </body>
 
