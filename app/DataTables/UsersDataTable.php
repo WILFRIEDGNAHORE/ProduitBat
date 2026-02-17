@@ -26,8 +26,7 @@ class UsersDataTable extends DataTable
                 $edit = '<a href="'.route('admin.vendor-request.edit', $query->id).'" class="btn btn-warning mx-2">
                         Edit
                       </a>';
-                $delete = '<a href="'.route('admin.vendor-request.destroy', $query->id).'" class="btn btn-danger">
-                        Delete
+                $delete = '<a href="'.route('admin.vendor-request.destroy', $query->id).'" class="btn btn-danger delete-item">                        Delete
                       </a>';
 
                       return $edit.$delete;
