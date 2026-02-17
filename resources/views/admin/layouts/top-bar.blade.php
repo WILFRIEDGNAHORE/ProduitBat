@@ -166,9 +166,13 @@
 
                                         <div class="dropdown-divider my-1"></div>
 
-                                        <a class="dropdown-item text-danger" href="auth-signin.html">
-                                             <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
+                                        <a class="dropdown-item text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                             <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class class="align-middle">Logout</span>
                                         </a>
+
+                                        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                                             @csrf
+                                        </form>
                                    </div>
                               </div>
 
