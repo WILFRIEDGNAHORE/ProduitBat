@@ -58,16 +58,21 @@ class AdminProfileController extends Controller
         //dd($request->all());
         if ($request->update_type === 'profile_update') {
 
+            $request->validate([
+                'name' => ['required'],
+                'email' => ['required', 'email']
+            ]);
+
             $admin = Admin::findOrFail($id);
-            if($request->hasFile('image')){
+           if ($request->hasFile('image')) {
 
                 if(File::exists(public_path($admin->image))){
                     File::delete(public_path($admin->image));
                 }
 
                 $file = $request->image;
-                $fileName = rand().'.'.$file->getClientOriginalExtension();
-                $path = '/uploads/'.$fileName;
+                $fileName = rand() . '.' . $file->getClientOriginalExtension();
+                $path = '/uploads/' . $fileName;
                 $file->move(public_path('uploads'), $fileName);
                 $admin->image = $path;
                 //dd($path);
@@ -79,8 +84,20 @@ class AdminProfileController extends Controller
             notyf()->success('Profile Updated Successfully!');
             return redirect()->back();
         } elseif ($request->update_type === 'password_update') {
-            # code...
-            dd('pass');
+            //dd($request->all());
+            $request->validate([
+                'current_password' => ['required', 'current_password'],
+                'password' => ['required', 'confirmed'],
+            ]);
+
+
+            //dd($request->password);
+
+            $request->user()->update([
+                'password' => bcrypt($request->password),
+            ]);
+            notyf()->success('Profile Updated Successfully!');
+            return redirect()->back();
         }
 
         abort(404);
