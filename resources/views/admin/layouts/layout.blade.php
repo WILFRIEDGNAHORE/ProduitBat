@@ -23,9 +23,7 @@
 
      <!-- App css (Require in all Page) -->
      <link href="{{asset('admin_assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
-     <!-- DataTable CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.bootstrap5.min.css">
-    <!-- DataTable CSS -->
+     {{-- DataTables CSS loaded via Vite --}}
      <meta name="csrf-token" content="{{ csrf_token() }}">
 
 
@@ -215,33 +213,13 @@
         </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
-    <!-- Libs JS -->
-    <script src="{{ asset('admin/dist/libs/apexcharts/dist/apexcharts.min.js?1692870487') }}" defer></script>
-    <script src="{{ asset('admin/dist/libs/jsvectormap/dist/js/jsvectormap.min.js?1692870487') }}" defer></script>
-    <script src="{{ asset('admin/dist/libs/jsvectormap/dist/maps/world.js?1692870487') }}" defer></script>
-    <script src="{{ asset('admin/dist/libs/jsvectormap/dist/maps/world-merc.js?1692870487') }}" defer></script>
-
-    <!-- Tabler Core -->
-    <script src="{{ asset('admin/dist/js/tabler.min.js?1692870487') }}" defer></script>
-    <script src="{{ asset('admin/dist/js/demo.min.js?1692870487') }}" defer></script>
-
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.1/js/dataTables.bootstrap5.min.js"></script>
+    {{-- jQuery & DataTables loaded via Vite (admin.js) --}}
 
     <!-- Notyf JS -->
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
     <!-- Summernote Lite JS -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-
-
-      <script src="{{ asset('admin/dist/libs/nouislider/dist/nouislider.min.js?1692870487') }}" defer></script>
-  <script src="{{ asset('admin/dist/libs/litepicker/dist/litepicker.js?1692870487') }}" defer></script>
-  <script src="{{ asset('admin/dist/libs/tom-select/dist/js/tom-select.base.min.js?1692870487') }}" defer></script>
 
 
   {{-- select 2 js --}}

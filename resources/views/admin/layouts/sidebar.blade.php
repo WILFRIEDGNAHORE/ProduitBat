@@ -23,7 +23,7 @@
                          <li class="menu-title">General</li>
 
                          <li class="nav-item">
-                              <a class="nav-link" href="index.html">
+                              <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon>
                                    </span>
@@ -276,10 +276,10 @@
                               <div class="collapse" id="sidebarSellers">
                                    <ul class="nav sub-navbar-nav">
                                     <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="{{ route('admin.vendor-request.index') }}">Vendor Requests</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.vendor-request.index') }}">vendeurs en attente</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="seller-list.html">List</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.approved-vendors.index') }}">vendeurs Aprouver</a>
                                         </li>
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="seller-details.html">Details</a>

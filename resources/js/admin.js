@@ -1,3 +1,8 @@
+import jQuery from 'jquery';
+window.$ = window.jQuery = jQuery;
+
+import './datatables';
+
 var notyf = new Notyf();
 
 var delete_url = null;
@@ -7,13 +12,11 @@ $(document).on("click", ".delete-item", function (e) {
 
     let url = $(this).attr("href");
     delete_url = url;
-    //alert(url);
     $("#modal-danger").modal("show");
 });
 
 $(document).on("click", ".delete-confirm", function (e) {
     e.preventDefault();
-    //alert('aaaaaaa');
 
     $.ajaxSetup({
         headers: {

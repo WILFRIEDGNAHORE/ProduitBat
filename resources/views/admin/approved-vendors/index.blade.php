@@ -5,8 +5,11 @@
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
+                    <!-- Page pre-title -->
+          
                     <h2 class="page-title">
-                        Vendor Requests                    </h2>
+                        Approved Vendors
+                    </h2>
                 </div>
                 <!-- Page title actions -->
                 <div class="col-auto ms-auto d-print-none">
@@ -57,7 +60,12 @@
         </div>
     </div>
     <!-- Page body -->
+
+
+
+
+
 @endsection
 @push('scripts')
-{{ $dataTable->scripts() }}
+    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
 @endpush
