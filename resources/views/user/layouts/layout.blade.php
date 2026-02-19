@@ -42,7 +42,7 @@
 
           <!-- ========== Topbar Start ========== -->
 
-          @include('vendor.layouts.top-bar')
+          @include('user.layouts.top-bar')
 
 
           <!-- ========== Topbar End ========== -->
@@ -50,7 +50,7 @@
           <!-- ========== App Menu Start ========== -->
 
           
-          @include('vendor.layouts.sidebar')
+          @include('user.layouts.sidebar')
           
           <!-- ========== App Menu End ========== -->
 
@@ -67,7 +67,7 @@
                <!-- End Container Fluid -->
 
                <!-- ========== Footer Start ========== -->
-               @include('vendor.layouts.footer')
+               @include('user.layouts.footer')
                <!-- ========== Footer End ========== -->
 
           </div>

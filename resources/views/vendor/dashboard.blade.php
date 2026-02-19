@@ -1,6 +1,6 @@
 
 
-@extends('vendor.layouts.layout')
+@extends('user.layouts.layout')
 @section('content')
 <div class="row">
                          <div class="col-md-3">

@@ -3,7 +3,7 @@
 @endphp
 
 
-@extends('vendor.layouts.layout')
+@extends('user.layouts.layout')
 @section('content')
 <div class="row">
     @if ($user->role === 'user' && $user->vendor_request === 1 && $user->vendor_status === 'pending' && $user->user_status === 'active')
