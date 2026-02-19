@@ -12,7 +12,7 @@
 
                               <!-- Menu Toggle Button -->
                               <div class="topbar-item">
-                                   <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">Welcome</h4>
+                                   <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">{{ Auth::user()->role === 'vendor' ? 'Vendor' : 'User' }}</h4>
                               </div>
                          </div>
 

@@ -771,6 +771,18 @@
 
      <!-- App Javascript (Require in all Page) -->
      <script src="{{asset('admin_assets/js/app.js')}}"></script>
+     <!-- Vendor Javascript (Require in all Page) -->
+
+     <!-- App Javascript (Require in all Page) -->
+     <script src="{{asset('admin_assets/js/app.js')}}"></script>
+
+     <!-- Vector Map Js -->
+     <script src="{{asset('admin_assets/vendor/jsvectormap/js/jsvectormap.min.js')}}"></script>
+     <script src="{{asset('admin_assets/vendor/jsvectormap/maps/world-merc.js')}}"></script>
+     <script src="{{asset('admin_assets/vendor/jsvectormap/maps/world.js')}}"></script>
+
+     <!-- Dashboard Js -->
+     <script src="{{asset('admin_assets/js/pages/dashboard.js')}}"></script>
      @stack('scripts')
 
 
