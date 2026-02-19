@@ -1,3 +1,6 @@
+       @php
+    $user = Auth::user();
+@endphp   
           <div class="main-nav">
                <!-- Sidebar Logo -->
                <div class="logo-box">
@@ -23,7 +26,7 @@
                          <li class="menu-title">General</li>
 
                          <li class="nav-item">
-                              <a class="nav-link" href="{{ route('vendor.dashboard') }}">
+                              <a class="nav-link" href="{{ route('user.dashboard') }}">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon>
                                    </span>
@@ -205,7 +208,7 @@
                          <li class="menu-title mt-2">Users</li>
 
                          <li class="nav-item">
-                              <a class="nav-link" href="{{route('vendor.profile.index')}}">
+                              <a class="nav-link" href="{{route('user.profile.index')}}">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
                                    </span>
