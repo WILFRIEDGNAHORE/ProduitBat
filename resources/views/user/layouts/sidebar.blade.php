@@ -317,15 +317,17 @@
                                    </ul>
                               </div>
                          </li>
+                           @if ($user->vendor_request === 0 && $user->role === 'user' && $user->user_status === 'active')
 
                          <li class="nav-item">
                               <a class="nav-link" href="pages-review.html">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
                                    </span>
-                                   <span class="nav-text"> Reviews </span>
+                                   <span class="nav-text">  Request too be Vendor </span>
                               </a>
                          </li>
+                         @endif
 
                          <li class="menu-title mt-2">Other Apps</li>
 
