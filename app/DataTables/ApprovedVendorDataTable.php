@@ -52,7 +52,13 @@ class ApprovedVendorDataTable extends DataTable
             })
 
 
-            ->rawColumns(['action', 'vendor_request', 'vendor_status'])
+            ->addColumn('image', function($query) {
+    $imagePath = $query->image ? asset($query->image) : 'Image Not Updated';
+    return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
+})
+
+
+            ->rawColumns(['action', 'vendor_request', 'vendor_status', 'image'])
             ->setRowId('id');
     }
 
