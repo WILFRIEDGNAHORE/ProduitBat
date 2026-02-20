@@ -33,7 +33,14 @@ $(document).on("click", ".delete-confirm", function (e) {
             }
         },
         error: function (xhr, status, error) {
-            notyf.error('Something went wrong!');
-        },
+    // Log error details to console for debugging
+    console.log('Error:', error);
+    console.log('Status:', status);
+    console.log('XHR:', xhr);
+
+    // Show specific error message
+    let errorMessage = xhr.responseJSON?.message || `Error: ${xhr.status} ${xhr.statusText}`;
+    notyf.error(errorMessage);
+}
     });
 });
