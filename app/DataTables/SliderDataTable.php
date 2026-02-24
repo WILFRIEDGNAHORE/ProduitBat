@@ -32,10 +32,6 @@ class SliderDataTable extends DataTable
                         Delete
                       </a>';
 
-                if ($query->id == 1) {
-                    return '';
-                }
-
                 if (Auth::id() === 1) {
                     return $edit . $delete;
                 }
@@ -45,16 +41,18 @@ class SliderDataTable extends DataTable
 
             ->addColumn('status', function ($query) {
                 if ($query->status === 1) {
-                    return '<span class="badge bg-green-lt">Active</span>';
+                    return '<span class="badge bg-green">Active</span>';
                 } else if ($query->status == 0) {
-                    return '<span class="badge bg-danger-lt">Inactive</span>';
+                    return '<span class="badge bg-danger">Inactive</span>';
                 }
             })
 
 
             ->addColumn('banner', function ($query) {
-                $imagePath = $query->banner ? asset($query->banner) : 'Banner Not Updated';
-                return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
+                if ($query->banner) {
+                    return '<img src="' . asset($query->banner) . '" style="width:60px; height:60px; object-fit:cover; border-radius:4px;" />';
+                }
+                return '<span class="text-muted">No Banner</span>';
             })
 
 

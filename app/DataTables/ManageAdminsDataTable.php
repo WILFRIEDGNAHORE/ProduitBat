@@ -48,10 +48,10 @@ class ManageAdminsDataTable extends DataTable
             })
 
             ->addColumn('created_by', function ($query) {
-    $user = \App\Models\Admin::find($query->created_by);
-    $imagePath = $user && $user->image ? asset( $user->image) : asset('default-avatar.png');
-    return '<span class="avatar avatar-xl" style="background-image: url(' . $imagePath . ')"></span>';
-})
+                $user = \App\Models\Admin::find($query->created_by);
+                $imagePath = $user && $user->image ? asset($user->image) : asset('default-avatar.png');
+                return '<img src="' . $imagePath . '" style="width:60px; height:60px; object-fit:cover; border-radius:50%;" />';
+            })
 
 ->addColumn('created_person_email', function ($query) {
     $admin = \App\Models\Admin::find($query->created_by);
@@ -61,9 +61,10 @@ class ManageAdminsDataTable extends DataTable
 
 
             ->addColumn('image', function ($query) {
-                
-                $imagePath = $query->image ? asset($query->image) : 'Image Not Updated';
-                return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
+                if ($query->image) {
+                    return '<img src="' . asset($query->image) . '" style="width:60px; height:60px; object-fit:cover; border-radius:4px;" />';
+                }
+                return '<span class="text-muted">No Image</span>';
             })
 
                ->addColumn('status', function ($query) {

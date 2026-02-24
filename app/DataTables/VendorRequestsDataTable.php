@@ -38,9 +38,11 @@ class VendorRequestsDataTable extends DataTable
             })
 
             ->addColumn('image', function($query) {
-    $imagePath = $query->image ? asset($query->image) : 'Image Not Updated';
-    return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
-})
+                if ($query->image) {
+                    return '<img src="' . asset($query->image) . '" style="width:60px; height:60px; object-fit:cover; border-radius:4px;" />';
+                }
+                return '<span class="text-muted">No Image</span>';
+            })
 
 
             ->addColumn('vendor_request', function ($query) {
@@ -63,7 +65,6 @@ class VendorRequestsDataTable extends DataTable
             })
 
 
-            ->rawColumns(['action', 'vendor_request', 'vendor_status'])
             ->rawColumns(['action', 'vendor_request', 'vendor_status', 'image'])
             ->setRowId('id');
     }
