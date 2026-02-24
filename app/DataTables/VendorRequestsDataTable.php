@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
@@ -29,7 +30,11 @@ class VendorRequestsDataTable extends DataTable
                 $delete = '<a href="'.route('admin.vendor-request.destroy', $query->id).'" class="btn btn-danger delete-item">                        Delete
                       </a>';
 
-                      return $edit.$delete;
+                      if (Auth::id() === 1) {
+                    return $edit . $delete;
+                }
+
+                return $edit;
             })
 
             ->addColumn('image', function($query) {

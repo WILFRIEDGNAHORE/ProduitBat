@@ -1,4 +1,4 @@
-@extends('user.layout.master')
+@extends('user.layouts.layout')
 @section('content')
     <!-- Page header -->
     <div class="page-header d-print-none">

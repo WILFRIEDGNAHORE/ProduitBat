@@ -47,9 +47,21 @@ class ManageAdminsDataTable extends DataTable
                 return $query->id == '1' ? '<span class="badge bg-purple-lt">Super Admin</span>' : '<span class="badge bg-green-lt">Admin</span>';
             })
 
+            ->addColumn('created_by', function ($query) {
+    $user = \App\Models\Admin::find($query->created_by);
+    $imagePath = $user && $user->image ? asset( $user->image) : asset('default-avatar.png');
+    return '<span class="avatar avatar-xl" style="background-image: url(' . $imagePath . ')"></span>';
+})
+
+->addColumn('created_person_email', function ($query) {
+    $admin = \App\Models\Admin::find($query->created_by);
+    return $admin ? $admin->email : 'N/A';
+})
+
 
 
             ->addColumn('image', function ($query) {
+                
                 $imagePath = $query->image ? asset($query->image) : 'Image Not Updated';
                 return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
             })
@@ -62,7 +74,7 @@ class ManageAdminsDataTable extends DataTable
                 }
             })
 
-            ->rawColumns(['action', 'role', 'image', 'status'])
+            ->rawColumns(['action', 'role', 'image', 'status', 'created_by'])
             ->setRowId('id');
     }
 
@@ -110,12 +122,13 @@ class ManageAdminsDataTable extends DataTable
             Column::make('email'),
             Column::make('role'),
             Column::make('created_by'),
+            Column::make('created_person_email'),
             Column::make('created_at'),
             Column::make('status'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
+                ->width(360)
                 ->addClass('text-center'),
         ];
     }

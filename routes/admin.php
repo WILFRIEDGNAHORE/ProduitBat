@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\ManageAdminController;
 use App\Http\Controllers\Admin\VendorRequestController;
 use App\Http\Controllers\Admin\ApprovedVendorController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
@@ -18,7 +19,6 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
-
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
@@ -40,6 +40,7 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
+    Route::resource('slider', SliderController::class);
     Route::resource('manage-admin', ManageAdminController::class);
     Route::resource('manage-user', ManageUserController::class);
     Route::resource('vendor-request', VendorRequestController::class);

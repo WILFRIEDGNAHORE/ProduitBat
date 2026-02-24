@@ -320,7 +320,7 @@
                            @if ($user->vendor_request === 0 && $user->role === 'user' && $user->user_status === 'active')
 
                          <li class="nav-item">
-                              <a class="nav-link" href="pages-review.html">
+                              <a class="nav-link" href="{{ route('user.vendor-request.index') }}">
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:chat-square-like-bold-duotone"></iconify-icon>
                                    </span>

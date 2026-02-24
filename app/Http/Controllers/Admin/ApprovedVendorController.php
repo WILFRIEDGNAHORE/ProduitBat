@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\ApprovedVendorDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use File;
 
@@ -95,6 +96,9 @@ class ApprovedVendorController extends Controller
      */
     public function destroy(string $id)
     {
+        if (Auth::user()->id != 1) {
+            abort(404);
+        }
           $request = User::findOrFail($id);
         if(File::exists(public_path($request->document))){
             File::delete(public_path($request->document));

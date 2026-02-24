@@ -58,6 +58,24 @@
                                    </ul>
                               </div>
                          </li>
+                         <li class="nav-item">
+                              <a class="nav-link menu-arrow" href="#sidebarSlider" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarSlider">
+                                   <span class="nav-icon">
+                                        <iconify-icon icon="solar:t-shirt-bold-duotone"></iconify-icon>
+                                   </span>
+                                   <span class="nav-text"> Manage Section </span>
+                              </a>
+                              <div class="collapse" id="sidebarSlider">
+                                   <ul class="nav sub-navbar-nav">
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="{{ route('admin.slider.index') }}">Manage Slider</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="product-add.html">List</a>
+                                        </li>
+                                   </ul>
+                              </div>
+                         </li>
 
                          <li class="nav-item">
                               <a class="nav-link menu-arrow" href="#sidebarCategory" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCategory">

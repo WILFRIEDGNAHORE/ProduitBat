@@ -6,6 +6,7 @@ use App\Models\ApprovedVendor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -32,7 +33,11 @@ class ApprovedVendorDataTable extends DataTable
                         Delete
                       </a>';
 
-                      return $edit.$delete;
+                      if (Auth::id() === 1) {
+                    return $edit . $delete;
+                }
+
+                return $edit;
             })
 
 

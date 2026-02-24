@@ -66,7 +66,7 @@ class ManageAdminController extends Controller
         $admin->contact = $request->contact;
         $admin->address = $request->address;
         $admin->status = 'approved';
-        $admin->created_by = Auth::user()->email;
+        $admin->created_by = Auth::user()->id;
         $admin->save();
         notyf()->success('Admin Created Successfully!');
         return redirect()->route('admin.manage-admin.index');
@@ -85,6 +85,9 @@ class ManageAdminController extends Controller
      */
     public function edit(string $id)
     {
+        if($id == 1){
+            abort(404);
+        }
 
         $admin = Admin::findOrFail($id);
         return view('admin.manage-admin.edit', compact('admin'));
@@ -95,6 +98,10 @@ class ManageAdminController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
+        if($id == 1){
+            abort(404);
+        }
 
         
            $request->validate([
@@ -124,15 +131,15 @@ class ManageAdminController extends Controller
 
         $admin->name = $request->name;
         $admin->email = $request->email;
-        if(!empty($request->password)){
-             $admin->update([
+        if (!empty($request->password)) {
+            $admin->update([
                 'password' => bcrypt($request->password),
             ]);
         }
         $admin->contact = $request->contact;
         $admin->address = $request->address;
-        if(Auth::user()->id == '1'){
-             $admin->status = $request->status;
+        if (Auth::user()->id == '1') {
+            $admin->status = $request->status;
         }
         $admin->save();
         notyf()->success('Admin Updated Successfully!');
@@ -144,11 +151,11 @@ class ManageAdminController extends Controller
      */
     public function destroy(string $id)
     {
-        if (Auth::user()->id != '1') {
+        if (Auth::user()->id != 1) {
             abort(404);
         }
           $admin = Admin::findOrFail($id);
-        if(File::exists(public_path($admin->image))){
+        if (File::exists(public_path($admin->image))) {
             File::delete(public_path($admin->image));
         }
         $admin->delete();

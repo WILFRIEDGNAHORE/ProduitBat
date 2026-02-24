@@ -603,6 +603,21 @@
                           OTP Verification
                         </a>
                       </li>
+                      <li class="px-4 group/item">
+                        <a
+                          href="{{ route('vendor.register.index') }}"
+                          class="vendor-register-page-btn flex items-center py-2 gap-x-2 relative text-light-primary-text group-hover/item:text-primary"
+                        >
+                          <span
+                            class="w-8 h-8 bg-[#F0F0F0] group-hover/item:bg-[rgba(0,171,85,0.08)] transition-colors duration-300 inline-flex items-center justify-center rounded-full"
+                          >
+                            <i
+                              class="hgi hgi-stroke hgi-user-add text-base text-light-primary-text group-hover/item:text-primary"
+                            ></i>
+                          </span>
+                          Vendor Register
+                        </a>
+                      </li>
                     </ul>
                   </li>
                   <li class="flex items-center">
