@@ -6,9 +6,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="mb-4">Sub Category Details</h2>
+                    <h2 class="mb-4">Child Category Details</h2>
 
-                    <form action="{{ route('admin.sub-category.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.child-category.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="row g-3 align-items-center">
@@ -19,6 +19,20 @@
                                 <select name="category_id" class="form-select">
                                     @forelse ($cats as $cat)
                                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    @empty
+                                        No Data Available
+                                    @endforelse
+                                   
+                                   
+                                </select>
+                            </div>
+
+
+                                    <div class="col-md-7">
+                                <div class="form-label">Sub Category</div>
+                                <select name="sub_category_id" class="form-select">
+                                    @forelse ($subcats as $subcat)
+                                       <option value="{{ $subcat->id }}">{{ $subcat->name }}</option>
                                     @empty
                                         No Data Available
                                     @endforelse
@@ -47,7 +61,7 @@
                         </div>
 
                         <div class="mt-4">
-                            <button class="btn btn-primary">Create Sub Category</button>
+                            <button class="btn btn-primary">Create Child Category</button>
                         </div>
                     </form>
                 </div>

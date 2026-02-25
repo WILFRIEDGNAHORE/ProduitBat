@@ -93,7 +93,7 @@
                                              <a class="sub-nav-link" href="{{ route('admin.sub-category.index') }}">Manage Sub-category</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="category-add.html">Manage Child-category</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.child-category.index') }}">Manage Child-category</a>
                                         </li>
                                    </ul>
                               </div>
