@@ -6,35 +6,25 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="mb-4">Sub Category Details</h2>
+                    <h2 class="mb-4">Category Details</h2>
 
-                    <form action="{{ route('admin.sub-category.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('admin.category.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="row g-3 align-items-center">
                           
-
-                              <div class="col-md-7">
-                                <div class="form-label">Category</div>
-                                <select name="category_id" class="form-select">
-                                    @forelse ($cats as $cat)
-                                       <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                    @empty
-                                        No Data Available
-                                    @endforelse
-                                   
-                                   
-                                </select>
-                            </div>
-
 
                             <div class="col-md-7">
                                 <div class="form-label">Name</div>
                                 <input type="text" name="name" value="{{ old('name') }}" class="form-control">
                                 <x-input-error :messages="$errors->get('name')" class="mt-2 text-danger" />
                             </div>
-                  
-
+                            <div class="col-md-7">
+                                <div class="form-label">Icon</div>
+                                <input type="text" name="icon" class="form-control" value="{{ old('icon') }}">
+                                Copy icons SVG<a href="https://tabler.io/icons" target="_blank"> here</a>
+                                <x-input-error :messages="$errors->get('icon')" class="mt-2 text-danger" />
+                            </div>
                          
                          
                             <div class="col-md-7">
@@ -47,7 +37,7 @@
                         </div>
 
                         <div class="mt-4">
-                            <button class="btn btn-primary">Create Sub Category</button>
+                            <button class="btn btn-primary">Create Category</button>
                         </div>
                     </form>
                 </div>
