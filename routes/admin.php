@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ManageAdminController;
 use App\Http\Controllers\Admin\VendorRequestController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ApprovedVendorController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\AdminProfileController;
@@ -44,6 +45,9 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
+    Route::get('product/get-child-categories/', [ProductController::class, 'getChildCategories'])->name('product.get-child-categories');
+    Route::get('product/get-sub-categories/', [ProductController::class, 'getSubCategories'])->name('product.get-sub-categories');
+    Route::resource('product', ProductController::class);
     Route::resource('child-category', ChildCategoryController::class);
     Route::resource('sub-category', SubCategoryController::class);
     Route::resource('brand', BrandController::class);

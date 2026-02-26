@@ -218,22 +218,12 @@
     <!-- Notyf JS -->
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-    <!-- Summernote Lite JS -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-
-
   {{-- select 2 js --}}
   <script src="{{ asset('frontend/assets/js/select2.min.js') }}"></script>
   {{-- select 2 js --}}
 
-
-  
-
     <!-- Vite-bundled admin.js -->
     @vite('resources/js/admin.js')
-
-
-
     <!-- Error Handling -->
     <script>
         @if ($errors->any())
@@ -764,14 +754,18 @@
             })).render();
         });
         // @formatter:on
+
+        
     </script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- Summernote Lite JS (after jQuery) -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
      <!-- Vendor Javascript (Require in all Page) -->
      <script src="{{asset('admin_assets/js/vendor.js')}}"></script>
-
-     <!-- App Javascript (Require in all Page) -->
-     <script src="{{asset('admin_assets/js/app.js')}}"></script>
-     <!-- Vendor Javascript (Require in all Page) -->
 
      <!-- App Javascript (Require in all Page) -->
      <script src="{{asset('admin_assets/js/app.js')}}"></script>

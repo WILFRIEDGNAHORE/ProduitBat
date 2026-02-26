@@ -183,18 +183,53 @@
 
 @push('scripts')
     <script>
-        $('.summernote').summernote({
-            height: 200,
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['insert', ['link', 'picture', 'video']]
-            ]
-        });
+        $(document).ready(function() {
 
-        // Initialize all datepickers with class 'datepicker'
-        document.addEventListener("DOMContentLoaded", function() {
+            // Category → Sub-Category
+            $('.category').on('change', function() {
+                let category_id = $(this).val();
+                $.ajax({
+                    url: "{{ route('admin.product.get-sub-categories') }}",
+                    method: 'GET',
+                    data: { category_id: category_id },
+                    success: function(data) {
+                        let subCategorySelect = $('.sub-category');
+                        subCategorySelect.html('<option value="">Select</option>');
+                        if (data.status === 'success' && Array.isArray(data.subCategories)) {
+                            $.each(data.subCategories, function(i, item) {
+                                subCategorySelect.append(`<option value="${item.id}">${item.name}</option>`);
+                            });
+                        } else {
+                            subCategorySelect.append('<option value="">No Subcategories Available</option>');
+                        }
+                    },
+                    error: function(xhr, status, error) { console.log(error); }
+                });
+            });
+
+            // Sub-Category → Child Category
+            $('.sub-category').on('change', function() {
+                let sub_category_id = $(this).val();
+                $.ajax({
+                    url: "{{ route('admin.product.get-child-categories') }}",
+                    method: 'GET',
+                    data: { sub_category_id: sub_category_id },
+                    success: function(data) {
+                        let childCategorySelect = $('.child-category');
+                        childCategorySelect.html('<option value="">Select</option>');
+                        if (data.status === 'success' && Array.isArray(data.childCategories)) {
+                            $.each(data.childCategories, function(i, item) {
+                                childCategorySelect.append(`<option value="${item.id}">${item.name}</option>`);
+                            });
+                        } else {
+                            childCategorySelect.append('<option value="">No Child Categories Available</option>');
+                        }
+                    },
+                    error: function(xhr, status, error) { console.log(error); }
+                });
+            });
+
+            // Datepickers
             window.Litepicker && document.querySelectorAll('.datepicker').forEach(function(element) {
                 new Litepicker({
                     element: element,
@@ -204,79 +239,20 @@
                     },
                 });
             });
+
+            // Summernote (en dernier — n'empêche pas les autres features si indisponible)
+            if ($.fn.summernote) {
+                $('.summernote').summernote({
+                    height: 200,
+                    toolbar: [
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['insert', ['link', 'picture', 'video']]
+                    ]
+                });
+            }
         });
-
-
-
-
-        $(document).ready(function() {
-            $('.category').on('change', function() {
-                //alert('aaaaaaa');
-                let category_id = $(this).val()
-                //alert(category_id);
-
-                $.ajax({
-                    url: "{{ route('admin.product.get-sub-categories') }}",
-                    method: 'GET',
-                    data: {
-                        category_id: category_id
-                    },
-                    success: function(data) {
-                        let subCategorySelect = $('.sub-category');
-                        subCategorySelect.html('<option value="">Select</option>');
-                        if (data.status === 'success' && Array.isArray(data.subCategories)) {
-                            $.each(data.subCategories, function(i, item) {
-                                subCategorySelect.append(
-                                    `<option value="${item.id}">${item.name}</option>`
-                                    );
-                            });
-                        } else {
-                            subCategorySelect.append(
-                                '<option value="">No Subcategories Available</option>');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(error);
-                    }
-                })
-            })
-
-
-
-
-               $('.sub-category').on('change', function() {
-                //alert('aaaaaaa');
-                let sub_category_id = $(this).val()
-                //alert(category_id);
-
-                $.ajax({
-                    url: "{{ route('admin.product.get-child-categories') }}",
-                    method: 'GET',
-                    data: {
-                        sub_category_id: sub_category_id
-                    },
-                    success: function(data) {
-                        let childCategorySelect = $('.child-category');
-                        childCategorySelect.html('<option value="">Select</option>');
-                        if (data.status === 'success' && Array.isArray(data.childCategories)) {
-                            $.each(data.childCategories, function(i, item) {
-                                childCategorySelect.append(
-                                    `<option value="${item.id}">${item.name}</option>`
-                                    );
-                            });
-                        } else {
-                            childCategorySelect.append(
-                                '<option value="">No Subcategories Available</option>');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(error);
-                    }
-                })
-            })
-
-            
-        })
     </script>
 @endpush
 
