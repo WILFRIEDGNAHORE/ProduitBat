@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Admin\ManageAdminController;
 use App\Http\Controllers\Admin\VendorRequestController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ApprovedVendorController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\AdminProfileController;
@@ -45,6 +46,7 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.
 
     Route::resource('child-category', ChildCategoryController::class);
     Route::resource('sub-category', SubCategoryController::class);
+    Route::resource('brand', BrandController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('slider', SliderController::class);
     Route::resource('manage-admin', ManageAdminController::class);

@@ -71,7 +71,7 @@
                                              <a class="sub-nav-link" href="{{ route('admin.slider.index') }}">Manage Slider</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="product-add.html">List</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.brand.index') }}">Manage Brand</a>
                                         </li>
                                    </ul>
                               </div>
