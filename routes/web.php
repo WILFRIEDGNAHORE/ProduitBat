@@ -6,6 +6,7 @@ use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserVendorRequest;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Vendor\ProductVariantController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\User\UserVendorRequestController;
 use App\Http\Controllers\Vendor\VendorProfileController;
@@ -37,8 +38,19 @@ Route::group(['middleware' => ['auth', 'verified', 'check_role:user'], 'prefix' 
  */
 Route::group(['middleware' => ['auth', 'verified', 'check_role:vendor'], 'prefix' => 'vendor', 'as' => 'vendor.'], function () {
 
-    Route::get('product/get-child-categories/', [ProductController::class, 'getChildCategories'])->name('product.get-child-categories');
-    Route::get('product/get-sub-categories/', [ProductController::class, 'getSubCategories'])->name('product.get-sub-categories');
+ /**
+     * Product Variant Routes
+     */
+    Route::delete('product/variant/destroy/{variant_id}', [ProductVariantController::class, 'destroy'])->name('product-variant.destroy');
+    Route::put('product/variant/update/{variant_id}', [ProductVariantController::class, 'update'])->name('product-variant.update');
+    Route::get('product/variant/edit/{product_id}/{variant_id}', [ProductVariantController::class, 'edit'])->name('product-variant.edit');
+    Route::post('product/variant/store', [ProductVariantController::class, 'store'])->name('product-variant.store');
+    Route::get('product/variant/create/{product_id}', [ProductVariantController::class, 'create'])->name('product-variant.create');
+    Route::get('product/variant/{product_id}', [ProductVariantController::class, 'index'])->name('product-variant.index');
+    /**
+     * Product Variant Routes
+     */
+    Route::get('product/get-child-categories/', [ProductController::class, 'getChildCategories'])->name('product.get-child-categories');    Route::get('product/get-sub-categories/', [ProductController::class, 'getSubCategories'])->name('product.get-sub-categories');
     Route::resource('product', ProductController::class);
     Route::resource('profile', VendorProfileController::class);
     Route::get('dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
