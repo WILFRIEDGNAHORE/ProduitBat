@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\DataTables\AdminProductDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\ProductVariant;
 use App\Models\Category;
 use App\Models\ChildCategory;
 use App\Models\Product;
@@ -191,6 +192,11 @@ class ProductController extends Controller
             abort(404);
         }
         $product = Product::findOrFail($id);
+        $variants = ProductVariant::where('product_id', $product->id)->count();
+        if($variants > 0){
+            notyf()->error('There are variants under this product. Please delete them first!');
+            return response(['status' => 'error']);
+        }
         if (File::exists(public_path($product->thumb_image))) {
             File::delete(public_path($product->thumb_image));
         }

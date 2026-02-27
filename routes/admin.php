@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\VendorRequestController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\VendorProductController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ApprovedVendorController;
 use App\Http\Controllers\Admin\SliderController;
@@ -46,6 +47,12 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
 
+    Route::delete('puri: roduct/variant/destroy/{variant_id}', [ProductVariantController::class, 'destroy'])->name('product-variant.destroy');
+    Route::put('product/variant/update/{variant_id}', [ProductVariantController::class, 'update'])->name('product-variant.update');
+    Route::get('product/variant/edit/{product_id}/{variant_id}', [ProductVariantController::class, 'edit'])->name('product-variant.edit');
+    Route::post('product/variant/store', [ProductVariantController::class, 'store'])->name('product-variant.store');
+    Route::get('product/variant/create/{product_id}', [ProductVariantController::class, 'create'])->name('product-variant.create');
+    Route::get('product/variant/{product_id}', [ProductVariantController::class, 'index'])->name('product-variant.index');
     Route::resource('vendor-product', VendorProductController::class);
     Route::get('product/get-child-categories/', [ProductController::class, 'getChildCategories'])->name('product.get-child-categories');
     Route::get('product/get-sub-categories/', [ProductController::class, 'getSubCategories'])->name('product.get-sub-categories');
