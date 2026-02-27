@@ -44,7 +44,7 @@
                                              <a class="sub-nav-link" href="{{ route('admin.product.index') }}">My Products</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="{{ route('admin.brand.index') }}">Vendor Products</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.vendor-product.index') }}">Vendor Products</a>
                                         </li>
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="product-details.html">Details</a>
