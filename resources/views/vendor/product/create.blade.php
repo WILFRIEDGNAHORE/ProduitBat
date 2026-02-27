@@ -1,4 +1,4 @@
-@extends('admin.layouts.layout')
+@extends('vendor.layouts.layout')
 @section('content')
     <!-- Page body -->
     <div class="page-body">
@@ -8,7 +8,7 @@
                     <div class="card-body">
                         <h2 class="mb-4">Create Product</h2>
 
-                        <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('vendor.product.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
 
@@ -183,8 +183,8 @@
 
 @push('scripts')
     <script>
-        // IIFE : capture window.$ immédiatement (CDN jQuery + Summernote),
-        // avant que le module Vite admin.js (différé) ne l'écrase avec ViteJQuery.
+        // IIFE : capture window.$ (CDN jQuery + Summernote) immédiatement,
+        // avant que le module Vite vendor.js (différé) ne l'écrase avec ViteJQuery.
         // Le script est en bas du body → le DOM est déjà accessible.
         (function($) {
 
@@ -192,7 +192,7 @@
             $('.category').on('change', function() {
                 let category_id = $(this).val();
                 $.ajax({
-                    url: "{{ route('admin.product.get-sub-categories') }}",
+                    url: "{{ route('vendor.product.get-sub-categories') }}",
                     method: 'GET',
                     data: { category_id: category_id },
                     success: function(data) {
@@ -214,7 +214,7 @@
             $('.sub-category').on('change', function() {
                 let sub_category_id = $(this).val();
                 $.ajax({
-                    url: "{{ route('admin.product.get-child-categories') }}",
+                    url: "{{ route('vendor.product.get-child-categories') }}",
                     method: 'GET',
                     data: { sub_category_id: sub_category_id },
                     success: function(data) {
@@ -243,7 +243,7 @@
                 });
             });
 
-            // Summernote
+            // Summernote — en dernier, avec guard
             if ($.fn.summernote) {
                 $('.summernote').summernote({
                     height: 200,

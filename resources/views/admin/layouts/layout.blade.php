@@ -30,8 +30,9 @@
      <!-- Theme Config js (Require in all Page) -->
      <script src="{{asset('admin_assets/js/config.js')}}"></script>
      <!-- Notyf CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-                <!-- Notyf CSS -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+     <!-- Summernote Lite CSS -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css">
 </head>
 
 <body>
@@ -761,14 +762,14 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-    <!-- Summernote Lite JS (after jQuery) -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
-
      <!-- Vendor Javascript (Require in all Page) -->
      <script src="{{asset('admin_assets/js/vendor.js')}}"></script>
 
      <!-- App Javascript (Require in all Page) -->
      <script src="{{asset('admin_assets/js/app.js')}}"></script>
+
+    <!-- Summernote Lite JS (après vendor.js/app.js pour éviter l'écrasement de window.$) -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
      <!-- Vector Map Js -->
      <script src="{{asset('admin_assets/vendor/jsvectormap/js/jsvectormap.min.js')}}"></script>

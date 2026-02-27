@@ -1,3 +1,8 @@
+import jQuery from 'jquery';
+window.$ = window.jQuery = jQuery;
+
+import './datatables';
+
 var notyf = new Notyf();
 
 var delete_url = null;

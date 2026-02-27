@@ -30,6 +30,18 @@
                                    <span class="nav-text"> Dashboard </span>
                               </a>
                          </li>
+                         @if (Auth::user()->vendor_status === 'approved')
+                         <li class="nav-item">
+                              <a class="nav-link" href="{{ route('vendor.product.index') }}">
+                                   <span class="nav-icon">
+                                        <iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon>
+                                   </span>
+                                   <span class="nav-text"> My Products </span>
+                              </a>
+                         </li>
+                          @endif
+
+                         
 
                          <li class="nav-item">
                               <a class="nav-link menu-arrow" href="#sidebarProducts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarProducts">
