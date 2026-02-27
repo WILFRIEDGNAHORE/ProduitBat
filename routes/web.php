@@ -6,6 +6,7 @@ use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\User\UserVendorRequest;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Vendor\ProductVariantItemController;
 use App\Http\Controllers\Vendor\ProductVariantController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\User\UserVendorRequestController;
@@ -37,6 +38,15 @@ Route::group(['middleware' => ['auth', 'verified', 'check_role:user'], 'prefix' 
  * Vendor Routes
  */
 Route::group(['middleware' => ['auth', 'verified', 'check_role:vendor'], 'prefix' => 'vendor', 'as' => 'vendor.'], function () {
+
+
+    Route::delete('product/variant-item/destroy/{variant_item_id}', [ProductVariantItemController::class, 'destroy'])->name('product-variant-item.destroy');
+    Route::put('product/variant-item/update/{variant_item_id}', [ProductVariantItemController::class, 'update'])->name('product-variant-item.update');
+    Route::get('product/variant-item/edit/{product_id}/{variant_id}/{variant_item_id}', [ProductVariantItemController::class, 'edit'])->name('product-variant-item.edit');
+    Route::post('product/variant-item/store', [ProductVariantItemController::class, 'store'])->name('product-variant-item.store');
+    Route::get('product/variant-item/create/{product_id}/{variant_id}', [ProductVariantItemController::class, 'create'])->name('product-variant-item.create');
+    Route::get('product/variant-item/{product_id}/{variant_id}', [ProductVariantItemController::class, 'index'])->name('product-variant-item.index');
+
 
  /**
      * Product Variant Routes

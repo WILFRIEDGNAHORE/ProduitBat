@@ -13,4 +13,8 @@ class Product extends Model
         'price', 'offer_price', 'offer_start_date', 'offer_end_date',
         'product_type', 'status', 'is_approved', 'seo_title', 'seo_description',
     ];
+
+     public function variants(){
+        return $this->hasMany(ProductVariant::class);
+    }
 }
