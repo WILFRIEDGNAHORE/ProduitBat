@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\VendorProductVariant;
 use App\Http\Controllers\Admin\VendorProductVariantItem;
 use App\Http\Controllers\Admin\ProductImageGalleryController;
+use App\Http\Controllers\Admin\VendorProductImageGalleryController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ApprovedVendorController;
@@ -50,6 +51,8 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 });
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+
+    Route::resource('vendor/product/vendor-image-gallery', VendorProductImageGalleryController::class);
 
     Route::resource('product/image-gallery', ProductImageGalleryController::class);
 
