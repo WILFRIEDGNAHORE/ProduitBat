@@ -51,7 +51,7 @@
               </div>
 
               <a
-                href="shop-left-sidebar.html"
+                href="{{ route('flash-sale.index')}} "
                 class="btn btn-large btn-primary rounded-[60px] group py-2 pl-5 pr-3"
               >
                 View All Products

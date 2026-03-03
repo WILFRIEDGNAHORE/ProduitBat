@@ -91,24 +91,8 @@
             <nav class="main-menu">
               <ul>
                 <li>
-                  <a class="active" href="#">Home </a>
-                  <ul>
-                    <li>
-                      <a class='active' href='index.html'> Home 1 </a>
-                    </li>
-                    <li>
-                      <a href='index-2.html'> Home 2 </a>
-                    </li>
-                    <li>
-                      <a href='index-3.html'> Home 3 </a>
-                    </li>
-                    <li>
-                      <a href='index-4.html'> Home 4 </a>
-                    </li>
-                    <li>
-                      <a href='index-5.html'> Home 5 </a>
-                    </li>
-                  </ul>
+                  <a class="active" href="{{ route('home') }}">Home </a>
+                  
                 </li>
 
                 <li>
