@@ -73,6 +73,10 @@
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="{{ route('admin.brand.index') }}">Manage Brand</a>
                                         </li>
+
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="{{ route('admin.flash-sale.index') }}">Manage Flash Sale</a>
+                                        </li>
                                    </ul>
                               </div>
                          </li>

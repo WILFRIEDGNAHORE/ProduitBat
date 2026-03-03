@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\VendorProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\VendorProductVariant;
 use App\Http\Controllers\Admin\VendorProductVariantItem;
+use App\Http\Controllers\Admin\FlashSaleController;
 use App\Http\Controllers\Admin\ProductImageGalleryController;
 use App\Http\Controllers\Admin\VendorProductImageGalleryController;
 use App\Http\Controllers\Admin\ProductVariantController;
@@ -51,6 +52,9 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 });
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+
+    Route::resource('flash-sale', FlashSaleController::class);
+
 
     Route::resource('vendor/product/vendor-image-gallery', VendorProductImageGalleryController::class);
 

@@ -219,10 +219,6 @@
     <!-- Notyf JS -->
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-  {{-- select 2 js --}}
-  <script src="{{ asset('frontend/assets/js/select2.min.js') }}"></script>
-  {{-- select 2 js --}}
-
     <!-- Vite-bundled admin.js -->
     @vite('resources/js/admin.js')
     <!-- Error Handling -->
@@ -236,6 +232,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('chart-new-clients'), {
                 chart: {
                     type: "line",
@@ -298,6 +295,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('chart-active-users'), {
                 chart: {
                     type: "bar",
@@ -362,6 +360,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('chart-mentions'), {
                 chart: {
                     type: "bar",
@@ -445,6 +444,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined' || !document.querySelector('#map-world')) return;
             const map = new jsVectorMap({
                 selector: '#map-world',
                 map: 'world',
@@ -472,6 +472,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-activity'), {
                 chart: {
                     type: "radialBar",
@@ -511,6 +512,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('chart-development-activity'), {
                 chart: {
                     type: "area",
@@ -579,6 +581,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-1'), {
                 chart: {
                     type: "line",
@@ -609,6 +612,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-2'), {
                 chart: {
                     type: "line",
@@ -639,6 +643,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-3'), {
                 chart: {
                     type: "line",
@@ -669,6 +674,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-4'), {
                 chart: {
                     type: "line",
@@ -699,6 +705,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-5'), {
                 chart: {
                     type: "line",
@@ -729,6 +736,7 @@
     <script>
         // @formatter:off
         document.addEventListener("DOMContentLoaded", function () {
+            if (typeof tabler === 'undefined') return;
             window.ApexCharts && (new ApexCharts(document.getElementById('sparkline-bounce-rate-6'), {
                 chart: {
                     type: "line",
@@ -767,6 +775,9 @@
 
      <!-- App Javascript (Require in all Page) -->
      <script src="{{asset('admin_assets/js/app.js')}}"></script>
+
+    <!-- Select2 JS (after jQuery/app.js so it attaches to the correct $ instance) -->
+    <script src="{{ asset('admin_assets/js/select2.min.js') }}"></script>
 
     <!-- Summernote Lite JS (après vendor.js/app.js pour éviter l'écrasement de window.$) -->
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
