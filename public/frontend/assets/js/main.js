@@ -240,20 +240,20 @@
   });
 
   /*------ Sellzy Countdown ----*/
-  const sellzyCountdown = $(".sellzy-countdown");
-  if (sellzyCountdown.length) {
-    safeInit(function () {
-      if ($.fn && $.fn.countdown) {
-        sellzyCountdown.countdown({
-          date: "12/13/2026 00:00:00",
-          offset: +6,
-          day: "Day",
-          days: "Days",
-          hideOnComplete: true,
-        });
-      }
-    });
-  }
+  safeInit(function () {
+    if ($.fn && $.fn.countdown) {
+      $('.sellzy-countdown').each(function () {
+        var rawDate = $(this).data('countdown-date');
+        if (!rawDate) return;
+        // Convert YYYY-MM-DD (from DB) → MM/DD/YYYY 23:59:59 (plugin format, end of day)
+        var parts = String(rawDate).split('-');
+        if (parts.length === 3) {
+          rawDate = parts[1] + '/' + parts[2] + '/' + parts[0] + ' 23:59:59';
+        }
+        $(this).countdown({ date: rawDate });
+      });
+    }
+  });
 
   /*------ Search Flow ----*/
   $(".header-search-input").on("input.sellzy", function () {
