@@ -80,7 +80,7 @@
                     <div
                       class="product-image rounded-xl bg-[#F4F3F5] mb-4 overflow-hidden"
                     >
-                      <a href='product-details.html'>
+                      <a href='{{ route('product-details.show', $item->product->id) }}'>
                         <img
                           src="{{ asset($item->product->thumb_image) }}"
                           alt="{{ $item->product->name }}"
@@ -112,7 +112,7 @@
                           </a>
                         </li>
                         <li>
-                          <a aria-label='Compare' class='product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center before:absolute before:left-[calc(50%-8px)] before:bottom-full before:z-9 before:border-8 before:border-transparent before:border-t-black before:opacity-0 before:invisible before:-mb-3.5 hover:before:opacity-100 hover:before:visible before:transition-all before:duration-300 after:absolute after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rounded-sm after:bg-gray-800 after:whitespace-nowrap after:text-white after:text-xs after:leading-[18px] after:py-[3px] after:px-2 after:content-[attr(aria-label)] after:opacity-0 after:invisible after:transition-all after:duration-300 hover:after:opacity-100 hover:after:visible hover:after:-translate-y-2.5 hover:before:-translate-y-2.5' href='compare.html'>
+                          <a aria-label='Compare' class='product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center before:absolute before:left-[calc(50%-8px)] before:bottom-full before:z-9 before:border-8 before:border-transparent before:border-t-black before:opacity-0 before:invisible before:-mb-3.5 hover:before:opacity-100 hover:before:visible before:transition-all before:duration-300 after:absolute after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rounded-sm after:bg-gray-800 after:whitespace-nowrap after:text-white after:text-xs after:leading-[18px] after:py-[3px] after:px-2 after:content-[attr(aria-label)] after:opacity-0 after:invisible after:transition-all after:duration-300 hover:after:opacity-100 hover:after:visible hover:after:-translate-y-2.5 hover:before:-translate-y-2.5' href='{{ route('product-details.show', $item->product->id) }}'>
                             <i
                               class="hgi hgi-stroke hgi-reload text-2xl leading-6 text-light-primary-text"
                             ></i>
@@ -148,7 +148,7 @@
                     <h5
                       class="text-base leading-6 font-semibold font-dm-sans mb-4"
                     >
-                      <a href='product-details.html'>{{ $item->product->name }}</a>
+                      <a href='{{ route('product-details.show', $item->product->id) }}'>{{ $item->product->name }}</a>
                     </h5>
                     <div class="rating-section flex items-center mb-4">
                       <div

@@ -79,7 +79,7 @@
                     <div class="product-image-container relative">
                         <div class="product-image rounded-xl bg-[#F4F3F5] mb-4 overflow-hidden">
                             {{-- TODO: route('frontend.product.show', $product->slug) --}}
-                            <a href="#">
+                            <a href="{{ route('product-details.show', $item->product->id) }}">      
                                 <img
                                     src="{{ asset($product->thumb_image) }}"
                                     alt="{{ $product->name }}"
@@ -113,7 +113,7 @@
 
                         <h5 class="text-sm leading-6 font-semibold font-dm-sans mb-3 line-clamp-2">
                             {{-- TODO: route('frontend.product.show', $product->slug) --}}
-                            <a href="#" class="hover:text-primary transition-colors">{{ $product->name }}</a>
+                            <a href="{{ route('product-details.show', $item->product->id) }}" class="hover:text-primary transition-colors">{{ $product->name }}</a>
                         </h5>
 
                         {{-- TODO: système de notation (à implémenter)
