@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\ProductImageGalleryController;
 use App\Http\Controllers\Admin\VendorProductImageGalleryController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\ApprovedVendorController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProductVariantItemController;
@@ -52,6 +53,8 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 });
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+
+    Route::resource('settings', SettingsController::class);
 
     Route::resource('flash-sale', FlashSaleController::class);
 
