@@ -2869,6 +2869,27 @@
     @yield('content')
 
     @include('frontend.layouts.footer')
+    <script>
+document.querySelectorAll('.quantity-section').forEach(section => {
+
+    const input = section.querySelector('.quantity-input');
+    const minusBtn = section.querySelectorAll('.quantity-btn')[0];
+    const plusBtn = section.querySelectorAll('.quantity-btn')[1];
+
+    plusBtn.addEventListener('click', function () {
+        let value = parseInt(input.value) || 1;
+        input.value = value + 1;
+    });
+
+    minusBtn.addEventListener('click', function () {
+        let value = parseInt(input.value) || 1;
+        if (value > 1) {
+            input.value = value - 1;
+        }
+    });
+
+});
+</script>
 
     <!-- ========== Plugins JS ========== -->
     <script src="{{asset('frontend/assets/js/vendor/jquery-3.7.1.min.js')}}"></script>

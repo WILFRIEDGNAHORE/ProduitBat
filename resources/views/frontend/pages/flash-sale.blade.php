@@ -122,11 +122,11 @@
 
                         <div class="price-section flex items-center gap-x-2 flex-wrap mb-3">
                             <span class="current-price text-base font-bold text-light-primary-text">
-                                {{ number_format($displayPrice, 2) }} €
+                                {{ number_format($displayPrice, 2) }} {{ @$settings->currency_icon }}
                             </span>
                             @if($hasDiscount)
                             <span class="old-price text-sm font-normal text-light-disabled-text line-through">
-                                {{ number_format($product->price, 2) }} €
+                                {{ number_format($product->price, 2) }} {{ @$settings->currency_icon }}
                             </span>
                             @endif
                         </div>

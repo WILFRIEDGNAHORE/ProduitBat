@@ -168,11 +168,11 @@
                       @if ($item->product->offer_price > 0 && $item->product->offer_start_date <= now() && $item->product->offer_end_date >= now())
                         <span
                           class="current-price text-base font-semibold text-light-primary-text"
-                          >${{ $item->product->offer_price }}</span
+                          >{{ $item->product->offer_price }} {{ @$settings->currency_icon }}</span
                         >
                         <span
                           class="old-price text-sm leading-[22px] font-normal text-light-disabled-text line-through"
-                          >${{ $item->product->price }}</span
+                          >{{ $item->product->price }} {{ @$settings->currency_icon }}</span
                         >
                         <span
                           class="discount-percentage text-sm leading-[22px] font-semibold text-error"
@@ -181,7 +181,7 @@
                       @else
                         <span
                           class="current-price text-base font-semibold text-light-primary-text"
-                          >${{ $item->product->price }}</span
+                          >{{ $item->product->price }} {{ @$settings->currency_icon }}</span
                         >
                       @endif
                     </div>

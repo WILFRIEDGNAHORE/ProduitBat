@@ -113,11 +113,11 @@
                     $discountAmount = $product->price - $product->offer_price;
                     $percent = round(($discountAmount / $product->price) * 100);
                   @endphp
-                  <span class="current-price text-2xl leading-9 font-bold text-light-primary-text relative after:absolute after:h-6 after:w-px after:bg-gray-300 after:right-0 after:top-1/2 after:-translate-y-1/2 pr-3 inline-block">${{ $product->offer_price }}</span>
-                  <span class="old-price text-2xl leading-9 font-normal text-light-disabled-text">${{ $product->price }}</span>
+                  <span class="current-price text-2xl leading-9 font-bold text-light-primary-text relative after:absolute after:h-6 after:w-px after:bg-gray-300 after:right-0 after:top-1/2 after:-translate-y-1/2 pr-3 inline-block">{{ $product->offer_price }} {{ @$settings->currency_icon }}</span>
+                  <span class="old-price text-2xl leading-9 font-normal text-light-disabled-text">+{{ $product->price }}{{ @$settings->currency_icon }}</span>
                   <span class="product-discount-badge uppercase relative bg-warning text-black font-medium text-sm leading-[22px] px-1 after:absolute after:top-0 after:left-full after:z-10 after:w-1 after:h-full after:bg-[url('images/discount-warning-shape.html')] after:bg-contain after:bg-no-repeat">-{{ $percent }}% OFF</span>
                 @else
-                  <span class="current-price text-2xl leading-9 font-bold text-light-primary-text relative after:absolute after:h-6 after:w-px after:bg-gray-300 after:right-0 after:top-1/2 after:-translate-y-1/2 pr-3 inline-block">${{ $product->price }}</span>
+                  <span class="current-price text-2xl leading-9 font-bold text-light-primary-text relative after:absolute after:h-6 after:w-px after:bg-gray-300 after:right-0 after:top-1/2 after:-translate-y-1/2 pr-3 inline-block">{{ $product->price }} {{ @$settings->currency_icon }}</span>
                 @endif
               </div>
 
@@ -137,7 +137,7 @@
                         @if ($variantItem->status === 1)
                         <div class="size-variation-item">
                           <button data-size-text="{{ $variantItem->name }}" class="cursor-pointer flex items-center justify-center text-sm leading-6 px-[38px] py-1.5 text-light-primary-text font-semibold border border-gray-300 rounded-[100px] hover:bg-[rgba(145,158,171,0.08)]">
-                            {{ $variantItem->name }} (+${{ $variantItem->price }})
+                            {{ $variantItem->name }} (+{{ $variantItem->price }} {{ @$settings->currency_icon }})
                           </button>
                         </div>
                         @endif
@@ -156,7 +156,12 @@
                       <button class="quantity-btn inline-flex items-center justify-center hover:text-primary">
                         <i class="hgi hgi-stroke hgi-minus-sign text-xl leading-5"></i>
                       </button>
-                      <input type="text" class="quantity-input text-center w-full focus:outline-none font-semibold text-base leading-6 text-light-primary-text" value="1">
+                      <input 
+                        type="number" 
+                        class="quantity-input text-center w-full focus:outline-none font-semibold text-base leading-6 text-light-primary-text" 
+                        value="1"
+                        min="1"
+                      >
                       <button class="quantity-btn inline-flex items-center justify-center hover:text-primary">
                         <i class="hgi hgi-stroke hgi-plus-sign text-xl leading-5"></i>
                       </button>
