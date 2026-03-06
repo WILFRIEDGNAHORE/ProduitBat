@@ -231,6 +231,14 @@
                                    <span class="nav-text"> Manage Coupons </span>
                               </a>
                          </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="{{ route('admin.shipping-rule.index') }}">
+                                   <span class="nav-icon">
+                                        <iconify-icon icon="solar:leaf-bold-duotone"></iconify-icon>
+                                   </span>
+                                   <span class="nav-text"> Manage Shipping Rules </span>
+                              </a>
+                         </li>
 
                          <li class="menu-title mt-2">Users</li>
 
