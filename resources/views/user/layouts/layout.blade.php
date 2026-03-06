@@ -6,7 +6,7 @@
 <head>
      <!-- Title Meta -->
      <meta charset="utf-8" />
-     <title>Welcome | Larkon - Responsive Admin Dashboard Template</title>
+     <title>Welcome | User Dashboard</title>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta name="description" content="A fully responsive premium admin dashboard template" />
      <meta name="author" content="Techzaa" />
@@ -29,11 +29,14 @@
 
      <!-- Theme Config js (Require in all Page) -->
      <script src="{{asset('vendo/js/config.js')}}"></script>
-     <!-- Notyf CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-                <!-- Notyf CSS -->
-</head>
 
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
+    <!-- Summernote Lite CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
+     <!-- Notyf CSS -->
+</head>
 <body>
 
      <!-- START Wrapper -->
@@ -214,7 +217,8 @@
     </div>
 
     {{-- jQuery & DataTables loaded via Vite (admin.js) --}}
-
+ <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <!-- Notyf JS -->
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
@@ -230,7 +234,7 @@
   
 
     <!-- Vite-bundled admin.js -->
-    @vite('resources/js/vendor.js')
+    @vite('resources/js/user.js')
 
 
 
