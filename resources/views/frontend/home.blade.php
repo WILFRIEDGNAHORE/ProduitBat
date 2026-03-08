@@ -1,7 +1,8 @@
 @extends('frontend.layouts.master')
-
+@section('title')
+    {{ $settings->site_name }}
+@endsection
 @section('content')
-
     @include('frontend.sections.hero')
 
     @include('frontend.sections.cta-info')
@@ -27,5 +28,4 @@
     @include('frontend.sections.blog')
 
     @include('frontend.sections.subscribe')
-
 @endsection

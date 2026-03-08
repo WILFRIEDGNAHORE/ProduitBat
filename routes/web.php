@@ -10,6 +10,7 @@ use App\Http\Controllers\User\UserVendorRequest;
 use App\Http\Controllers\Frontend\FlashSaleController;
 use App\Http\Controllers\User\UserAddressController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Vendor\ProductVariantItemController;
 use App\Http\Controllers\Vendor\ProductVariantController;
 use App\Http\Controllers\Vendor\ProductController;
@@ -80,6 +81,8 @@ Route::group(['middleware' => ['auth', 'verified', 'check_role:vendor'], 'prefix
  /**
  * Frontend Routes
  */
+Route::get('cart-count', [CartController::class, 'getCartCount'])->name('cart-count');
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::resource('product-details', ProductDetailsController::class);
 Route::resource('flash-sale', FlashSaleController::class);
 Route::get('/', [HomeController::class, 'home'])->name('home');

@@ -10,4 +10,9 @@ class ProductVariantItem extends Model
         'product_variant_id', 'product_id', 'admin_id', 'vendor_id',
         'name', 'price', 'is_default', 'status',
     ];
+
+    public function productVariant()
+    {
+        return $this->belongsTo(ProductVariant::class);
+    }
 }

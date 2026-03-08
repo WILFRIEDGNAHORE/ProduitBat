@@ -635,8 +635,8 @@
                       >
                         Cart
                         <span
-                          class="text-base leading-6 text-light-primary-text"
-                          >0- Items</span
+                          class="cart_count text-base leading-6 text-light-primary-text"
+                          >{{ Cart::count() }}</span
                         >
                       </span>
                     </button>

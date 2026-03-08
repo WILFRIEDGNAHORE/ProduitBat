@@ -8,7 +8,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sellzy - Multipurpose eCommerce</title>
+    <title>@yield('title')</title>
 
     <!-- ========== Favicon ========== -->
     <link
@@ -44,6 +44,11 @@
 
     <!-- ========== Custom CSS ========== -->
     <link rel="stylesheet" href="{{asset('frontend/assets/css/style.css')}}" />
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <!-- Notyf CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
   </head>
   <body>
     <!-- Preloader Start -->
@@ -2870,26 +2875,26 @@
 
     @include('frontend.layouts.footer')
     <script>
-document.querySelectorAll('.quantity-section').forEach(section => {
+      document.querySelectorAll('.quantity-section').forEach(section => {
 
-    const input = section.querySelector('.quantity-input');
-    const minusBtn = section.querySelectorAll('.quantity-btn')[0];
-    const plusBtn = section.querySelectorAll('.quantity-btn')[1];
+     const input = section.querySelector('.quantity-input');
+     const minusBtn = section.querySelectorAll('.quantity-btn')[0];
+     const plusBtn = section.querySelectorAll('.quantity-btn')[1];
 
-    plusBtn.addEventListener('click', function () {
+     plusBtn.addEventListener('click', function () {
         let value = parseInt(input.value) || 1;
         input.value = value + 1;
-    });
+     });
 
-    minusBtn.addEventListener('click', function () {
+     minusBtn.addEventListener('click', function () {
         let value = parseInt(input.value) || 1;
         if (value > 1) {
             input.value = value - 1;
         }
-    });
+     });
 
-});
-</script>
+      });
+    </script>
 
     <!-- ========== Plugins JS ========== -->
     <script src="{{asset('frontend/assets/js/vendor/jquery-3.7.1.min.js')}}"></script>
@@ -2903,6 +2908,32 @@ document.querySelectorAll('.quantity-section').forEach(section => {
 
     <!-- ========== Custom JS ========== -->
     <script src="{{asset('frontend/assets/js/main.js')}}"></script>
+
+    <!-- Notyf JS -->
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+
+
+
+        <!-- Vite-bundled user.js -->
+    @vite(['resources/js/user.js'])
+
+
+    <!-- Error Handling -->
+    <script>
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                notyf.error("{{ $error }}");
+            @endforeach
+        @endif
+
+        var config = {
+            routes: {
+                addToCart: "{{ route('add-to-cart') }}", // Changed to route() for consistency
+                cartCount: "{{ route('cart-count') }}"  // Added cart-count route
+            }
+        };
+    </script>
   </body>
 
 <!-- Mirrored from sellzy-preview.netlify.app/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 08 Feb 2026 18:57:58 GMT -->
