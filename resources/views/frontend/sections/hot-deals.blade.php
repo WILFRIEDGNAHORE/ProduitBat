@@ -195,7 +195,17 @@
                         <i
                           class="hgi hgi-stroke hgi-shopping-cart-02 text-xl text-white"
                         ></i>
-                        <span>Add to Cart</span>
+                        <form class="shopping_cart_form">
+                                    
+
+                                    <input type="text" name="product_id" value="{{ $item->product_id }}" hidden>
+                                    <input type="hidden" name="qty" value="1">
+
+                                    <button type="submit" class="btn btn-primary rounded-full text-sm w-full py-2">
+                                        <i class="hgi hgi-stroke hgi-shopping-cart-02 text-white"></i>
+                                        <span>Add to Cart</span>
+                                    </button>
+                                </form>
                       </a>
                     </div>
                   </div>
