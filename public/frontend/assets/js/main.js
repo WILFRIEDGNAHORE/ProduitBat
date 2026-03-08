@@ -125,15 +125,7 @@
     });
   }
 
-  /*------ Cart Sidebar ------*/
-  const cartSidebarBtn = $(".cart-sidebar-btn");
-
-  if (cartSidebarBtn.length) {
-    cartSidebarBtn.on("click.sellzy", function () {
-      isAnythingOpen();
-      showSidebar(".cart-sidebar");
-    });
-  }
+  
 
   /*------ Register Page Button ------*/
   const registerPageBtn = $(".register-page-btn");
