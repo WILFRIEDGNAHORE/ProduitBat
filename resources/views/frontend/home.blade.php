@@ -22,9 +22,11 @@
     @include('frontend.sections.cta-banner')
 
     @include('frontend.sections.newly-launched-products')
-
+    
+    @if ($flashSaleDate->end_date >= now())
     @include('frontend.sections.hot-deals')
-
+    @endif
+    
     @include('frontend.sections.banner')
 
     @include('frontend.sections.blog')

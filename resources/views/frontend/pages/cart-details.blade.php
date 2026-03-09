@@ -158,7 +158,7 @@
               <div>
                 <div class="flex flex-col gap-y-6 pb-4 border-b border-gray-300">
                   <p class="flex items-center justify-between">
-                    Sub-Total<span class="text-gray-900">$20.00</span>
+                    Sub-Total<span class="sub_total text-gray-900">{{ $settings->currency_icon }}{{ getSubTotal() }}</span>
                   </p>
                   <p class="flex items-center justify-between">
                     VAT (40%)<span class="text-gray-900">$4.00</span>
@@ -190,7 +190,7 @@
             </span>
           </label>
           <div class="flex flex-col gap-y-6">
-            <a class='btn btn-primary py-3 w-full rounded-[80px]' href='order-successful.html'>
+            <a class='btn btn-primary py-3 w-full rounded-[80px]' href='{{ route('home') }}'>
               Proceed to checkout
             </a>
             <a class='btn btn-default outline shadow-none w-full py-[11px] rounded-[80px]' href='shop-left-sidebar-3col.html'>
