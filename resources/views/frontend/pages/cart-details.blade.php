@@ -29,10 +29,12 @@
             <p>({{ count($cartItems) }} item)</p>
           </div>
           <div class="flex items-center">
-            <button class="inline-flex gap-x-1 items-center justify-center font-semibold leading-[26px] text-error">
+            @if (Cart::count() > 0)
+            <a href="{{ route('clear-cart', 1) }}" class="inline-flex gap-x-1 items-center justify-center font-semibold leading-[26px] text-error delete-item">
               <i class="hgi hgi-stroke hgi-cancel-01 text-xl leading-5 font-semibold"></i>
               Remove All
-            </button>
+            </a>
+            @endif
           </div>
         </div>
       </div>
@@ -94,18 +96,20 @@
                 </td>
                 <td data-title="Quantity " class="capitalize py-4 px-3 lg:px-0 product-quantity">
                   <div class="border border-gray-300 inline-flex items-center justify-center rounded-[80px] max-w-[108px] py-2.5 px-4">
-                    <button class="inline-flex items-center justify-center hover:text-primary">
+                    <button class="inline-flex items-center justify-center hover:text-primary decrement-btn">
                       <i class="hgi hgi-stroke hgi-remove-circle text-xl leading-6"></i>
                     </button>
-                    <input type="text" readonly value="{{ $item->qty }}"
-                      class="border-0 w-full grow text-center focus:outline-none font-semibold text-light-primary-text" />
-                    <button class="inline-flex items-center justify-center hover:text-primary">
+                    <input type="text" readonly
+                      data-rowid="{{ $item->rowId }}"
+                      value="{{ $item->qty }}"
+                      class="border-0 w-full grow text-center focus:outline-none font-semibold text-light-primary-text qty-input" />
+                    <button class="inline-flex items-center justify-center hover:text-primary increment-btn">
                       <i class="hgi hgi-stroke hgi-add-circle text-xl leading-6"></i>
                     </button>
                   </div>
                 </td>
                 <td data-title="Total Price " class="capitalize py-4 px-3 lg:px-0 product-total-price">
-                  <p class="font-semibold text-light-primary-text">
+                  <p id="{{ $item->rowId }}" class="font-semibold text-light-primary-text">
                     {{ $settings->currency_icon }}{{ ($item->price + $item->options->variantsTotal) * $item->qty }}
                   </p>
                 </td>
@@ -114,9 +118,9 @@
                     <button class="inline-flex items-center justify-center product-add-to-favourite">
                       <i class="hgi hgi-stroke hgi-favourite text-2xl leading-6 text-light-primary-text"></i>
                     </button>
-                    <button class="inline-flex items-center justify-center product-remove">
+                    <a href="{{ route('cart-remove-item', $item->rowId) }}" class="inline-flex items-center justify-center product-remove">
                       <i class="hgi hgi-stroke hgi-delete-01 text-2xl leading-6 text-light-primary-text"></i>
-                    </button>
+                    </a>
                   </div>
                 </td>
               </tr>

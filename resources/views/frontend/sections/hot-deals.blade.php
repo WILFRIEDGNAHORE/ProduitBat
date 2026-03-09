@@ -156,10 +156,8 @@
                                             <i
                                                 class="hgi hgi-stroke hgi-favourite text-xl text-light-secondary-text"></i>
                                         </a>
-                                        <a class='btn btn-primary rounded-full font-semibold text-sm leading-6 px-6.5 py-2 flex-1'
-                                            href='cart-single-vendor.html'>
-                                            <i class="hgi hgi-stroke hgi-shopping-cart-02 text-xl text-white"></i>
-                                            <form class="shopping_cart_form">
+                                        
+                                        <form class="shopping_cart_form">
                                                 @forelse ($item->product->variants as $variant)
                                                     @if ($variant->status === 1)
                                                         <div class="wsus_pro_det_color" hidden>
@@ -189,12 +187,12 @@
                                                 <input type="hidden" name="qty" value="1">
 
                                                 <button type="submit"
-                                                    class="btn btn-primary rounded-full text-sm w-full py-2">
-                                                    <i class="hgi hgi-stroke hgi-shopping-cart-02 text-white"></i>
+                                                    class="btn btn-primary rounded-full font-semibold text-sm leading-6 px-6.5 py-2 flex-1">
+                                                    <i class="hgi hgi-stroke hgi-shopping-cart-02 text-xl text-white"></i>
                                                     <span>Add to Cart</span>
                                                 </button>
                                             </form>
-                                        </a>
+                                    
                                     </div>
                                 </div>
                             </div>
