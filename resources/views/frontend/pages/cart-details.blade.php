@@ -149,11 +149,13 @@
             <div class="flex flex-col gap-y-6">
               <h5>Order Summary</h5>
               <div class="input-group relative large w-full mx-auto ps-3.5 pe-24 py-3 rounded-[100px]">
-                <input type="text" class="form-control" placeholder="Coupon Code" />
+                <form class="coupon_form">
+                <input type="text" class="form-control" placeholder="Coupon Code"  name="coupon_code" />
                 <button
                   class="btn btn-primary btn-large px-[22px] py-[11px] rounded-l-none rounded-r-[100px] absolute top-0 right-0 h-full w-auto">
                   Apply
                 </button>
+                </form>
               </div>
               <div>
                 <div class="flex flex-col gap-y-6 pb-4 border-b border-gray-300">
@@ -161,11 +163,11 @@
                     Sub-Total<span class="sub_total text-gray-900">{{ $settings->currency_icon }}{{ getSubTotal() }}</span>
                   </p>
                   <p class="flex items-center justify-between">
-                    VAT (40%)<span class="text-gray-900">$4.00</span>
+                    VAT (40%)<span class="discount text-danger text-gray-900">(-) {{ $settings->currency_icon }}{{ discount() }}</span>
                   </p>
                 </div>
                 <h6 class="flex items-center justify-between text-light-primary-text pt-4">
-                  Total<span class="text-gray-900">$24.00</span>
+                  Total<span class="cart_total text-gray-900">{{ $settings->currency_icon }}{{ mainCartTotal() }}
                 </h6>
               </div>
             </div>
