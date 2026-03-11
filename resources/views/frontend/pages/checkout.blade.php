@@ -370,7 +370,7 @@
             @error('zip')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
           </div>
           <div class="md:col-span-2">
-            <textarea name="address" class="form-control summernote w-full">{{ old('address') }}</textarea>
+            <textarea name="address" class="summernote w-full">{{ old('address') }}</textarea>
             @error('address')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
           </div>
           <div class="md:col-span-2">
@@ -386,14 +386,15 @@
 
 @push('scripts')
 <script>
-  $('.summernote').summernote({
-    height: 200,
-    toolbar: [
-      ['style', ['bold', 'italic', 'underline', 'clear']],
-      ['font', ['strikethrough', 'superscript', 'subscript']],
-      ['para', ['ul', 'ol', 'paragraph']],
-      ['insert', ['link', 'picture', 'video']]
-    ]
-  });
+    $('.summernote').summernote({
+        height: 150,
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture', 'video']]
+        ]
+    });
 </script>
 @endpush
+

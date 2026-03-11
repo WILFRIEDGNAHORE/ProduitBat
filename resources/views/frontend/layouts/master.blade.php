@@ -1705,10 +1705,8 @@
             }
         };
     </script>
-    
 
-
-
+    @stack('scripts')
 
 </body>
 
