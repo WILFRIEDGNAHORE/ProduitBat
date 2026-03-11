@@ -245,7 +245,7 @@
                 <div class="xl:flex items-center hidden">
                     <div>
                         <a href='index.html'>
-                            <img src="assets/images/logo.png" alt="Logo" />
+                            <img src="{{ asset('frontend/assets/images/logo.avif') }}" alt="Logo" />
                         </a>
                     </div>
                     <div class="flex items-center w-full justify-end gap-x-[54px]">
@@ -482,7 +482,7 @@
                         </div>
                         <div>
                             <a href='index.html'>
-                                <img src="assets/images/logo.png" alt="Logo" class="w-[120px] md:w-[150px]" />
+                                <img src="{{ asset('frontend/assets/images/logo.avif') }}" alt="Logo" class="w-[120px] md:w-[150px]" />
                             </a>
                         </div>
                         <div class="xl:hidden flex items-center gap-x-4">

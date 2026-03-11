@@ -192,7 +192,7 @@
             </span>
           </label>
           <div class="flex flex-col gap-y-6">
-            <a class='btn btn-primary py-3 w-full rounded-[80px]' href='{{ route('home') }}'>
+            <a class='btn btn-primary py-3 w-full rounded-[80px]' href='{{ route('user.checkout.index') }}'>
               Proceed to checkout
             </a>
             <a class='btn btn-default outline shadow-none w-full py-[11px] rounded-[80px]' href='shop-left-sidebar-3col.html'>
