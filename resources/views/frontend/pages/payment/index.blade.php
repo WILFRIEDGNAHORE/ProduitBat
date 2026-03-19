@@ -30,7 +30,7 @@
         <div class="flex flex-wrap gap-4">
 
           <div class="w-[180px]">
-            <a href="">
+            <a href="{{ route('user.payment.momo') }}">
               <img src="{{ asset('frontend/assets/images/payment-gateway/MTN_MOMO.jpeg') }}" class="w-full">
             </a>
           </div>

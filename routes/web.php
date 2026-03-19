@@ -32,6 +32,13 @@ Route::post('vendor/register/store', [RegisteredVendorController::class, 'store'
 Route::group(['middleware' => ['auth', 'verified', 'check_role:user'], 'prefix' => 'user', 'as' => 'user.'], function () {
 
 Route::get('payment', [PaymentController::class, 'index'])->name('payment.index');
+
+// ✅ Routes MoMo à ajouter
+    Route::get('payment/momo',           [PaymentController::class, 'payWithMomo'])->name('payment.momo');
+    Route::post('payment/momo/initiate', [PaymentController::class, 'initiateMomoPayment'])->name('payment.momo.initiate');
+    Route::get('payment/momo/status',    [PaymentController::class, 'checkMomoStatus'])->name('payment.momo.status');
+    Route::get('payment/success',        [PaymentController::class, 'paymentSuccess'])->name('payment.success');
+    Route::get('payment/failed',         [PaymentController::class, 'paymentFailed'])->name('payment.failed');
     Route::post('checkout/form-submit', [CheckoutController::class, 'checkoutFormSubmit'])->name('checkout.form.submit');
     
     Route::get('checkout', [CheckoutController::class, 'index'])->name('checkout.index');
