@@ -159,64 +159,6 @@
             </div>
           </div>
 
-          <!-- Payment -->
-          <div class="border border-gray-300 rounded-2xl">
-            <div class="py-4 px-6 bg-gray-200 rounded-t-2xl">
-              <h5>Payment</h5>
-            </div>
-            <div class="md:px-6 px-3 py-6">
-              <div class="payment-methods flex flex-col gap-y-6">
-                <div class="border border-gray-300 w-full payment-method px-3 py-4">
-                  <div>
-                    <label class="flex items-center gap-x-2 cursor-pointer">
-                      <span class="has-[input:checked]:hover:bg-[#00AB55]/8 flex items-center justify-center w-9 h-9 bg-transparent rounded-full hover:bg-[#919EAB]/8 transition-colors duration-300 ease-in-out">
-                        <span class="relative inline-flex w-5 h-5 items-center justify-center">
-                          <input checked type="radio" name="payment-method"
-                            class="peer appearance-none w-full h-full border-2 focus:outline-none checked:border-primary border-gray-300 rounded-full bg-white transition-all" />
-                          <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary opacity-0 scale-0 peer-checked:opacity-100 peer-checked:scale-100 transition-all"></span>
-                        </span>
-                      </span>
-                      <span class="text-light-primary-text">Bank Transfer</span>
-                    </label>
-                  </div>
-                  <div class="payment-content pt-4 pl-2">
-                    Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
-                  </div>
-                </div>
-                <div class="border border-gray-300 w-full payment-method px-3 py-4">
-                  <div>
-                    <label class="flex items-center gap-x-2 cursor-pointer">
-                      <span class="has-[input:checked]:hover:bg-[#00AB55]/8 flex items-center justify-center w-9 h-9 bg-transparent rounded-full hover:bg-[#919EAB]/8 transition-colors duration-300 ease-in-out">
-                        <span class="relative inline-flex w-5 h-5 items-center justify-center">
-                          <input type="radio" name="payment-method"
-                            class="peer appearance-none w-full h-full border-2 focus:outline-none checked:border-primary border-gray-300 rounded-full bg-white transition-all" />
-                          <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary opacity-0 scale-0 peer-checked:opacity-100 peer-checked:scale-100 transition-all"></span>
-                        </span>
-                      </span>
-                      <span class="text-light-primary-text">Cash on Delivery</span>
-                    </label>
-                  </div>
-                  <div class="payment-content pt-4 pl-2">Pay with cash upon delivery.</div>
-                </div>
-                <div class="border border-gray-300 w-full payment-method px-3 py-4">
-                  <div>
-                    <label class="flex items-center gap-x-2 cursor-pointer">
-                      <span class="has-[input:checked]:hover:bg-[#00AB55]/8 flex items-center justify-center w-9 h-9 bg-transparent rounded-full hover:bg-[#919EAB]/8 transition-colors duration-300 ease-in-out">
-                        <span class="relative inline-flex w-5 h-5 items-center justify-center">
-                          <input type="radio" name="payment-method"
-                            class="peer appearance-none w-full h-full border-2 focus:outline-none checked:border-primary border-gray-300 rounded-full bg-white transition-all" />
-                          <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary opacity-0 scale-0 peer-checked:opacity-100 peer-checked:scale-100 transition-all"></span>
-                        </span>
-                      </span>
-                      <span class="text-light-primary-text">Check Payment</span>
-                    </label>
-                  </div>
-                  <div class="payment-content pt-4 pl-2">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
 
@@ -280,29 +222,29 @@
               <div>
                 <div class="flex flex-col gap-y-4 pb-4 border-b border-gray-300">
                   <p class="flex items-center justify-between">
-                    Sub-Total<span class="text-gray-900">{{ $settings->currency_icon }}{{ getSubTotal() }}</span>
+                    Sub-Total<span class="sub_total text-gray-900">{{ $settings->currency_icon }}{{ getSubTotal() }}</span>
                   </p>
                   <p class="flex items-center justify-between">
-                    Discount<span class="text-gray-900">(-) {{ $settings->currency_icon }}{{ discount() }}</span>
+                    Discount<span class="discount text-gray-900">(-) {{ $settings->currency_icon }}{{ discount() }}</span>
                   </p>
                   <p class="flex items-center justify-between">
-                    Shipment<span class="text-gray-900 shipping_fee">(+){{ $settings->currency_icon }}0</span>
+                    Shipment<span class="shipping_fee text-gray-900">(+){{ $settings->currency_icon }}0</span>
                   </p>
                 </div>
                 <h6 class="flex items-center justify-between text-light-primary-text pt-4">
-                  Total<span class="text-gray-900 total_cost final_cost" data-id="{{ mainCartTotal() }}">{{ $settings->currency_icon }}{{ mainCartTotal() }}</span>
+                  Total<span class="total_cost text-gray-900" data-id="{{ mainCartTotal() }}"><b class="final_cost">{{ $settings->currency_icon }}{{ mainCartTotal() }}</b></span>
                 </h6>
               </div>
             </div>
           </div>
 
           <div>
-            <form action="">
+            <form class="checkoutForm">
               <input type="hidden" id="shipping_rule_id" name="shipping_rule_id" value="">
               <input type="hidden" id="shipping_address_id" name="shipping_address_id" value="">
-              <a class='btn btn-primary py-3 rounded-[80px] w-full' href='#'>
+              <button type="submit" class="btn btn-primary py-3 rounded-[80px] w-full">
                 Place Order
-              </a>
+              </button>
             </form>
           </div>
 
@@ -313,7 +255,6 @@
 </div>
 <!-- ========== PAYMENT Section End ========== -->
 
-<!-- Modal Add Address -->
 <!-- Modal Add Address -->
 <div id="exampleModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50">
   <div class="bg-white rounded-2xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
@@ -397,4 +338,3 @@
     });
 </script>
 @endpush
-

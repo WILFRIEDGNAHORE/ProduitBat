@@ -10,6 +10,7 @@
         "anayarojo/shoppingcart": "^4.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
+        "patricpoba/mtn-momo-api-php": "^0.2.3",
         "php-flasher/flasher-laravel": "^2.1",
         "php-flasher/flasher-notyf-laravel": "^2.1",
         "yajra/laravel-datatables-buttons": "^12.3",

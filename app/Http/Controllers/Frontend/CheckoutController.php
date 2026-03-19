@@ -8,6 +8,8 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 
 class CheckoutController extends Controller
 {
@@ -17,4 +19,30 @@ class CheckoutController extends Controller
     $cartItems = Cart::content();
     return view('frontend.pages.checkout', compact('addresses', 'rules', 'cartItems'));
 }
+public function checkoutFormSubmit(Request $request){
+        //dd($request->all());
+        $request->validate([
+            'shipping_rule_id' => ['required', 'numeric'],
+            'shipping_address_id' => ['required', 'numeric']
+        ]);
+
+        $shippingRule = ShippingRule::findOrFail($request->shipping_rule_id);
+        $shippingAddress = UserAddress::findOrFail($request->shipping_address_id)->toArray();
+
+        if($shippingRule){
+            Session::put('shipping_rule', [
+                'id' => $shippingRule->id,
+                'name' => $shippingRule->name,
+                'type' => $shippingRule->type,
+                'cost' => $shippingRule->cost
+            ]);
+        }
+
+        if($shippingAddress){
+            Session::put('shippingAddress', $shippingAddress);
+        }
+
+        return response(['status' => 'success', 'message' => 'saved', 'redirect_url' => route('user.payment.index')]);
+    }
+
 }

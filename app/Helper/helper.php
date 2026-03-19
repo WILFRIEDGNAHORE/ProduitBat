@@ -11,9 +11,11 @@ function getSubTotal(){
     return $total;
 }
 
-function mainCartTotal(){
+
+
+    function mainCartTotal(){
         //dd('working');
-        $subTotal = getSubTotal();
+          $subTotal = getSubTotal();
         if(Session::has('coupon')){
             $coupon = Session::get('coupon');
             if($coupon['discount_type'] === 'amount'){
@@ -51,4 +53,22 @@ function mainCartTotal(){
         }else{
             return 0;
         }
+    }
+
+
+    function shippingFee(){
+        if(Session::has('shipping_rule')){
+            $cost = Session::get('shipping_rule')['cost'];
+            return $cost;
+        }else{
+            return 0;
+        }
+    }
+
+
+    function finalCost(){
+        $total = mainCartTotal();
+        $shippingFee = shippingFee();
+        $finalCost = ($total + $shippingFee);
+        return round($finalCost);
     }
