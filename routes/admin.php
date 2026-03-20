@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductImageGalleryController;
 use App\Http\Controllers\Admin\VendorProductImageGalleryController;
 use App\Http\Controllers\Admin\ProductVariantController;
+use App\Http\Controllers\Admin\MomoSettingsController;
+
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShippingRuleController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -55,6 +57,9 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 });
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+    
+    Route::resource('momo-settings', MomoSettingsController::class);
+
 
     Route::resource('shipping-rule', ShippingRuleController::class);
 

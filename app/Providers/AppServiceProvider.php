@@ -2,25 +2,17 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Pagination\Paginator;
+use App\Models\MomoSettings;
 use App\Models\Settings;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         Paginator::useBootstrapFive();
@@ -28,8 +20,23 @@ class AppServiceProvider extends ServiceProvider
 
         Config::set('app.timezone', $settings->time_zone ?? 'UTC');
 
-        View::composer('*', function($view) use ($settings){
-            $view->with('settings', $settings);
+        // Charger les settings MoMo depuis la DB
+        $momoSettings = MomoSettings::all()->pluck('value', 'key')->toArray();
+
+        if (!empty($momoSettings)) {
+            Config::set('momo.baseUrl',              $momoSettings['momo_base_url']        ?? 'https://sandbox.momodeveloper.mtn.com');
+            Config::set('momo.currency',             $momoSettings['momo_currency']         ?? 'EUR');
+            Config::set('momo.targetEnvironment',    $momoSettings['momo_environment']      ?? 'sandbox');
+            Config::set('momo.collectionPrimaryKey', $momoSettings['momo_primary_key']      ?? '');
+            Config::set('momo.collectionUserId',     $momoSettings['momo_user_id']          ?? '');
+            Config::set('momo.collectionApiSecret',  $momoSettings['momo_api_secret']       ?? '');
+        }
+
+        View::composer('*', function ($view) use ($settings, $momoSettings) {
+            $view->with([
+                'settings'     => $settings,
+                'momoSettings' => $momoSettings ?? [],
+            ]);
         });
     }
 }
