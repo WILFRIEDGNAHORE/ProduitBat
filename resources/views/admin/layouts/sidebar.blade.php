@@ -228,7 +228,10 @@
                                              <a class="sub-nav-link" href="{{ route('admin.settings.index') }}">General Settings</a>
                                         </li>
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="{{ route('admin.momo-settings.index') }}">Payement setting</a>
+                                             <a class="sub-nav-link" href="{{ route('admin.momo-settings.index') }}">momo setting</a>
+                                        </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="{{ route('admin.geniuspay-settings.index') }}">geniuspay setting</a>
                                         </li>
                                         
                                    </ul>

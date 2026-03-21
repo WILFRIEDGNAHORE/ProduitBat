@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\ProductVariantItemController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\ChildCategoryController;
 use App\Http\Controllers\Admin\ManageUserController;
+use App\Http\Controllers\Admin\GeniusPaySettingsController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
@@ -57,6 +58,9 @@ Route::group(['middleware' => 'guest:admin', 'prefix' => 'admin', 'as' => 'admin
 });
 
 Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.'], function () {
+
+    Route::resource('geniuspay-settings', GeniusPaySettingsController::class);
+
     
     Route::resource('momo-settings', MomoSettingsController::class);
 

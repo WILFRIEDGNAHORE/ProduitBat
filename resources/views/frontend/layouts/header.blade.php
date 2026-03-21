@@ -486,10 +486,24 @@
                             </a>
                         </div>
                         <div class="xl:hidden flex items-center gap-x-4">
-                            <button class="btn bg-warning-light size-12 rounded-[50px] cart-sidebar-btn">
-                                <i
-                                    class="hgi hgi-stroke hgi-shopping-cart-01 text-light-primary-text text-2xl leading-6"></i>
-                            </button>
+                            <li class="flex items-center">
+                                    <a href="{{ route('cart-details') }}"
+                                        class="flex items-center gap-x-4 cursor-pointer">
+                                        <span
+                                            class="inline-flex items-center justify-center bg-warning w-12 h-12 rounded-full">
+                                            <i
+                                                class="hgi hgi-stroke hgi-shopping-cart-02 text-2xl text-light-primary-text"></i>
+                                        </span>
+
+                                        <span
+                                            class="flex flex-col items-start text-sm leading-[22px] text-light-secondary-text">
+                                            Cart
+                                            <span class="cart_count text-base leading-6 text-light-primary-text">
+                                                {{ Cart::count() }}
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
                         </div>
                     </div>
                 </div>

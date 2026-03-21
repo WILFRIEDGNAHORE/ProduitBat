@@ -15,9 +15,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'auth' => Authenticate::class,
-            'guest' => RedirectIfAuthenticated::class,
-            'check_role' => CheckRoleMiddleware::class
+            'auth'       => Authenticate::class,
+            'guest'      => RedirectIfAuthenticated::class,
+            'check_role' => CheckRoleMiddleware::class,
+        ]);
+
+        // ✅ Exclure le webhook GeniusPay du CSRF
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/geniuspay',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
