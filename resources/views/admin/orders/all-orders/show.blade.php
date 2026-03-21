@@ -199,7 +199,7 @@
                         </td>
                     </tr>
                     <tr class="fw-bold fs-4">
-                        <td>Total Due</td>
+                        <td>Total</td>
                         <td class="text-end text-primary">{{ $order->currency_icon }}{{ number_format($order->amount, 2) }}</td>
                     </tr>
                 </table>
