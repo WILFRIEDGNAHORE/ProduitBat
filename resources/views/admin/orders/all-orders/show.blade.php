@@ -108,15 +108,15 @@
             </div>
             <div class="col-md-4">
                 <label class="form-label text-muted">Order Status</label>
-                <select name="order_status" class="form-select order_status">
-                    <option value="pending"                    {{ $order->order_status == 'pending'                    ? 'selected' : '' }}>Pending</option>
-                    <option value="processed_and_ready_to_ship"{{ $order->order_status == 'processed_and_ready_to_ship'? 'selected' : '' }}>Processed and Ready to Ship</option>
-                    <option value="dropped_off"                {{ $order->order_status == 'dropped_off'                ? 'selected' : '' }}>Dropped Off</option>
-                    <option value="shipped"                    {{ $order->order_status == 'shipped'                    ? 'selected' : '' }}>Shipped</option>
-                    <option value="out_for_delivery"           {{ $order->order_status == 'out_for_delivery'           ? 'selected' : '' }}>Out For Delivery</option>
-                    <option value="delivered"                  {{ $order->order_status == 'delivered'                  ? 'selected' : '' }}>Delivered</option>
-                    <option value="canceled"                   {{ $order->order_status == 'canceled'                   ? 'selected' : '' }}>Canceled</option>
-                </select>
+                <select name="order_status" data-id="{{ $order->id }}" class="form-control order_status">
+                                        <option @selected($order->order_status === 'pending') value="pending">Pending</option>
+                                        <option @selected($order->order_status === 'processed_and_ready_to_ship') value="processed_and_ready_to_ship">Processed and Ready to Ship</option>
+                                        <option @selected($order->order_status === 'dropped_off') value="dropped_off">Dropped Off</option>
+                                        <option @selected($order->order_status === 'shipped') value="shipped">Shipped</option>
+                                        <option @selected($order->order_status === 'out_for_delivery') value="out_for_delivery">Out For Delivery</option>
+                                        <option @selected($order->order_status === 'delivered') value="delivered">Delivered</option>
+                                        <option @selected($order->order_status === 'canceled') value="canceled">Canceled</option>
+                                    </select>
             </div>
         </div>
 
