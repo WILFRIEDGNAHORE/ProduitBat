@@ -252,8 +252,8 @@
                       <a class="dropdown-item" href="{{ route('admin.all-orders.index') }}">
                         All Orders
                       </a>
-                      <a class="dropdown-item" href="{{ route('admin.vendor-product.index') }}">
-                        Vendor Products
+                      <a class="dropdown-item" href="{{ route('admin.transaction.index') }}">
+                        Transctions
                       </a>
                   </div>
                 </div>

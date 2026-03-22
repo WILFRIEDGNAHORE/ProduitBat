@@ -145,7 +145,7 @@
                                 </span>
                             </td>
                             <td>
-                                <div class="fw-bold">{{ $product->product_name }}</div>
+                                <div class="fw-bold"><a href="{{ route('product-details.show', $product->product_id) }}"> <p class="strong mb-1">{{ $product->product_name }}</p></a></div>
                                 @foreach ($variants as $key => $variant)
                                     <div class="text-muted small">
                                         {{ $key }}: {{ $variant['name'] }}
