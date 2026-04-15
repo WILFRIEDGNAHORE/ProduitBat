@@ -14,6 +14,7 @@ use App\Http\Controllers\User\UserVendorRequestController;
 use App\Http\Controllers\Vendor\ProductController;
 use App\Http\Controllers\Vendor\ProductImageGalleryController;
 use App\Http\Controllers\Vendor\ProductVariantController;
+use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\Vendor\ProductVariantItemController;
 use App\Http\Controllers\Vendor\VendorDashboardController;
 use App\Http\Controllers\Vendor\VendorProfileController;
@@ -31,6 +32,9 @@ Route::post('webhooks/geniuspay', [PaymentController::class, 'geniusWebhook'])->
 //  User Routes
 // =========================================================
 Route::group(['middleware' => ['auth', 'verified', 'check_role:user'], 'prefix' => 'user', 'as' => 'user.'], function () {
+
+    Route::resource('order', UserOrderController::class);
+
 
     // ── Paiement ──────────────────────────────────────────
     Route::get('payment',                [PaymentController::class, 'index'])->name('payment.index');

@@ -55,10 +55,10 @@ class UserAddressController extends Controller
         $address->address = $request->address;
         $address->save();
          notyf()->success('Address Created Successfully!');
-        if($request->checkout === 'checkout'){
-        return redirect()->route('user.checkout.index');     
+        if ($request->checkout === 'checkout') {
+            return redirect()->route('user.checkout.index');
         }
-        return redirect()->route('user.address.index');
+        return redirect()->route('user.dashboard');
     }
 
     /**
@@ -104,7 +104,7 @@ class UserAddressController extends Controller
         $address->address = $request->address;
         $address->save();
          notyf()->success('Address Updated Successfully!');
-        return redirect()->route('user.address.index');
+        return redirect()->route('user.dashboard');
     }
 
     /**
@@ -114,7 +114,7 @@ class UserAddressController extends Controller
     {
         $address = UserAddress::findOrFail($id);
         $address->delete();
-         notyf()->success('Address Deleted Successfully!');
-         return response(['status' => 'success']);
+        notyf()->success('Address Deleted Successfully!');
+        return redirect()->route('user.dashboard');
     }
 }

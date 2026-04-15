@@ -119,7 +119,7 @@
                                 <x-input-error :messages="$errors->get('address')" class="mt-2 text-danger" />
                             </div>
                             <div class="mt-3 col-10">
-                                <label class="form-label">Dscription <span
+                                <label class="form-label">Description <span
                                         class="form-label-description">56/100</span></label>
                                 <textarea class="form-control" name="desc" rows="6">{{ Auth::user()->desc }}</textarea>
                                 <x-input-error :messages="$errors->get('desc')" class="mt-2 text-danger" />
