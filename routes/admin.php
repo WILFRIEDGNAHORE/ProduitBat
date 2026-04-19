@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ProductImageGalleryController;
 use App\Http\Controllers\Admin\VendorProductImageGalleryController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\MomoSettingsController;
+use App\Http\Controllers\Admin\TopCategorySectionController;
 
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShippingRuleController;
@@ -153,6 +154,7 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.
     Route::resource('brand', BrandController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('slider', SliderController::class);
+    Route::resource('top-category', TopCategorySectionController::class);
     Route::resource('manage-admin', ManageAdminController::class);
     Route::resource('manage-user', ManageUserController::class);
     Route::resource('vendor-request', VendorRequestController::class);

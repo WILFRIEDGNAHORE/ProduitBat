@@ -77,6 +77,9 @@
                                         <li class="sub-nav-item">
                                              <a class="sub-nav-link" href="{{ route('admin.flash-sale.index') }}">Manage Flash Sale</a>
                                         </li>
+                                        <li class="sub-nav-item">
+                                             <a class="sub-nav-link" href="{{ route('admin.top-category.index') }}">Manage Top Categories</a>
+                                        </li>
                                    </ul>
                               </div>
                          </li>
