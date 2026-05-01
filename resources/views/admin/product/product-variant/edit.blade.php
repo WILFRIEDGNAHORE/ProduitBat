@@ -35,7 +35,7 @@
 
                                   <div class="col-md-7">
                                     <div class="form-label">Thumb Image</div>
-                                    <span class="avatar avatar-xl mb-3 rounded" style="background-image: url({{ asset($product->thumb_image) }})"></span>
+                                    <img src="{{ asset($product->thumb_image) }}" class="rounded border" style="height:60px;width:60px;object-fit:cover;" alt="img">
                              
                                 </div>
 

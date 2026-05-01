@@ -62,7 +62,7 @@
                                     <th>Image</th>
                                     <td>
                                         <span class="avatar avatar-xl"
-                                            style="background-image: url({{ asset($user->image) }})"></span>
+                                            src="{{ asset($user->image) }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;"></span>
                                     </td>
                                 </tr>
 

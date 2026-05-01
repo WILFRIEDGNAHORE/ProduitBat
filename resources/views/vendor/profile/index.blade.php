@@ -61,10 +61,14 @@
                             @csrf
                             @method('PUT')
                             <div class="row align-items-center">
-                                <div class="col-auto"><span class="avatar avatar-xl"
-                                        style="background-image: url({{ Auth::user()->image }})"></span>
+                                <div class="col-auto">
+                                    <img id="avatar-preview" src="{{ Auth::user()->image ? asset(Auth::user()->image) : asset('default-avatar.png') }}"
+                                         class="rounded-circle border" style="height:80px;width:80px;object-fit:cover;" alt="avatar">
                                 </div>
-                                <div class="col-auto"> <input type="file" name="image" class="form-control"></div>
+                                <div class="col-auto">
+                                    <input type="file" name="image" class="form-control" accept="image/*"
+                                           onchange="document.getElementById('avatar-preview').src=URL.createObjectURL(this.files[0])">
+                                </div>
 
                             </div>
 
@@ -79,7 +83,7 @@
                                         No banner is uploaded. Please upload a banner of your business
                                     @else
                                             <div class="img-responsive img-responsive-3x1 rounded-3 border"
-                                            style="background-image: url({{ asset(Auth::user()->banner) }})"></div>
+                                            src="{{ asset(Auth::user()->banner) }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;"></div>
                                     @endif
                                     </a>
                                      <input type="file" class="form-control mt-2" name="banner">

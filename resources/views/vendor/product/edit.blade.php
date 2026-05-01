@@ -18,12 +18,16 @@
                             <div class="row g-3 align-items-center">
                                 <div class="col-md-7">
                                     <div class="form-label">Thumb Image</div>
-                                    <div class="col-auto">
-                                           <div class="img-responsive img-responsive-3x1 rounded-3 border"
-                                            style="background-image: url({{ asset($product->thumb_image) }})"></div>
-                                            <br>
-                                        <input type="file" name="thumb_image" class="form-control">
-                                    </div>
+                                    @if($product->thumb_image)
+                                        <img id="thumb-preview" src="{{ asset($product->thumb_image) }}"
+                                             alt="thumb" class="mb-2 rounded border"
+                                             style="height:120px;width:120px;object-fit:cover;">
+                                    @else
+                                        <img id="thumb-preview" src="#" alt="preview"
+                                             class="mb-2 rounded border" style="height:120px;width:120px;object-fit:cover;display:none;">
+                                    @endif
+                                    <input type="file" name="thumb_image" class="form-control" accept="image/*"
+                                           onchange="previewThumb(event)">
                                     <x-input-error :messages="$errors->get('thumb_image')" class="mt-2 text-danger" />
                                 </div>
 
@@ -198,6 +202,12 @@
 
 @push('scripts')
     <script>
+        function previewThumb(event) {
+            var img = document.getElementById('thumb-preview');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.style.display = 'block';
+        }
+
         $('.summernote').summernote({
             height: 200,
             toolbar: [

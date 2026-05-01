@@ -73,17 +73,19 @@ class AdminProductDataTable extends DataTable
 
 
             ->addColumn('thumb_image', function ($query) {
-                $imagePath = $query->thumb_image ? asset($query->thumb_image) : 'Image Not Updated';
-                return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
+                if ($query->thumb_image) {
+                    return '<img src="' . asset($query->thumb_image) . '" style="height:50px;width:50px;object-fit:cover;border-radius:8px;" alt="img">';
+                }
+                return '<span class="text-muted">—</span>';
             })
 
 
 
      
             ->addColumn('created_by', function ($query) {
-    $user = \App\Models\Admin::findOrFail($query->admin_id);
-    $imagePath = $user && $user->image ? asset( $user->image) : asset('default-avatar.png');
-    return '<span class="avatar avatar-xl" style="background-image: url(' . $imagePath . ')"></span>';
+    $user = \App\Models\Admin::find($query->admin_id);
+    $imagePath = $user && $user->image ? asset($user->image) : asset('default-avatar.png');
+    return '<img src="' . $imagePath . '" style="height:40px;width:40px;object-fit:cover;border-radius:50%;" alt="admin">';
 })
 
 ->addColumn('created_person_email', function ($query) {

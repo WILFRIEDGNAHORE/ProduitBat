@@ -52,7 +52,7 @@
                                  <div class="col-md-7">
                                     <div class="form-label">Product Image</div>
                                     <div class="col-auto">
-                                              <span class="avatar avatar-xl mb-3 rounded" style="background-image: url({{ asset($flashSaleItem->product->thumb_image) }})"></span>
+                                              <img src="{{ asset($flashSaleItem->product->thumb_image) }}" class="rounded border" style="height:60px;width:60px;object-fit:cover;" alt="img">
                                     </div>
                                 </div>
                          

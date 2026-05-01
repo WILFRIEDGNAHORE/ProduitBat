@@ -40,9 +40,11 @@ class AdminProductImageGalleryDataTable extends DataTable
             })
 
 
-                     ->addColumn('image', function ($query) {
-                $imagePath = $query->image ? asset($query->image) : 'Image Not Updated';
-                return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
+            ->addColumn('image', function ($query) {
+                if ($query->image) {
+                    return '<img src="' . asset($query->image) . '" style="height:50px;width:50px;object-fit:cover;border-radius:8px;" alt="img">';
+                }
+                return '<span class="text-muted">—</span>';
             })
 
              ->rawColumns(['action', 'image'])

@@ -90,8 +90,8 @@ class ProductController extends Controller
         $product->sku = $request->sku;
         $product->price = $request->price;
         $product->offer_price = $request->offer_price;
-        $product->offer_start_date = $request->offer_start_date;
-        $product->offer_end_date = $request->offer_end_date;
+        $product->offer_start_date = $request->offer_start_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_start_date)->format('Y-m-d') : null;
+        $product->offer_end_date   = $request->offer_end_date   ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_end_date)->format('Y-m-d')   : null;
         $product->product_type = $request->product_type;
         $product->status = $request->status;
         $product->is_approved = 0;
@@ -184,8 +184,8 @@ class ProductController extends Controller
         $product->sku = $request->sku;
         $product->price = $request->price;
         $product->offer_price = $request->offer_price;
-        $product->offer_start_date = $request->offer_start_date;
-        $product->offer_end_date = $request->offer_end_date;
+        $product->offer_start_date = $request->offer_start_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_start_date)->format('Y-m-d') : null;
+        $product->offer_end_date   = $request->offer_end_date   ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_end_date)->format('Y-m-d')   : null;
         $product->product_type = $request->product_type;
         $product->status = $request->status;
         $product->seo_title = $request->seo_title;

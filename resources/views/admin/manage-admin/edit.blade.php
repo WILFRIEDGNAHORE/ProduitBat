@@ -63,7 +63,7 @@
                          <div class="row align-items-center">
 
                               <span class="avatar avatar-xl"
-                                            style="background-image: url({{ asset($admin->image) }})"></span>
+                                            src="{{ asset($admin->image) }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;"></span>
                             <div class="col-auto"> <input type="file" name="image" class="form-control"></div>
 
                         </div>

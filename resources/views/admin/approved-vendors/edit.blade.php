@@ -62,7 +62,7 @@
                                     <th>Image</th>
                                     <td>
                                         <span class="avatar avatar-xl"
-                                            style="background-image: url({{ asset($request->image) }})"></span>
+                                            src="{{ asset($request->image) }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;"></span>
                                     </td>
                                 </tr>
 
@@ -70,7 +70,7 @@
                                     <th>Banner</th>
                                     <td>
                                         <div class="img-responsive img-responsive-3x1 rounded-3 border"
-                                            style="background-image: url({{ asset($request->banner) }})"></div>
+                                            src="{{ asset($request->banner) }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;"></div>
                                     </td>
                                 </tr>
                                 <tr>

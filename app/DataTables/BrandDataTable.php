@@ -59,8 +59,10 @@ class BrandDataTable extends DataTable
 
 
             ->addColumn('logo', function ($query) {
-                $imagePath = $query->logo ? asset($query->logo) : 'Logo Not Updated';
-                return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
+                if ($query->logo) {
+                    return '<img src="' . asset($query->logo) . '" style="height:50px;width:50px;object-fit:cover;border-radius:8px;" alt="logo">';
+                }
+                return '<span class="text-muted">—</span>';
             })
 
 

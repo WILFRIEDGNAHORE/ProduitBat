@@ -16,7 +16,7 @@
                     <br>
                     <label class="mt-2">Product Variant: {{ $variant->name }}</label>
                     <br>
-                    <span class="avatar avatar-xl mb-3 rounded mt-2" style="background-image: url({{ asset($product->thumb_image) }})"></span>
+                    <img src="{{ asset($product->thumb_image) }}" class="rounded border" style="height:60px;width:60px;object-fit:cover;" alt="img">
                
                    
                 </div>

@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\FlashSaleController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ShopController;
 use App\Http\Controllers\Frontend\PaymentController;
 use App\Http\Controllers\Frontend\ProductDetailsController;
 use App\Http\Controllers\User\UserAddressController;
@@ -108,6 +109,7 @@ Route::get('cart-count',          [CartController::class, 'getCartCount'])->name
 Route::post('add-to-cart',        [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::resource('product-details', ProductDetailsController::class);
 Route::resource('flash-sale',      FlashSaleController::class);
+Route::get('nos-produits',         [ShopController::class, 'index'])->name('shop.index');
 Route::get('/',                    [HomeController::class, 'home'])->name('home');
 
 require __DIR__ . '/auth.php';

@@ -59,7 +59,7 @@ class SliderDataTable extends DataTable
             ->addColumn('created_by', function ($query) {
                 $user = \App\Models\Admin::find($query->created_by);
                 $imagePath = $user && $user->image ? asset($user->image) : asset('default-avatar.png');
-                return '<span class="avatar avatar-xl" style="background-image: url(' . $imagePath . ')"></span>';
+                return '<img src="' . $imagePath . '" style="height:40px;width:40px;object-fit:cover;border-radius:50%;" alt="admin">';
             })
 
             ->addColumn('created_person_email', function ($query) {

@@ -4,220 +4,343 @@ namespace Database\Seeders;
 
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\ChildCategory;
 use App\Models\Product;
 use App\Models\SubCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Seed products for admin (vendor_id=0, admin_id=1)
-     * and for vendor (vendor_id=1, admin_id=null).
-     */
     public function run(): void
     {
-        $category    = Category::first();
-        $subCategory = SubCategory::first();
-        $child       = ChildCategory::first();
-        $brand       = Brand::first();
+        $brand = Brand::first();
+        $brandId = $brand ? $brand->id : null;
 
-        if (! $category || ! $brand) {
-            $this->command->warn('ProductSeeder: run CategorySeeder and BrandSeeder first.');
-            return;
-        }
-
-        // ----------------------------------------------------------------
-        // Admin products  (vendor_id = 0, admin_id = 1)
-        // ----------------------------------------------------------------
-        $adminProducts = [
-            [
-                'name'              => 'Ciment Portland CEM I 52.5',
-                'short_description' => 'Ciment de haute résistance pour béton armé et ouvrages structurels.',
-                'long_description'  => '<p>Le ciment Portland CEM I 52,5 est un liant hydraulique de classe résistance 52,5 MPa. Idéal pour les bétons armés, dalles, fondations et ouvrages soumis à de fortes charges. Conditionnement en sac de 35 kg.</p>',
-                'price'             => 12.50,
-                'offer_price'       => 10.90,
-                'offer_start_date'  => '2026-03-01',
-                'offer_end_date'    => '2026-03-31',
-                'qty'               => 500,
-                'product_type'      => 'featured_product',
-                'is_approved'       => 1,
-            ],
-            [
-                'name'              => 'Mortier-colle Weber.col flex',
-                'short_description' => 'Mortier-colle flexible C2TE pour pose de carrelage grand format.',
-                'long_description'  => '<p>Mortier-colle amélioré et flexible pour la pose de carrelage céramique, grès cérame et pierre naturelle jusqu\'à 60×60 cm. Convient pour les supports déformables et les zones humides.</p>',
-                'price'             => 18.00,
-                'offer_price'       => null,
-                'offer_start_date'  => null,
-                'offer_end_date'    => null,
-                'qty'               => 300,
-                'product_type'      => 'top_product',
-                'is_approved'       => 1,
-            ],
-            [
-                'name'              => 'Plaque de plâtre Knauf BA13',
-                'short_description' => 'Plaque standard 2,5 m × 1,2 m, épaisseur 13 mm.',
-                'long_description'  => '<p>Plaque de plâtre Knauf BA13 pour cloisons, doublages et plafonds. Bords amincis, prête à enduire. Résistance au feu classée A1. Idéale pour les travaux de second œuvre.</p>',
-                'price'             => 9.80,
-                'offer_price'       => null,
-                'offer_start_date'  => null,
-                'offer_end_date'    => null,
-                'qty'               => 800,
-                'product_type'      => 'best_product',
-                'is_approved'       => 1,
-            ],
-            [
-                'name'              => 'Câble électrique U1000R2V 3G2.5',
-                'short_description' => 'Câble rigide 3 conducteurs 2.5 mm² pour installation électrique.',
-                'long_description'  => '<p>Câble d\'installation U1000R2V tripolaire 3G2,5 mm². Gaine extérieure en PVC, résistant aux UV. Vendu au mètre. Conforme à la norme NF C 32-321. Pour circuits d\'éclairage et prises de courant 16 A.</p>',
-                'price'             => 2.30,
-                'offer_price'       => 1.99,
-                'offer_start_date'  => '2026-03-15',
-                'offer_end_date'    => '2026-04-15',
-                'qty'               => 2000,
-                'product_type'      => 'new_arrival',
-                'is_approved'       => 1,
-            ],
-            [
-                'name'              => 'Laine de verre Isover Isoconfort 35',
-                'short_description' => 'Rouleau 6 m², épaisseur 100 mm, λ 0,035 W/m·K.',
-                'long_description'  => '<p>Laine de verre en rouleau pour isolation thermique des toitures sous rampants et combles aménagés. Classement au feu A2-s1,d0. Rouleau de 6 m², épaisseur 100 mm. Résistance thermique R=2,85 m²·K/W.</p>',
-                'price'             => 24.90,
-                'offer_price'       => null,
-                'offer_start_date'  => null,
-                'offer_end_date'    => null,
-                'qty'               => 150,
-                'product_type'      => 'featured_product',
-                'is_approved'       => 1,
-            ],
+        $products = [
+            ['category'=>'Accessoires','name'=>'Cartouches Filtrantes Classic - BRITA','price'=>9000,'description'=>'Les cartouches filtrantes sont compatibles avec toutes les carafes filtrantes et bouilloires Brita Classique.','image'=>'cartouches_filtrantes_classic_brita.jpg'],
+            ['category'=>'Accessoires','name'=>'Encens Palo Santos 20g - TIERRA ZEN','price'=>8500,'description'=>'Pendant des siècles, dans la tradition amérindienne, les guérisseurs utilisaient le Palo Santo au cours de rituels de fumigation pour se débarrasser des énergies négatives et optimiser la guérison tant sur le plan physique que spirituel. Très utilisé pour la méditation pour clarifier et apaiser l\'esprit.','image'=>'encens_palo_santos_20g_tierra_zen.jpg'],
+            ['category'=>'Accessoires','name'=>'Lampe de Sel de l\'Himalaya 2-3kg','price'=>18000,'description'=>'Cette lampe de 2-3kg a été conçue pour apporter de nombreux bienfaits à votre vie quotidienne. Fabriquée à partir de sel de l\'Himalaya pur, elle peut améliorer la qualité de l\'air en réduisant les allergènes et en augmentant les niveaux d\'oxygène. Elle peut également aider à réduire le stress, à améliorer l\'humeur et à favoriser un meilleur sommeil.','image'=>'lampe_de_sel_de_l_himalaya_2_3kg.jpg'],
+            ['category'=>'Accessoires','name'=>'Encens Végétal Palo Santo - LES ENCENS DU MONDE','price'=>3500,'description'=>'Un encens végétal Palo Santo, à l\'effet relaxant et positivant.  Boisés et balsamiques, les senteurs de cet encens embaumeront votre intérieur.','image'=>'encens_v_g_tal_palo_santo_les_encens_du_monde.jpg'],
+            ['category'=>'Accessoires','name'=>'Dentifrice Charbon 75ml - PERLE COCO','price'=>7000,'description'=>'Le Dentifrice Charbon 75 ml – PERLE COCO est formulé à base de charbon actif pour nettoyer efficacement les dents et retrouver un sourire éclatant. Il aide à éliminer les impuretés et les taches de surface, tout en procurant une sensation de fraîcheur durable. Sa composition douce respecte l’émail et contribue à une bonne hygiène bucco-dentaire au quotidien.','image'=>'dentifrice_charbon_75ml_perle_coco.jpg'],
+            ['category'=>'Accessoires','name'=>'Sauge Blanche - TIERRA ZEN','price'=>6500,'description'=>'Utilisé depuis des siècles pour purifier l\'air et l\'esprit, cette encens de Californie vous apportera une sensation de calme et de sérénité. Profitez des propriétés bénéfiques de cet encens pour créer une atmosphère apaisante dans votre maison.','image'=>'sauge_blanche_tierra_zen.jpg'],
+            ['category'=>'Accessoires','name'=>'Éponge Konjac au Charbon de Bambou - SUN&SIA','price'=>4000,'description'=>'Cette éponge nettoie en profondeur grâce à sa composition unique à base de charbon de bambou. Éliminez efficacement les impuretés et l\'excès de sébum pour une peau plus pure et éclatante. Idéale pour les peaux à tendance acnéique.','image'=>'ponge_konjac_au_charbon_de_bambou_sun_sia.jpg'],
+            ['category'=>'Accessoires','name'=>'Dentifrice à l\'Argile Verte Eucalyptus 75ML - ARGILETZ','price'=>8000,'description'=>'Ce dentifrice est un produit naturel et efficace pour une hygiène bucco-dentaire optimale. Sa formule unique nettoie en profondeur, purifie et rafraîchit l\'haleine, grâce aux propriétés antibactériennes de l\'argile verte et de l\'eucalyptus.','image'=>'dentifrice_l_argile_verte_eucalyptus_75ml_argiletz.jpg'],
+            ['category'=>'Accessoires','name'=>'Porte Encens Izumo Gris','price'=>9000,'description'=>'Ce porte encens est parfait pour créer une atmosphère paisible et parfumée dans votre maison. Fabriqué avec des matériaux de haute qualité, il est conçu pour accueillir vos bâtonnets d\'encens préférés en toute sécurité.','image'=>'porte_encens_izumo_gris.jpg'],
+            ['category'=>'Accessoires','name'=>'Lampe de Sel Rose de L\'Himalaya Pyramide 17.5-12.5cm','price'=>29000,'description'=>'Fabriquée à partir de sel de l\'Himalaya pur, cette peut améliorer la qualité de l\'air en réduisant les allergènes et en augmentant les niveaux d\'oxygène. Elle peut également aider à réduire le stress, à améliorer l\'humeur et à favoriser un meilleur sommeil.','image'=>'lampe_de_sel_rose_de_l_himalaya_pyramide_17_5_12_5cm.jpg'],
+            ['category'=>'Accessoires','name'=>'Carafe Filtrante MARELLA Cool Bleu 2.4L - BRITA','price'=>41000,'description'=>'Cette carafe filtrante est conçue pour filtrer l\'eau. Avec une capacité de 2.4L, elle vous offre une eau pure et délicieuse, sans chlore ni particules.','image'=>'carafe_filtrante_marella_cool_bleu_2_4l_brita.jpg'],
+            ['category'=>'Accessoires','name'=>'Cordelettes D\'Encens Népalaises Patchouli','price'=>4500,'description'=>'L\'encens originel du Népal à la senteur douce et boisée est
+d\'ingrédients naturels : poudres de patchouli, genévrier, santal blanc, enroulées dans une feuille de papier lokta.','image'=>'cordelettes_d_encens_n_palaises_patchouli.jpg'],
+            ['category'=>'Accessoires','name'=>'Encens Cones Oliban - LES ENCENS DU MONDE','price'=>5000,'description'=>'Ces cônes 100% naturels influent sur la confiance et favorisent la paix. Une composition à base de résine d\'Oliban Indien et de poudre de Santal.','image'=>'encens_cones_oliban_les_encens_du_monde.jpg'],
+            ['category'=>'Accessoires','name'=>'Encens Traditionnel Patchouli Tendre 20g - AROMANDISE','price'=>5000,'description'=>'Stimulante, la senteur des bâtonnets d\'encens Patchouli tendre favorise l\'optimisme. Le Patchouli est une senteur emblématique de l\'Inde traditionnelle: boisée et terreuse, pour voyager à travers l\'Inde éternelle.','image'=>'encens_traditionnel_patchouli_tendre_20g_aromandise.jpg'],
+            ['category'=>'Accessoires','name'=>'Encens Traditionnel Eucalyptus 20g - AROMANDISE','price'=>5000,'description'=>'Utilisé depuis des siècles, l\'eucalyptus est connu pour ses propriétés purifiantes et apaisantes.
+Son parfum frais et revigorant apporte un sentiment de clarté et de bien-être.','image'=>'encens_traditionnel_eucalyptus_20g_aromandise.jpg'],
+            ['category'=>'Accessoires','name'=>'Encens Végétal Cannelle Orange 30 bâtonnets - AROMANDISE','price'=>7000,'description'=>'Une formulation très festive pour des senteurs chaleureuses: l\'orange et la cannelle se marient pour créer une ambiance chaleureuse. Les senteurs d\'agrumes relevées d\'épices forment des effluves gourmands et chaleureux parfaits pour les fêtes hivernales.','image'=>'encens_v_g_tal_cannelle_orange_30_b_tonnets_aromandise.jpg'],
+            ['category'=>'Accessoires','name'=>'Masseur Electrique Facial Quartz Rose - SUN & SIA','price'=>15000,'description'=>'Système de Vibration Intégré pour plus d’Efficacité | Anti-Âge | Stimule la circulation sanguine
+| Dégonfle et réduit les cernes','image'=>'masseur_electrique_facial_quartz_rose_sun_sia.jpg'],
+            ['category'=>'Accessoires','name'=>'Carafe Marella Aluna Blanc 2.4L - BRITA','price'=>41000,'description'=>'Grâce à sa technologie avancée, cette carafe élimine jusqu\'à 99% des impuretés, vous garantissant ainsi une eau plus saine et plus savoureuse.','image'=>'carafe_marella_aluna_blanc_2_4l_brita.jpg'],
+            ['category'=>'Accessoires','name'=>'Support Multi Batonnet Laiton - AROMANDISE','price'=>5000,'description'=>'Ce support pratique est à positionner dans n\'importe quelle assiette ou coupelle : il vous permettra de la transformer en port-encens. 9 trous de diamètre différents sont percés dans le support afin de s\'adapter à tous les diamètres d\'encens.','image'=>'support_multi_batonnet_laiton_aromandise.jpg'],
+            ['category'=>'Accessoires','name'=>'Diffuseur pour Résine Geofleur  Noir - LES ENCENS DU MONDE','price'=>16000,'description'=>'Ce diffuseur de résines en pierre naturelle noire et orné d\'une frise florale, permet une diffusion douce des résines à l\'aide de bougies chauffe-plat.','image'=>'diffuseur_pour_r_sine_geofleur_noir_les_encens_du_monde.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Graines de Courge 200g','price'=>4500,'description'=>'Ces graines de courge de haute qualité sont riches en nutriments et en fibres. Elles peuvent être ajoutées à vos salades, soupes et autres plats pour améliorer la texture et la saveur. Avec leur teneur élevée en protéines et en minéraux, ces graines sont un excellent choix pour une alimentation saine et équilibrée.','image'=>'graines_de_courge_200g.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Graines de Chia 200g','price'=>4000,'description'=>'Les graines de chia biologiques contiennent des fibres, des protéines et des acides gras oméga-3. Les bienfaits sur la digestion, l\'énergie et la santé cardiaque sont prouvés scientifiquement. La consommation régulière de graines de chia peut augmenter la satiété et aider à maintenir un poids santé.','image'=>'graines_de_chia_200g.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Coffret Découverte 36 Thés Bio - HILDEGARDE','price'=>10000,'description'=>'Un coffret de 6 références d\'infusions et thés de plantes médicinales.','image'=>'coffret_d_couverte_36_th_s_bio_hildegarde.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Sel Rose Fin de l\' Himalaya 500g - SALTURA','price'=>3500,'description'=>'Ce sel pur et naturel est riche en minéraux et oligo-éléments, essentiels pour une alimentation saine. Utilisé pour cuisiner ou en bain relaxant, ce sel apporte ses propriétés détoxifiantes et apaisantes à votre corps.','image'=>'sel_rose_fin_de_l_himalaya_500g_saltura.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Sel Rose Cristaux de l\'Himalaya 500g - SALTURA','price'=>3000,'description'=>'Sel rose sans additif, non iodé et non raffiné. Adapté à tous vos plats et aliments, crus ou cuits.','image'=>'sel_rose_cristaux_de_l_himalaya_500g_saltura.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Amandes Décortiquées 100g','price'=>2200,'description'=>'Amandes décortiquées bio, conditionnés en petit sachet doypack à maintien debout. Idéal pour vos en-cas ou vos apéritifs entre amis. A déguster directement au paquet ou à cuisiner !','image'=>'amandes_d_cortiqu_es_100g.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Baies de Goji Bio 100g','price'=>5000,'description'=>'En Médecine traditionnelle chinoise les baies de goji: protege le foie, les reins et les organes de la vision; stimule le système immunitaire; traite l’infertilité masculine et les troubles respiratoires; ralentit le vieillissement neurologique et combat la fatigue et la faiblesse.','image'=>'baies_de_goji_bio_100g.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Fraises Séchées Thaîlande 100g','price'=>2500,'description'=>'Les fraises séchées présentent plusieurs avantages par rapport aux fraîches. Tout d\'abord, ils ont une durée de conservation plus longue et peuvent être conservés pendant des mois sans se gâter. Deuxièmement, ils sont une excellente source de nutriments tels que les fibres, les vitamines et les minéraux. Troisièmement, ils constituent une collation pratique qui peut être transportée et consommée sur le pouce. De plus, les fraises séchées peuvent être utilisées dans une variété de recettes, y compris les produits de boulangerie, les mélanges montagnards et le yogourt. Enfin, ils sont une excellente alternative aux bonbons et autres collations sucrées, car ils offrent une douceur naturelle sans les sucres ajoutés.','image'=>'fraises_s_ch_es_tha_lande_100g.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Jus de Pruneaux Bio 75cl - VITAMONT','price'=>7500,'description'=>'Le Jus de Pruneaux est un moyen 100% naturel de réguler votre digestion. Grâce à sa haute teneur en fibres, il vous aide à soulager la constipation et les ballonnements. Savourez la douceur sucrée des pruneaux bio tout en prenant soin de votre bien-être intestinal.','image'=>'jus_de_pruneaux_bio_75cl_vitamont.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Figues Séchées Bio 100g','price'=>3000,'description'=>'Les figues apporteront calcium et potassium, mais également magnésium, fer, manganèse, zinc et brome. Elles disposent également d\'une teneur importante en vitamines A, K, B1, B5, B6... Un vrai geste santé au quotidien ! Riche en fibres, la figue séchée contient également un bon apport pour la santé en oligo-éléments tels que le potassium et complètent parfaitement une alimentation saine. La consommation de ce fruit, grâce à sa teneur en fibres, facilite le transit instestinal et prévient la constipation.','image'=>'figues_s_ch_es_bio_100g.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Son d\'Avoine Bio 500g - MARKAL','price'=>3500,'description'=>'Le son d\'avoine est un produit naturel et nutritif qui favorise la digestion et régule le cholestérol grâce à ses fibres solubles. Avec une portion quotidienne de son d\'avoine, vous améliorez votre santé de manière délicieuse et efficace. A consommer dans vos repas ou mélangé à vos recettes préférées.','image'=>'son_d_avoine_bio_500g_markal.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Miel de Citronnier 500g - GABRIEL PERRONNEAU','price'=>11000,'description'=>'Un miel gourmand prisé pour les pâtisseries, mais aussi aux multiples bienfaits pour les défenses naturelles et les voies respiratoires.','image'=>'miel_de_citronnier_500g_gabriel_perronneau.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Krounchy Familial Nature 1kg - GRILLON D\'OR','price'=>9000,'description'=>'Avec son délicieux goût naturel et sa croustillance unique, ce produit saura ravir toute la famille.','image'=>'krounchy_familial_nature_1kg_grillon_d_or.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Superflakes au Copeaux de Chocolat Noir 375g - GRILLON D\'OR','price'=>4500,'description'=>'Savourez le croustillant des flocons associé au chocolat, pour un petit-déjeuner énergétique.','image'=>'superflakes_au_copeaux_de_chocolat_noir_375g_grillon_d_or.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Noix de Brésil Bio 100g','price'=>5200,'description'=>'Connue pour être riche en minéraux essentiels (sélénium, magnésium et zinc), en vitamine E, en fibres et en acides gras insaturés, la noix du Brésil a de nombreux atouts. On recommande d’en intégrer 30 g par semaine dans son alimentation.','image'=>'noix_de_br_sil_bio_100g.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Gros Sel Bleu de Perse 160g - PHILIA','price'=>8000,'description'=>'Riche en minéraux et en saveur, ce sel rare fera vibrer vos papilles avec sa texture unique.','image'=>'gros_sel_bleu_de_perse_160g_philia.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Krounchy Avoine Amandes Sans Gluten 500g - GRILLON D\'OR','price'=>8000,'description'=>'De délicieuses pépites de céréales croustillantes accompagnées d’amandes toastées pour un petit-déjeuner plaisir simple et sans gluten.','image'=>'krounchy_avoine_amandes_sans_gluten_500g_grillon_d_or.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Miel Crémeux +15g Pollen +10g Gelée Royale +5g Ginseng 220g - GABRIEL PERRONNEAU','price'=>9000,'description'=>'Un mariage de miel, gelée royale et ginseng qui apporte vitalité et résistance toute l\'année. La gelée royale est un mélange exceptionnellement concentré en éléments nutritifs variés. Quant au ginseng, il est le meilleur atout pour renforcer les défenses naturelles.
+Ingrédients : Miel, pollen, gelée royale, ginseng','image'=>'miel_cr_meux_15g_pollen_10g_gel_e_royale_5g_ginseng_220g_gabriel_perronneau.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Baies de Goji Bio 200g - PURASANA','price'=>13500,'description'=>'Les baies de Goji contiennent des antioxydants et également autant de vitamine C que les citrons et les oranges frais. Elles sont riches en protéines et en fibres qui aident à rester rassasié longtemps. Les baies de Goji sont également riches en cuivre, fer, sélénium et zinc. La consommation de baies de Goji peut inclure une amélioration des performances sportives et de la qualité du sommeil, ainsi qu\'une perte de poids.','image'=>'baies_de_goji_bio_200g_purasana.jpg'],
+            ['category'=>'Alimentation BIO','name'=>'Sel Gros de Guérande 1kg - SEL DE GUERANDE','price'=>4000,'description'=>'Le gros sel le Paludier de Guérande est récolté à la main sur les marais salants de Guérande selon une méthode ancestrale. Naturel, gris et sans additif, il est d\'héritage d\'un savoir-faire artisanal. Son fondant révèlera toutes les saveurs de vos plats.','image'=>'sel_gros_de_gu_rande_1kg_sel_de_guerande.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Huile de Krill 60 capsules 500mg - MGD','price'=>15000,'description'=>'Une grande richesse en Oméga-3, en phospholipides et en antioxydants rares
+L’huile de KRILL est riche en acides gras oméga 3 dont l’EPA et le DHA.
+L’EPA et le DHA contribuent à une fonction cardiaque normale.','image'=>'huile_de_krill_60_capsules_500mg_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Levure de Riz Rouge 90 Gélules - MGD','price'=>10000,'description'=>'La levure de riz rouge contient 23 monacolines, dont la plus importante est la monacoline K. Elle a une double action hypocholestérolémiante: elle inhibe la production de cholestérol dans le foie et augmente les récepteurs de cholestérol. Ce complément réduit la concentration de cholestérol dans le sang.','image'=>'levure_de_riz_rouge_90_g_lules_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Triphala 500mg 90 Capsules - SOLARAY','price'=>18000,'description'=>'Le
+Triphala 500mg 90 Gélules
+de
+Solaray
+est un
+complément alimentaire ayurvédique
+qui peut aider à
+tonifier en douceur le côlon
+et
+réguler le transit intestinal
+.','image'=>'triphala_500mg_90_capsules_solaray.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Spiruline 40 comprimés 500mg - SAP DE LA ME','price'=>3500,'description'=>'Les comprimés de Spiruline 500mg sont des compléments alimentaires riches en protéines, acides aminés essentiels, vitamines et minéraux provenant de la spiruline, une micro-algue aux propriétés nutritionnelles exceptionnelles. Elles contribuent à soutenir la vitalité, l’énergie et le bien-être général.','image'=>'spiruline_40_comprim_s_500mg_sap_de_la_me.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Ashwagandha 60 Gélules - EURO SANTE DIFFUSION','price'=>11000,'description'=>'L
+\'Ashwagandha est idéal pour aider à maintenir l\'équilibre mental et les performances physiques, que ce soit chez les sportifs ou les personnes sujettes au stress, à la fatigue ou au vieillissement.
+Ce complément alimentaire contient un extrait concentré de racines d\'Ashwagandha BIO standardisé à plus de 5% de withanolides.','image'=>'ashwagandha_60_g_lules_euro_sante_diffusion.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Gattilier Bio 90 Gélules 230mg - MGD','price'=>9000,'description'=>'Le gattilier est l\'une des
+principales
+plantes qui régularisent la production d\'hormones féminines. Il est ainsi employé pour aider à maintenir un bon confort avant et pendant le cycle menstruel.','image'=>'gattilier_bio_90_g_lules_230mg_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Collagène Marin Bio 90 Gélules - MGD','price'=>10000,'description'=>'Notre complément alimentaire Collagène marin est indiqué pour le maintien d’une ossature normale. La vitamine C contribue à la formation normale de collagène pour assurer la fonction normale des os et des cartilages. Le manganèse est un oligo-élément qui contribue à la formation normale de tissus conjonctifs et au maintien d’une ossature normale','image'=>'collag_ne_marin_bio_90_g_lules_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Artichaut Bio 20 Ampoules - FITOFORM','price'=>25000,'description'=>'Découvrez le Germe de Blé en Paillettes 250g. Situé au coeur du grain, le Germe de Blé contient tous les éléments nécessaires pour donner naissance au végétal. Consommé quotidiennement, le Germe de Blé est un ingrédient nutritionnel qui vous apporte toute sa richesse naturelle en antioxydants tels que vitamine E et Zinc.','image'=>'artichaut_bio_20_ampoules_fitoform.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Chardon Marie Bio 90 Gélules 300mg - MGD','price'=>9000,'description'=>'Le
+chardon-marie
+est une plante reconnue pour ses bienfaits sur le foie et la digestion. Grâce à sa richesse en silymarine, il aide à protéger et régénérer les cellules hépatiques, favorise l’élimination des toxines et soutient les fonctions de détoxification de l’organisme. Il contribue ainsi au confort digestif et au maintien d’un foie en bonne santé, notamment après des excès alimentaires ou en période de fatigue.','image'=>'chardon_marie_bio_90_g_lules_300mg_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Programme Ultra Minceur Bio 30 Ampoules - SANTAROME','price'=>33000,'description'=>'Ce programme ultra minceur comprend 30 ampoules, conçues spécialement pour vous aider à perdre du poids de manière naturelle et saine. Les ingrédients bio soutiennent le métabolisme et contribuent à la perte de poids. Simple et efficace, ce programme vous donnera des résultats durables.','image'=>'programme_ultra_minceur_bio_30_ampoules_santarome.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Magnésium Marin + B6 30 Gélules 512mg - MGD','price'=>8500,'description'=>'Le Magnésium marin + Vitamine B6 est un complément qui aide à réduire la fatigue, à soutenir le système nerveux et à favoriser une bonne fonction musculaire. Issu de l’eau de mer, le magnésium est facilement assimilable, tandis que la vitamine B6 améliore son absorption et agit en synergie pour réguler l’énergie et l’équilibre psychique. Idéal en cas de stress, de surmenage ou de baisse de vitalité.','image'=>'magn_sium_marin_b6_30_g_lules_512mg_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Spiruline 100 Comprimés  500mg SAP DE LA ME','price'=>8000,'description'=>'Les Comprimés de Spiruline 400mg sont des compléments alimentaires riches en protéines, acides aminés essentiels, vitamines et minéraux provenant de la spiruline, une micro-algue aux propriétés nutritionnelles exceptionnelles. Elles contribuent à soutenir la vitalité, l’énergie et le bien-être général.','image'=>'spiruline_100_comprim_s_500mg_sap_de_la_me.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Onagre Bourrache - MGD','price'=>12000,'description'=>'L’Onagre + Bourrache reconnus pour leurs bienfaits sur la peau, l’équilibre hormonal et le bien-être féminin. Les huiles d’onagre et de bourrache, riches en acides gras essentiels, contribuent à l’élasticité, l’hydratation et la souplesse de la peau, tout en soutenant le confort pendant le cycle et la ménopause. La vitamine E, antioxydante, protège les cellules du stress oxydatif et renforce l’action de ces huiles précieuses.','image'=>'onagre_bourrache_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Magnésium Mineral 250ML - FLORADIX','price'=>12000,'description'=>'Le magnésium est essentiel pour le bon fonctionnement du corps. Il aide à réduire le stress, à réguler le rythme cardiaque, et à maintenir des muscles et des os en bonne santé. Il participe aussi au métabolisme énergétique. Une carence peut causer fatigue, crampes et troubles du sommeil.','image'=>'magn_sium_mineral_250ml_floradix.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Complexe Berberine 75 Gélules 345mg - MGD','price'=>15000,'description'=>'Complément naturel reconnu pour son action sur le métabolisme et l’équilibre glycémique. La berbérine, issue de plantes comme l’épine-vinette, aide à réguler le taux de sucre dans le sang, favorise le métabolisme des graisses et soutient la santé cardiovasculaire. En association avec d’autres actifs, ce complexe contribue à la gestion du poids, au maintien d’une bonne énergie et au bien-être global.','image'=>'complexe_berberine_75_g_lules_345mg_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Total Cleanse Foie 60 Capsules - SOLARAY','price'=>20000,'description'=>'Cleanse foie est utilisé comme draineur hépatique, il contribue à favoriser le fonctionnement normal du foie. Il contribue à favoriser également la digestion.','image'=>'total_cleanse_foie_60_capsules_solaray.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Maca 90 Gélules 350mg - MGD','price'=>9500,'description'=>'La maca est une racine originaire des Andes, réputée pour ses vertus énergisantes et revitalisantes. Elle aide à stimuler la vitalité physique et mentale, à renforcer la résistance au stress et à soutenir l’équilibre hormonal. Également appréciée pour ses effets positifs sur la libido et la fertilité, elle contribue au bien-être général et à l’endurance au quotidien.','image'=>'maca_90_g_lules_350mg_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Ail + Olivier + Aubepine 120 Gélules - MGD','price'=>11000,'description'=>'L’ail est également utilisé pour favoriser la résistance face à un stress temporaire. Les sommités fleuries de l’aubépine et les feuilles de l’olivier complètent cette formule.','image'=>'ail_olivier_aubepine_120_g_lules_mgd.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Propolis 250mg 100 Gélules - EURO SANTE DIFFUSION','price'=>14000,'description'=>'La propolis contribue au bon fonctionnement du système immunitaire, offrant une défense naturelle contre les agressions extérieures. Elle joue un rôle essentiel en tant qu’antioxydant, contribuant à la protection des cellules contre les dommages oxydatifs. La propolis aide à purifier le système digestif, favorisant ainsi une digestion saine et équilibrée.','image'=>'propolis_250mg_100_g_lules_euro_sante_diffusion.jpg'],
+            ['category'=>'Compléments alimentaires','name'=>'Ginseng Rouge Bio 90 Gélules 350mg - MGD','price'=>16500,'description'=>'Le
+Ginseng rouge est un tonique naturel reconnu pour ses effets revitalisants sur le corps et l’esprit. Obtenu par un procédé de cuisson et de séchage du ginseng, il est particulièrement concentré en ginsénosides, actifs responsables de ses bienfaits. Il aide à stimuler l’énergie, renforcer les défenses immunitaires, améliorer la concentration et augmenter la résistance au stress et à la fatigue, favorisant ainsi vitalité et bien-être général.','image'=>'ginseng_rouge_bio_90_g_lules_350mg_mgd.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Argile Blanche En Poudre Ultra Ventilée 200g - ARGILETZ','price'=>5000,'description'=>'Conseillée aux peaux ternes et fragiles. Utilisée en masque capillaire pour revitaliser les cheveux secs et dévitalisés. Riche en silice, elle est reminéralisante et favorise l\'élimination des toxines','image'=>'argile_blanche_en_poudre_ultra_ventil_e_200g_argiletz.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Argile Verte Granulée 3kg - ARGILETZ','price'=>13000,'description'=>'L’argile verte granulée se prépare rapidement pour vous offrir un véritable confort et soulager efficacement votre corps.','image'=>'argile_verte_granul_e_3kg_argiletz.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Masque Visage Konjac au Charbon de Bambou - SUN & SIA','price'=>2500,'description'=>'Resserre les pores, élimine l’éxcès de sébum | Anti bactérien, Anti oxydant |
+100 % naturels, sans parabène, sans colorant artificiel, sans additifs, 100% biodégradable.','image'=>'masque_visage_konjac_au_charbon_de_bambou_sun_sia.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Masque Visage Konjac à l\'Aloe Vera - SUN & SIA','price'=>2500,'description'=>'Hydratant, régénérant et adoucissant |
+100 % naturels, sans parabène, sans colorant artificiel, sans additifs, 100% biodégradable.','image'=>'masque_visage_konjac_l_aloe_vera_sun_sia.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Poudre Per Blanc Menthe 30g','price'=>11000,'description'=>'PerBlan Poudre dentaire ultra fine à la menthe enrichie avec 8 extraits végétaux.
+Excellent dentifrice pour les fumeurs ou blanchir les dents et sans fluor!','image'=>'poudre_per_blanc_menthe_30g.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Huile Végétale de Nigelle 120ML','price'=>10000,'description'=>'Cette huile est anti-inflammatoire, adoucissante et tonifiante pour la peau
+. Elle s\'utilise contre les problèmes comme: l\'acné, eczéma, psoriasis, zona, brûlures légères, rides, irritations, etc. Action tonifiante et revitalisante pour les cheveux.','image'=>'huile_v_g_tale_de_nigelle_120ml.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Argile Verte En Poudre Ultra Ventilée 300g - ARGILETZ','price'=>5500,'description'=>'Cette argile naturelle est connue pour ses propriétés purifiantes et régénérantes, aidant à éliminer les impuretés et à revitaliser votre peau.','image'=>'argile_verte_en_poudre_ultra_ventil_e_300g_argiletz.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Huile de Coco Bio 120ml','price'=>2500,'description'=>'Cette huile polyvalente peut être utilisée pour hydrater et nourrir votre visage, corps et cheveux. Sa formule bio pure offre des avantages tels que l\'hydratation en profondeur, la réparation des cheveux abîmés, et l\'amélioration de l\'élasticité de la peau. Une solution naturelle pour une beauté éclatante de la tête aux pieds.','image'=>'huile_de_coco_bio_120ml.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Masque Visage Konjac Naturel - SUN & SIA','price'=>2500,'description'=>'Hydratant et purifiant |  100 % naturels, sans parabène, sans colorant artificiel, sans additifs, 100% biodégradable.','image'=>'masque_visage_konjac_naturel_sun_sia.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Masque Visage Konjac au Collagène - SUN & SIA','price'=>2500,'description'=>'Hydratant, raffermie et répulpant | Anti âge |
+100 % naturels, sans parabène, sans colorant artificiel, sans additifs, 100% biodégradable.','image'=>'masque_visage_konjac_au_collag_ne_sun_sia.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Liquide Vaisselle Bébé 500ml - ECODOO','price'=>4000,'description'=>'Ce produit nettoie et dégraisse parfaitement tous les ustensiles de bébé (biberons, tétines, sucettes, tire-lait, anneaux de dentition.)','image'=>'liquide_vaisselle_b_b_500ml_ecodoo.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Gel Arnica Bio Tube 50ml - PHYTONORM','price'=>5500,'description'=>'Ce gel Bio est un concentré d\'arnica, associé à des extraits de plantes et huiles essentielles, qui soulage immédiatement les petites contusions, bosses, et petites plaies.
+L\'arnica a des vertus régénérantes.','image'=>'gel_arnica_bio_tube_50ml_phytonorm.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Huile Végétale de Lin 120ML','price'=>5000,'description'=>'L\'Huile de Lin est reconnue pour ses propriétés médicinales. En effet, sa forte concentration en oméga 3 lui confère des effets bénéfiques sur les maladies cardio-vasculaires. Les oméga 3 vont permettre de réduire la pression artérielle et le mauvais cholestérol et donc éviter des maladies.','image'=>'huile_v_g_tale_de_lin_120ml.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Huile Végétale de Chébé 120ML','price'=>5500,'description'=>'Hydratante, nourrissante, fortifiante, protectrice,
+l\'huile de Chébé
+est un véritable 4 en 1.','image'=>'huile_v_g_tale_de_ch_b_120ml.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Macérat de Carotte (BETACAROTENE) 120ML','price'=>8000,'description'=>'Le macérat de carotte est parfait pour illuminer le teint, donner bonne mine et assurer un hâle naturel en application sur le corps.','image'=>'mac_rat_de_carotte_betacarotene_120ml.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Masque Argile Blanche 100ml - ARGILETZ','price'=>7000,'description'=>'Véritable source de bien-être pour votre visage, ce masque à l’argile blanche enveloppe votre peau d’une sublime douceur et la laisse reposée, naturellement éclatante de vie, et surtout purifiée et renforcée.','image'=>'masque_argile_blanche_100ml_argiletz.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Savon D\'Alep Rose de Damas Bio 100g - NAJEL','price'=>3500,'description'=>'Outre son parfum subtil et enchanteur, la Rose de Damas possède des propriétés astringentes qui font de ce savon l\'ami des peaux grasses.','image'=>'savon_d_alep_rose_de_damas_bio_100g_najel.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Poudre Ayurvédique de Neem 200g - SHEMEN','price'=>3000,'description'=>'Poudre Neem régule excès sébum, idéale pour cheveux gras. Détoxifiante, élimine toxines, soulage démangeaisons, limite pellicules, redonne force et brillance. Utilisable pour fabriquer shampooings/soins naturels ou comme masque/en shampooing sec.','image'=>'poudre_ayurv_dique_de_neem_200g_shemen.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Savon D\' Alep Boue de la Mer Morte 100g - NAJEL','price'=>3000,'description'=>'Sa forte concentration en minéraux fait de la boue de la mer Morte un produit d\'une richesse incomparable aux propriétés purifiantes, apaisantes et régénérantes. La peau retrouve douceur, vitalité et souplesse.','image'=>'savon_d_alep_boue_de_la_mer_morte_100g_najel.jpg'],
+            ['category'=>'Cosmétiques','name'=>'Crème visage antirides - NAJEL','price'=>6500,'description'=>'Cette crème allie efficacité et soin expert pour atténuer visiblement les signes du vieillissement. Sa formule soigneusement élaborée aide à nourrir la peau tout en réduisant l’apparence des rides, pour un teint plus lisse et ferme. Adaptée à un usage quotidien, elle contribue à renforcer l’élasticité cutanée et à protéger la peau contre les agressions extérieures. Un choix judicieux pour une peau revitalisée et un visage rajeuni.','image'=>'cr_me_visage_antirides_najel.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Synergie Anti Virale 5ml','price'=>6000,'description'=>'','image'=>'synergie_anti_virale_5ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Menthe Poivrée Bio 10ML','price'=>5000,'description'=>'Une Huile Essentielle réputée pour une bonne digestion. L\'Huile Essentielle de Menthe poivrée participe à un bon confort digestif.','image'=>'huile_essentielle_de_menthe_poivr_e_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Origan Bio 10ML','price'=>9000,'description'=>'L\'
+huile essentielle Bio d\'Origan
+a un parfum épicé. Elle est souvent utilisée dans les produits d\'
+hygiène corporelle
+et les
+produits nettoyants
+pour la maison.','image'=>'huile_essentielle_de_origan_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Sariette des Montagnes 10ML','price'=>7500,'description'=>'L\'Huile essentielle sarriette des montagnes est reconnue pour ses effets purifiants, puissants et stimulants en période de fatigue. Grâce à ses propriétés antibactériennes, antifongiques, l\'huile essentielle Sarriette des montagnes est recommandée en cas d\'infections intestinales bactériennes, parasitaires ou pulmonaires.','image'=>'huile_essentielle_de_sariette_des_montagnes_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Raventsare 10ML','price'=>7500,'description'=>'L\'huile essentielle de Ravensare est utilisée pour ses propriétés apaisantes sur les voies respiratoires, contribuant à soulager les symptômes du rhume et de la grippe. Polyvalente et équilibrante, cette huile essentielle apporte une touche d\'énergie et de revitalisation tout en capturant l\'essence vivifiante et thérapeutique des plantes tropicales.','image'=>'huile_essentielle_de_raventsare_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Thym Thymol Bio 10ml','price'=>8500,'description'=>'L\'huile essentielle de thym thymol est connue pour les utilisations suivantes :
+Le Thym aide au maintien de la santé respiratoire
+Le Thym contribue au maintien de la digestion
+Le Thym aide au maintien de la santé respiratoire et des défenses immunitaires
+Le Thym aide au maintien des défenses immunitaires','image'=>'huile_essentielle_de_thym_thymol_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Tea-Tree Bio 10ML','price'=>8000,'description'=>'Anti-inflammatoire, antibactérienne, antivirale et antifongique, l\'huile essentielle de tea tree
+est vivement recommandée en cas d\'infections: buccales
+(abcès, caries, parodontites, aphtes…) ORL (angines, laryngites, rhumes, otites, bronchites, sinusites…)','image'=>'huile_essentielle_de_tea_tree_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Ravintsara à Cinéole 10ML','price'=>8000,'description'=>'L\'huile essentielle Ravintsara a Cinéole Bio, 100% pure et naturelle, utilisée en accompagnement des infections hivernales. Calmante, elle est prisée pour faciliter le sommeil et lutter contre la nervosité. C\'est un stimulant immunitaire et un protecteur des voies respiratoires.','image'=>'huile_essentielle_de_ravintsara_cin_ole_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle d\'Eucalyptus Citronnée Bio 10ML','price'=>4000,'description'=>'L\'huile essentielle d\'Eucalyptus citronnée agit sur les douleurs musculaires et articulaire, les t
+roubles cutanés ainsi que les i
+nfections gynecologiques.','image'=>'huile_essentielle_d_eucalyptus_citronn_e_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Romarin Officinal à Cinéole Bio 10ML','price'=>4500,'description'=>'L\'huile essentielle de Romarin à Cinéole ou Rosmarinus officinalis cineoliferum Bio
+est reconnue pour ses propriétés antibactérienne, expectorante, mucolytique et fongicide.','image'=>'huile_essentielle_de_romarin_officinal_cin_ole_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Lavande Vraie Bio 10ml','price'=>7000,'description'=>'Cette huile est depuis longtemps connue pour ses vertus réparatrices et apaisantes cutanées et est traditionnellement utilisée dans les soins des peaux sensibles ou à problèmes. Elle s’emploie aussi pour ses vertus relaxantes et apaisantes.','image'=>'huile_essentielle_de_lavande_vraie_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle Hélichryse Italienne Bio 5ml','price'=>17000,'description'=>'L\'
+huile essentielle d\'hélichryse italienne
+a des vertus cicatrisantes et favorise la circulation sanguine en plus d\'être efficace pour la cicatrisation.
+L\'
+immortelle
+est très utile pour lutter contre les hématomes, entorses ou inflammations.
+Cette
+huile essentielle
+est idéale pour favoriser la relaxation et le sommeil.','image'=>'huile_essentielle_h_lichryse_italienne_bio_5ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Citron 10ml','price'=>4500,'description'=>'Nausées - maux de transport - gastro entérite - constipation - excès alimentaire - potéction épatique - drainage - détoxyfication.
+L\'huile essentielle de citron est l\'alliée du foie par excellence, détox et digestive. Elle est également utile pour la peau, les cheveux, contre les piqûres de moustiques ou encore pour apaiser les nausées des femmes enceintes.','image'=>'huile_essentielle_de_citron_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle Myrrhe Amère Bio 5ml','price'=>8000,'description'=>'La senteur de l’huile essentielle de Myrrhe rappelle l’encens, le sous-bois avec des notes de réglisse. Elle est reconnue pour ses vertus régénérantes en cosmétique.','image'=>'huile_essentielle_myrrhe_am_re_bio_5ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Thym à Thuyanol 5ml','price'=>14500,'description'=>'L\'huile essentielle de thym à thujanol est conseillée en cas d\'herpès buccal ou génital, ainsi qu\'en cas de condylomes (verrues génitales). Elle s\'avère remarquable pour la plupart des affections respiratoires: rhino-pharyngite, angine, bronchite, sinusite, otite, rhinite, grippe, asthme, et allergies printanières.','image'=>'huile_essentielle_de_thym_thuyanol_5ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle d\'Eucalyptus Globuleux Bio 10ML','price'=>4000,'description'=>'Elle est reconnue et utilisée pour les voies respiratoires. Elle apaise et soulage en cas de picotements dans la gorge (voies respiratoires inférieures). Elle aide également à maintenir une glycémie normale dans le cadre d’un mode de vie sain.','image'=>'huile_essentielle_d_eucalyptus_globuleux_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle d\'Eucalyptus Radié Bio 10ml','price'=>4000,'description'=>'Cette huile, connue pour ses propriétés purifiantes et rafraîchissantes, est traditionnellement utilisée pour libérer la sphère respiratoire. Tonique général, elle est également connue pour clarifier les idées.','image'=>'huile_essentielle_d_eucalyptus_radi_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Cyprès Bio 10ml','price'=>6500,'description'=>'L\'
+huile essentielle de Cyprès
+toujours verte est reconnue pour son action décongestionnante. On l\'utilisera aussi bien pour soulager les œdèmes des membres inférieurs, les jambes lourdes ou les hémorroïdes. Elle sera très intéressante pour calmer les toux sèches ou en cas d\'enrouements. L\'huile essentielle de Cyprès s\'attaque à la cellulite incrustée et au problème des cheveux gras.','image'=>'huile_essentielle_de_cypr_s_bio_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Cèdre de l\'Atlas 10ml','price'=>2000,'description'=>'Lhuile essentielle de Cèdre de l\'Atlas favorise la décomposition des graisses.
+Elle
+est traditionnellement reconnue pour ses vertus répulsives contre les acariens. Enfin le cèdre est un ingrédient important en parfumerie comme note de fond.','image'=>'huile_essentielle_de_c_dre_de_l_atlas_10ml.jpg'],
+            ['category'=>'Huiles Essentielles','name'=>'Huile Essentielle de Mandarine Rouge 10ML','price'=>6000,'description'=>'Cette huile apaise, relaxe, réduit le stress, favorise un sommeil réparateur, tonifie et régénère la peau, élimine les imperfections et parfume délicatement les produits de soins personnels. Un ingrédient précieux pour une routine de bien-être lumineuse et douce.','image'=>'huile_essentielle_de_mandarine_rouge_10ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Nigelle 120ML','price'=>10000,'description'=>'Cette huile est anti-inflammatoire, adoucissante et tonifiante pour la peau
+. Elle s\'utilise contre les problèmes comme: l\'acné, eczéma, psoriasis, zona, brûlures légères, rides, irritations, etc. Action tonifiante et revitalisante pour les cheveux.','image'=>'huile_v_g_tale_de_nigelle_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile de Coco Bio 120ml','price'=>2500,'description'=>'Cette huile polyvalente peut être utilisée pour hydrater et nourrir votre visage, corps et cheveux. Sa formule bio pure offre des avantages tels que l\'hydratation en profondeur, la réparation des cheveux abîmés, et l\'amélioration de l\'élasticité de la peau. Une solution naturelle pour une beauté éclatante de la tête aux pieds.','image'=>'huile_de_coco_bio_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Lin 120ML','price'=>5000,'description'=>'L\'Huile de Lin est reconnue pour ses propriétés médicinales. En effet, sa forte concentration en oméga 3 lui confère des effets bénéfiques sur les maladies cardio-vasculaires. Les oméga 3 vont permettre de réduire la pression artérielle et le mauvais cholestérol et donc éviter des maladies.','image'=>'huile_v_g_tale_de_lin_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Chébé 120ML','price'=>5500,'description'=>'Hydratante, nourrissante, fortifiante, protectrice,
+l\'huile de Chébé
+est un véritable 4 en 1.','image'=>'huile_v_g_tale_de_ch_b_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Macérat de Carotte (BETACAROTENE) 120ML','price'=>8000,'description'=>'Le macérat de carotte est parfait pour illuminer le teint, donner bonne mine et assurer un hâle naturel en application sur le corps.','image'=>'mac_rat_de_carotte_betacarotene_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile de Palmiste 200ML - PALMITA','price'=>2500,'description'=>'Cette huile végétale est utilisée pour le soin de la peau et
+des cheveux. Elle regorge de vertues médicinales. Riche en
+vitamines, en nutriments et en antioxydants, elle s\'intégre aussi
+parfaitement dans vote routine de beauté quotidienne et traite les
+imperfections cutanées.','image'=>'huile_de_palmiste_200ml_palmita.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile de Baobab 120ML - COMOE','price'=>8000,'description'=>'Adoucissante et restructurante, cette huile de Baobab est un ingrédient efficace pour le soin des peaux tiraillées et sèches. Elle aide à prévenir les vergetures et est aussi réputée pour composer des soins pour les cheveux secs, crépus ou abîmés.','image'=>'huile_de_baobab_120ml_comoe.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile de Massage Slimming 120ML','price'=>5500,'description'=>'Cette
+huile
+est connue pour faciliter l\'assimilation des sucres et pour lutter contre la cellulite; t
+rès utilisée dans les soins minceurs.','image'=>'huile_de_massage_slimming_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Rose Musqée 50ML','price'=>15000,'description'=>'L\'huile de Rose musquée bio est exceptionnellement riche en acides gras essentiels qui agissent contre le vieillissement prématuré de la peau, les vergetures, les cicatrices, et les brûlures.','image'=>'huile_v_g_tale_de_rose_musq_e_50ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale D\' Argan 120ML','price'=>16500,'description'=>'Cette huile d\'Argan, protège la peau et les cheveux. Riche en vitamines E aux propriétés anti oxydantes, elle aide naturellement la peau à combattre les signes naturels de relâchement cutané.','image'=>'huile_v_g_tale_d_argan_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Moringa 120ML','price'=>6500,'description'=>'L\'huile de moringa est particulièrement riche en vitamines A, E et C. Sa teneur élevée en acide oléique lui confère des vertus régénérantes, aidant ainsi à revitaliser la peau et les cheveux. Elle s\'utilise souvent pour fabriquer des savons et autres produits cosmétiques.','image'=>'huile_v_g_tale_de_moringa_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Pépin de Raisin 120ML','price'=>5000,'description'=>'L’huile de pépins de raisin BIO est un excellent hydratant pour tous les types de peau. Huile à texture fine et à absorption rapide. Superbe huile pour les massages.','image'=>'huile_v_g_tale_de_p_pin_de_raisin_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Sésame 120ML','price'=>2500,'description'=>'L\'huile végétale vierge de Sésame Bio 100% naturelle obtenue par première pression à froid est riche en vitamine E. Grâce à sa teneur en antioxydants, elle est régénère, restructure et nourrit les peaux matures.
+Cette huile végétale est également protectrice du rayonnement ultraviolet.','image'=>'huile_v_g_tale_de_s_same_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Macadamia 120ML','price'=>7000,'description'=>'Restructurante, nourrissante, protectrice et adoucissante, l\'huile végétale Macadamia est utilisée pour préparer des soins pour les peaux fragiles et desséchées ou encore des soins préventifs des vergetures. Fluide, elle pénètre sans laisser de film gras, ce qui en fait un ingrédient idéal pour préparer des huiles de massage.','image'=>'huile_v_g_tale_de_macadamia_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Noyaux d\'Abricot 120ML','price'=>7000,'description'=>'Très riche en vitamine A et en acide linoléique, l\'huile de noyaux d\'abricot est tonifiante, raffermissant et adoucissante.
+C\'est l\'alliée des peaux matures, ternes et fatiguées. Très pénétrante, elle redonne éclat et tons à la peau, elle la régénère tout en retardant les effets du vieillissement. Huile végétale anti-âge, elle est aussi excellente en tant qu\'huile de bronzage.','image'=>'huile_v_g_tale_de_noyaux_d_abricot_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Jojoba 120ML','price'=>11000,'description'=>'L\'huile de jojoba
+contient de la vitamine E naturelle antioxydante. Elle améliore le teint de la peau en freinant l\'oxydation du sébum, pour aider à prévenir l\'obstruction des pores et les imperfections.','image'=>'huile_v_g_tale_de_jojoba_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Calophylle 50ML','price'=>12000,'description'=>'L\'huile végétale de Calophylle est reconnue pour ses propriétés: à effet anti-inflammatoire - régénératrice de la peau - cicatrisante - tonique de la circulation veineuse.','image'=>'huile_v_g_tale_de_calophylle_50ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile de Palmiste Miracle Amande 100ML - PALMITA','price'=>2000,'description'=>'Cette huile assouplit et favorise la croissance rapide des cheveux,
+régénère et unifie la peau,
+hydrate et cicatrise,
+prévient l’apparition des vergetures et enfin
+élimine les tâches brunes.','image'=>'huile_de_palmiste_miracle_amande_100ml_palmita.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Ricin 120ML','price'=>10000,'description'=>'L\'huile végétale de Ricin est l\'alliée majeure des phanères (ongles, cils, sourcils, cheveux). Réputée pour fortifier les ongles, elle accélère la pousse des cils et des cheveux qu\'elle rend plus forts, plus épais et plus brillants.','image'=>'huile_v_g_tale_de_ricin_120ml.jpg'],
+            ['category'=>'Huiles Végétales','name'=>'Huile Végétale de Neem 120ML','price'=>5000,'description'=>'L\'huile de Neem est l’indispensable pour les peaux à problèmes, ses propriétés antibactériennes et assainissantes permettent de purifier les imperfections.','image'=>'huile_v_g_tale_de_neem_120ml.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Boisson Isotonic Citron 500ml - ERIC FAVRE','price'=>1500,'description'=>'Cette boisson recharge l\'énergie avant, pendant et après l\'effort. Elle a
+ugmente l\'endurance, f
+acilite la performance et la récupération tout en hydratant votre corps.','image'=>'boisson_isotonic_citron_500ml_eric_favre.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Lactobacillus Gasseri 200 Billions 30 Gélules - ERIC FAVRE','price'=>17000,'description'=>'Probiotique qui contribue à l\'équilibre du microbiote intestinal. Gélules gastro-résistantes pour une assimilation optimale.','image'=>'lactobacillus_gasseri_200_billions_30_g_lules_eric_favre.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Barre Zero Bar Cappuccino 76g - BIOTECH USA','price'=>3000,'description'=>'C’est une barre dite low-carb qui contient plus de 20g de protéines issues de diverses sources comme de la whey isolate native et de la protéine de blanc d’œuf avec une faible teneur en sucres. Cette barre ne contient pas de sucres ajoutés et est garantie sans gluten et sans lactose. Elle affichage des valeurs nutritionnelles intéressantes pour les sportifs suivant un régime strict.','image'=>'barre_zero_bar_cappuccino_76g_biotech_usa.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Barre Zero Bar Chocolat Chip Cookies 50g - BIOTECH USA','price'=>3000,'description'=>'En raison de sa teneur élevée en protéines, elle est un excellent choix pour les sportifs actifs ou pour ceux qui font une résolution pour être en bonne forme, mais il peut être aussi une alternative idéale aux personnes faisant un régime pour remplacer leurs collations.','image'=>'barre_zero_bar_chocolat_chip_cookies_50g_biotech_usa.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'My Iso Whey Strawberry Rasberry 900g - MY MUSCLE','price'=>50000,'description'=>'Ce Whey
+est spécialement conçue pour ceux qui cherchent à améliorer leur récupération musculaire et à optimiser leur croissance musculaire grâce à un
+supplément protéiné
+de premier choix.','image'=>'my_iso_whey_strawberry_rasberry_900g_my_muscle.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Barre Protergy Pomme Yaourt 46g - EAFIT','price'=>1000,'description'=>'Eafit La Barre Protéinée Pomme/Pêche Yaourt 46g est une délicieuse barre hyperprotéinée à l\'étonnante saveur pomme/yaourt.','image'=>'barre_protergy_pomme_yaourt_46g_eafit.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Pastille d\'hydratation tropical - TA','price'=>7000,'description'=>'Riche en électrolytes essentiels—sodium, potassium et magnésium—cette pastille rétablit l\'équilibre minéral perdu lors d\'efforts physiques intenses ou de conditions de déshydratation. Idéale pour les athlètes, les travailleurs en environnement chaud et quiconque cherche une réhydratation efficace et scientifiquement équilibrée.','image'=>'pastille_d_hydratation_tropical_ta.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Pastille d\'hydratation wild berry - TA','price'=>7000,'description'=>'Riche en électrolytes essentiels—sodium, potassium et magnésium—cette pastille rétablit l\'équilibre minéral perdu lors d\'efforts physiques intenses ou de conditions de déshydratation. Idéale pour les athlètes, les travailleurs en environnement chaud et quiconque cherche une réhydratation efficace et scientifiquement équilibrée.','image'=>'pastille_d_hydratation_wild_berry_ta.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Pastille d\'hydratation fraise kiwi - TA','price'=>7000,'description'=>'Riche en électrolytes essentiels—sodium, potassium et magnésium—cette pastille rétablit l\'équilibre minéral perdu lors d\'efforts physiques intenses ou de conditions de déshydratation. Idéale pour les athlètes, les travailleurs en environnement chaud et quiconque cherche une réhydratation efficace et scientifiquement équilibrée.','image'=>'pastille_d_hydratation_fraise_kiwi_ta.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Boisson L-Carnitine Mojito 500ml - ERIC FAVRE','price'=>1500,'description'=>'Cette boisson est le moyen idéal d\'atteindre vos objectifs de remise en forme et de perte de poids. Avec la L-carnitine comme ingrédient clé, elle peut augmenter votre métabolisme et favoriser la perte de graisse.','image'=>'boisson_l_carnitine_mojito_500ml_eric_favre.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Kré-Alkalyn Xtreme 120 capsules - PERFORMANCE','price'=>9000,'description'=>'Kré-Alkalyn Xtreme stimule la croissance musculaire/la masse musculaire (sans graisse) lors d\'efforts explosifs. Spécialement (équilibré) pour les athlètes. Réduit la fatigue (augmente votre niveau d\'énergie).','image'=>'kr_alkalyn_xtreme_120_capsules_performance.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Hydroxycut Hardcore Elite 110 Gélules - MUSCLE TECH','price'=>33500,'description'=>'Le nouveau Hydroxycut Hardcore Elite est le meilleur brûleur de graisse actuellement sur le marché. Ses composants naturels permettent d\'obtenir un effet thermogénique incomparable, un effet booster d\'énergie pour l\'entrainement et une augmentation significative de la concentration.','image'=>'hydroxycut_hardcore_elite_110_g_lules_muscle_tech.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Barre Dark Chocolat Raspberry 64g - PHD SMART','price'=>3000,'description'=>'Faite avec du chocolat noir riche et des protéines de framboise, cette barre de 64g satisfera votre faim et vos papilles. Idéale pour les amateurs de chocolat soucieux de leur santé, avec 0% de sucre ajouté et des protéines assurés.','image'=>'barre_dark_chocolat_raspberry_64g_phd_smart.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Barre Crunch Fudge Key Lime Pie 64g - WARRIOR CRUNCH','price'=>1500,'description'=>'Avec les Crunch Bars de Warrior, munissez-vous de collations protéinées, pauvres en sucres et faciles à transporter. Chaque unité contient 20g de protéines, assurant un apport continu au cours de la journée.
+Idéal comme collation au cours d\'une journée chargée, avant ou après l\'entraînement.','image'=>'barre_crunch_fudge_key_lime_pie_64g_warrior_crunch.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Pastille d\'hydratation pastèque - TA','price'=>7000,'description'=>'Riche en électrolytes essentiels—sodium, potassium et magnésium—cette pastille rétablit l\'équilibre minéral perdu lors d\'efforts physiques intenses ou de conditions de déshydratation. Idéale pour les athlètes, les travailleurs en environnement chaud et quiconque cherche une réhydratation efficace et scientifiquement équilibrée.','image'=>'pastille_d_hydratation_past_que_ta.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Pastille d\'hydratation fruits rouges - TA','price'=>7000,'description'=>'Riche en électrolytes essentiels—sodium, potassium et magnésium—cette pastille rétablit l\'équilibre minéral perdu lors d\'efforts physiques intenses ou de conditions de déshydratation. Idéale pour les athlètes, les travailleurs en environnement chaud et quiconque cherche une réhydratation efficace et scientifiquement équilibrée.','image'=>'pastille_d_hydratation_fruits_rouges_ta.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Pastille d\'hydratation citron - TA','price'=>7000,'description'=>'Riche en électrolytes essentiels—sodium, potassium et magnésium—cette pastille rétablit l\'équilibre minéral perdu lors d\'efforts physiques intenses ou de conditions de déshydratation. Idéale pour les athlètes, les travailleurs en environnement chaud et quiconque cherche une réhydratation efficace et scientifiquement équilibrée.','image'=>'pastille_d_hydratation_citron_ta.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Barre PHD SMART Salted Caramel - SMART PHD','price'=>3000,'description'=>'Barre protéinée intelligente au caramel salé, c
+onvient aussi bien aux femmes qu\'aux hommes à la recherche d\'une collation pratique, riche en protéines et faible en sucre.','image'=>'barre_phd_smart_salted_caramel_smart_phd.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Barre Milk Chocolate Hazelnut 64g - SMART PHD','price'=>1500,'description'=>'Barre protéinée Smart Chocolat au lait et noisettes,
+convient aussi bien aux femmes qu\'aux hommes à la recherche d\'un serpent pratique, riche en protéines et faible en sucre.','image'=>'barre_milk_chocolate_hazelnut_64g_smart_phd.jpg'],
+            ['category'=>'Nutrition sportive','name'=>'Barre Protéinée Crunchy Caramel Vanille Bar 40g - NAMED SPORT','price'=>2000,'description'=>'Délicieuse barre protéinée à 32%. L\'enrobage de chocolat croquant renferme un fourrage moelleux à base d\'un mélange de protéines de soja isolées et de protéines de lait concentrées, à valeur biologique élevée, qui aident au maintien de la masse musculaire.','image'=>'barre_prot_in_e_crunchy_caramel_vanille_bar_40g_named_sport.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Graines de Courge 200g','price'=>4500,'description'=>'Ces graines de courge de haute qualité sont riches en nutriments et en fibres. Elles peuvent être ajoutées à vos salades, soupes et autres plats pour améliorer la texture et la saveur. Avec leur teneur élevée en protéines et en minéraux, ces graines sont un excellent choix pour une alimentation saine et équilibrée.','image'=>'graines_de_courge_200g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Moringa Poudre 100g','price'=>3500,'description'=>'Le moringa bio est reconnu pour ses nombreux bienfaits. Riche en vitamines et minéraux, il renforce le système immunitaire et lutte contre la fatigue. La poudre de Moringa est un complément alimentaire idéal pour maintenir une bonne santé.','image'=>'moringa_poudre_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Framboisier Feuilles Coupées Bio 50g','price'=>3500,'description'=>'On prête aux feuilles de framboisier
+les bienfaits suivants :
+être riche en
+vitamines, minéraux et antioxydants
+être une
+préparation à l\'accouchement et d\'avoir des effets bénéfiques post-accouchement
+soulager les
+douleurs menstruelles et les symptômes du SPM
+aider à la
+digestion
+traiter les
+inflammations buccales','image'=>'framboisier_feuilles_coup_es_bio_50g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Aubépine Feuille et Fleur 100g','price'=>4500,'description'=>'Traditionnellement, l\'
+Aubépine
+soutient la fonction cardiaque, surtout lors de surmenage émotionnel ou physique qui s\'accompagne d\'une sensation de fatigue','image'=>'aub_pine_feuille_et_fleur_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Camomille Romaine Bio 50g','price'=>4500,'description'=>'Calmante et apaisante pour les peaux sensibles, la Camomille est aussi connue pour soulager l\'inconfort digestif et favoriser le sommeil. E
+lle ralentit le vieillissement cellulaire. Antispasmodique? elle prévient les contractions musculaires involontaires au niveau de l\'appareil digestif et de l\'utérus. Elle favorise la sécrétion de bile par le foie, apaise les douleurs (action analgésique), entraîne la survenue des règles (action emménagogue), fait baisser la fièvre (action fébrifuge).','image'=>'camomille_romaine_bio_50g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Chardon Marie Plantes Coupée 100g','price'=>5500,'description'=>'Le chardon Marie est réputée pour ses
+effets bénéfiques sur le foie
+. Il a des
+effets hépato-protecteurs
+et favorise la
+détoxification
+, grâce à son
+effet drainant.','image'=>'chardon_marie_plantes_coup_e_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Pissenlit Racine Coupée 100g','price'=>7000,'description'=>'Les racines de Pissenlit sont
+traditionnellement utilisée pour faciliter les fonctions d\'éliminations urinaire et digestive.','image'=>'pissenlit_racine_coup_e_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Ortie Piquante Partie Aérienne Coupée Bio 100g','price'=>6000,'description'=>'La partie aérienne d\'ortie piquante facilite les fonctions d\'élimination de l\'organisme avec une consommation de 3 à 5 grammes en infusion jusqu\'à 3 fois par jour.
+Elle favorise également le confort articulaire pour une consommation équivalente à 8 grammes par jour en infusion.','image'=>'ortie_piquante_partie_a_rienne_coup_e_bio_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Graines de Moringa 20g','price'=>1000,'description'=>'Les graines de moringa sont considérées comme superaliment, riches en protéines, vitamines C, calcium, potassium, antioxydants, minéraux, avec un haute valeur nutritive. On leur reconnait des vertus antioxydantes, des propriétés anti-inflammatoires et régénération du système immunitaire.','image'=>'graines_de_moringa_20g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Millefeuille Achillée Bio 50g','price'=>6000,'description'=>'L\'achillée millefeuille est réputée pour ses propriétés
+cholérétiques, antiseptiques, décongestionnantes, antispasmodiques, astringentes, cicatrisantes et coagulantes.
+Elle provoque ou régularise le cycle menstruel. Efficacité contre les crampes pelviennes. Elle aide à soulager les bouffées de chaleur pendant la ménopause.','image'=>'millefeuille_achill_e_bio_50g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Amaigrissant Bio 100g','price'=>8000,'description'=>'Une tisane minceur pour perdre un peu de poids et redessiner sa silhouette.
+Composée de 9 plantes médicinales BIO, ce mélange va permettre un drainage qui va faciliter l\'élimination des toxines, la digestion et ainsi l\'assimilation des nutriments.
+Cette tisane améliore la circulation sanguine et le désengorgement des tissus adipeux.','image'=>'amaigrissant_bio_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Graines de Nigelle 100g','price'=>2000,'description'=>'Les graines de nigelle sont riches en nutriments et en antioxydants. Elles peuvent être utilisées dans la cuisine comme une épice aromatique ou ajoutées à des recettes de soins capillaires et de soins de la peau pour leurs propriétés nourrissantes et revitalisantes.','image'=>'graines_de_nigelle_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Artémisia Bio 40g','price'=>2500,'description'=>'La
+tisane
+d\'
+artemisia
+est une
+tisane
+100% B
+io
+et 100% naturelle, efficace pour guérir et prévenir le paludisme et la bilharziose.','image'=>'art_misia_bio_40g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Melisse Vrac 50g','price'=>4500,'description'=>'Plante de l\'anxiété et de la digestion.
+La mélisse est traditionnellement utilisée
+pour favoriser la détente et la relaxation.','image'=>'melisse_vrac_50g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Clou de Girofle 50g','price'=>1500,'description'=>'Antiseptique : le clou de girofle tue les bactéries et prévient les infections.
+Anti-inflammatoire : il soulage les douleurs et réduit les inflammations.
+Antifongique : il combat les champignons et les levures responsables de mycoses.
+Antiparasitaire : il élimine les parasites et protège l’organisme.','image'=>'clou_de_girofle_50g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Olivier Feuilles Coupées Bio 100g','price'=>5000,'description'=>'Les feuilles d\'Olivier regorgent de bienfaits pour la santé cardiovasculaire. Les feuilles d\'olivier offrent de nombreux bienfaits notamment la régulation de la pression artérielle et l\'équilibre du taux de cholestérol, ainsi que la prévention de l\'athérosclérose, les lithiases et de la constipation.','image'=>'olivier_feuilles_coup_es_bio_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Bardane Racines Coupée Bio 50g','price'=>4000,'description'=>'Contribue à la santé de la peau
+Soutient le drainage de l’organisme
+A un rôle bénéfique contre les radicaux libres','image'=>'bardane_racines_coup_e_bio_50g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Queue de Cerise Bio 100g','price'=>6000,'description'=>'La tisane à la queue de cerise est appréciée pour ses propriétés diurétiques et dépuratives. Elle aide à stimuler la fonction rénale et à favorise l\'élimination des toxines du corps. Elle est souvent utilisée comme remède naturel pour les problèmes liés à la rétention d\'eau.','image'=>'queue_de_cerise_bio_100g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Pétales de Rose de Damas Bio 50g','price'=>3500,'description'=>'Les pétales de rose sont utilisés pour leurs propriétés calmantes et relaxantes. Ils sont souvent employés pour réduire le stress, l\'anxiété et favoriser un sommeil paisible.
+La tisane est connue pour ses propriétés relaxantes et pour soulager les troubles digestifs légers.','image'=>'p_tales_de_rose_de_damas_bio_50g.jpg'],
+            ['category'=>'Phytothérapie','name'=>'Damiana Feuilles et Tiges Coupées 100g','price'=>6000,'description'=>'Excellente plante tonique reconstituante du système nerveux - Indiquée dans les dépressions légères ou saisonnière et comme aphrodisiaque.','image'=>'damiana_feuilles_et_tiges_coup_es_100g.jpg'],
         ];
 
-        foreach ($adminProducts as $index => $data) {
-            $slug = Str::slug($data['name']);
-            Product::create([
-                'name'              => $data['name'],
-                'slug'              => $slug . '-admin-' . ($index + 1),
-                'thumb_image'       => 'images/products/default.jpg',
-                'vendor_id'         => 0,
-                'admin_id'          => 1,
-                'category_id'       => $category->id,
-                'sub_category_id'   => $subCategory?->id,
-                'child_category_id' => $child?->id,
-                'brand_id'          => $brand->id,
-                'qty'               => $data['qty'],
-                'short_description' => $data['short_description'],
-                'long_description'  => $data['long_description'],
-                'video_link'        => null,
-                'sku'               => strtoupper(Str::random(8)),
-                'price'             => $data['price'],
-                'offer_price'       => $data['offer_price'],
-                'offer_start_date'  => $data['offer_start_date'],
-                'offer_end_date'    => $data['offer_end_date'],
-                'product_type'      => $data['product_type'],
-                'status'            => 1,
-                'is_approved'       => $data['is_approved'],
-                'seo_title'         => $data['name'],
-                'seo_description'   => $data['short_description'],
-            ]);
+        foreach ($products as $data) {
+            $category = Category::where('name', $data['category'])->first();
+            if (! $category) continue;
+
+            $sub = SubCategory::where('category_id', $category->id)->first();
+
+            // Check image exists
+            $imgPath = null;
+            $srcImg  = public_path('uploads/products/' . $data['image']);
+            if (File::exists($srcImg)) {
+                $imgPath = '/uploads/products/' . $data['image'];
+            }
+
+            Product::updateOrCreate(
+                ['slug' => Str::slug($data['name'])],
+                [
+                    'name'              => $data['name'],
+                    'short_description' => Str::limit($data['description'], 200),
+                    'long_description'  => '<p>' . e($data['description']) . '</p>',
+                    'price'             => $data['price'],
+                    'offer_price'       => null,
+                    'qty'               => 50,
+                    'thumb_image'       => $imgPath,
+                    'category_id'       => $category->id,
+                    'sub_category_id'   => $sub?->id,
+                    'child_category_id' => null,
+                    'brand_id'          => $brandId,
+                    'vendor_id'         => 0,
+                    'admin_id'          => 1,
+                    'product_type'      => 'featured_product',
+                    'status'            => 1,
+                    'is_approved'       => 1,
+                ]
+            );
         }
-
-        // ----------------------------------------------------------------
-        // Vendor products  (vendor_id = 1, admin_id = null)
-        // ----------------------------------------------------------------
-        $vendorProducts = [
-            [
-                'name'              => 'Parpaing béton creux 20×20×50',
-                'short_description' => 'Bloc béton creux standard pour maçonnerie courante.',
-                'long_description'  => '<p>Parpaing béton creux aux dimensions 20×20×50 cm. Résistance à la compression ≥ 4 MPa. Vendu à l\'unité ou par palette. Idéal pour la construction de murs porteurs et de clôtures.</p>',
-                'price'             => 1.20,
-                'offer_price'       => null,
-                'offer_start_date'  => null,
-                'offer_end_date'    => null,
-                'qty'               => 1000,
-                'product_type'      => 'top_product',
-                'is_approved'       => 0,
-            ],
-            [
-                'name'              => 'Robinet mitigeur cuisine Grohe Bauloop',
-                'short_description' => 'Mitigeur monocommande chromé pour évier de cuisine.',
-                'long_description'  => '<p>Mitigeur monocommande Grohe Bauloop pour cuisine. Corps en laiton chromé brillant, bec haut orientable 360°. Cartouche céramique longue durée. Conforme aux normes EN 200.</p>',
-                'price'             => 89.00,
-                'offer_price'       => 74.90,
-                'offer_start_date'  => '2026-03-01',
-                'offer_end_date'    => '2026-03-31',
-                'qty'               => 50,
-                'product_type'      => 'featured_product',
-                'is_approved'       => 0,
-            ],
-            [
-                'name'              => 'Disjoncteur différentiel Schneider 40A 30mA',
-                'short_description' => 'Interrupteur différentiel type AC 40A 30mA pour tableau électrique.',
-                'long_description'  => '<p>Interrupteur différentiel Schneider Electric de type AC, calibre 40 A, sensibilité 30 mA. Protection des personnes contre les contacts indirects. Compatible avec les tableaux Rési9 et Pragma.</p>',
-                'price'             => 34.50,
-                'offer_price'       => null,
-                'offer_start_date'  => null,
-                'offer_end_date'    => null,
-                'qty'               => 200,
-                'product_type'      => 'new_arrival',
-                'is_approved'       => 1,
-            ],
-            [
-                'name'              => 'Tuile béton Lafarge Edilians Romane',
-                'short_description' => 'Tuile de couverture grand moule, coloris rouge naturel.',
-                'long_description'  => '<p>Tuile béton grand moule Lafarge Edilians Romane. Poids : 4,3 kg/unité. Couverture minimale : 30°. Résistance au gel/dégel certifiée. Conditionnement par palette de 120 unités.</p>',
-                'price'             => 3.80,
-                'offer_price'       => 3.20,
-                'offer_start_date'  => '2026-04-01',
-                'offer_end_date'    => '2026-04-30',
-                'qty'               => 600,
-                'product_type'      => 'best_product',
-                'is_approved'       => 0,
-            ],
-            [
-                'name'              => 'Enduit de façade Saint-Gobain Weber.pral F',
-                'short_description' => 'Enduit monocouche hydrofugé pour façades extérieures.',
-                'long_description'  => '<p>Enduit monocouche de finition Weber.pral F, grain fin. Application à la machine ou à la main. Hydrofuge en masse. Disponible en 40 teintes. Sac de 25 kg. Consommation : 15 kg/m² pour 10 mm d\'épaisseur.</p>',
-                'price'             => 21.00,
-                'offer_price'       => null,
-                'offer_start_date'  => null,
-                'offer_end_date'    => null,
-                'qty'               => 400,
-                'product_type'      => 'top_product',
-                'is_approved'       => 1,
-            ],
-        ];
-
-        foreach ($vendorProducts as $index => $data) {
-            $slug = Str::slug($data['name']);
-            Product::create([
-                'name'              => $data['name'],
-                'slug'              => $slug . '-vendor-' . ($index + 1),
-                'thumb_image'       => 'images/products/default.jpg',
-                'vendor_id'         => 1,
-                'admin_id'          => null,
-                'category_id'       => $category->id,
-                'sub_category_id'   => $subCategory?->id,
-                'child_category_id' => $child?->id,
-                'brand_id'          => $brand->id,
-                'qty'               => $data['qty'],
-                'short_description' => $data['short_description'],
-                'long_description'  => $data['long_description'],
-                'video_link'        => null,
-                'sku'               => strtoupper(Str::random(8)),
-                'price'             => $data['price'],
-                'offer_price'       => $data['offer_price'],
-                'offer_start_date'  => $data['offer_start_date'],
-                'offer_end_date'    => $data['offer_end_date'],
-                'product_type'      => $data['product_type'],
-                'status'            => 1,
-                'is_approved'       => $data['is_approved'],
-                'seo_title'         => $data['name'],
-                'seo_description'   => $data['short_description'],
-            ]);
-        }
-
-        $this->command->info('ProductSeeder: 5 admin products + 5 vendor products created.');
     }
 }

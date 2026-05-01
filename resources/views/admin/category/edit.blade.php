@@ -1,6 +1,5 @@
 @extends('admin.layouts.layout')
 @section('content')
-<!-- Page body -->
 <div class="page-body">
     <div class="container-xl">
         <div class="col-12">
@@ -13,32 +12,45 @@
                         @method('PUT')
 
                         <div class="row g-3 align-items-center">
-                          
 
                             <div class="col-md-7">
-                                <div class="form-label">Name</div>
+                                <div class="form-label">Category Image</div>
+                                @if($cat->image)
+                                    <img src="{{ asset($cat->image) }}" alt="{{ $cat->name }}"
+                                         class="d-block mb-2 rounded" style="max-height:120px;">
+                                @endif
+                                <input type="file" name="image" class="form-control" accept="image/*"
+                                       onchange="previewImg(event)">
+                                <img id="img-preview" src="#" alt="preview"
+                                     class="mt-2 rounded" style="max-height:120px; display:none;">
+                                <small class="text-muted">Laisser vide pour conserver l'image actuelle.</small>
+                                <x-input-error :messages="$errors->get('image')" class="mt-2 text-danger" />
+                            </div>
+
+                            <div class="col-md-7">
+                                <div class="form-label">Name <span class="text-danger">*</span></div>
                                 <input type="text" name="name" value="{{ old('name', $cat->name) }}" class="form-control">
                                 <x-input-error :messages="$errors->get('name')" class="mt-2 text-danger" />
                             </div>
+
                             <div class="col-md-7">
-                                <div class="form-label">Icon</div>
-                                <input type="text" name="icon" class="form-control" value="{{ old('icon', $cat->icon) }}">
-                                Copy icons SVG<a href="https://tabler.io/icons" target="_blank"> here</a>
+                                <div class="form-label">Icon class <span class="text-danger">*</span></div>
+                                <input type="text" name="icon" value="{{ old('icon', $cat->icon) }}" class="form-control">
+                                <small class="text-muted">Utilisé comme fallback si pas d'image.</small>
                                 <x-input-error :messages="$errors->get('icon')" class="mt-2 text-danger" />
                             </div>
-                         
-                         
+
                             <div class="col-md-7">
                                 <div class="form-label">Status</div>
                                 <select name="status" class="form-select">
-                                    <option @selected($cat->status === 1) value="1">Active</option>
-                                    <option @selected($cat->status === 0) value="0">Inactive</option>
+                                    <option @selected($cat->status == 1) value="1">Active</option>
+                                    <option @selected($cat->status == 0) value="0">Inactive</option>
                                 </select>
                             </div>
-                        </div>
 
-                        <div class="mt-4">
-                            <button class="btn btn-primary">Update Category</button>
+                            <div class="mt-4">
+                                <button class="btn btn-primary">Update Category</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -46,5 +58,13 @@
         </div>
     </div>
 </div>
-<!-- Page body -->
 @endsection
+@push('scripts')
+<script>
+function previewImg(event) {
+    var img = document.getElementById('img-preview');
+    img.src = URL.createObjectURL(event.target.files[0]);
+    img.style.display = 'block';
+}
+</script>
+@endpush

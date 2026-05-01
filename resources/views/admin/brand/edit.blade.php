@@ -17,7 +17,7 @@
 
                             <div class="col-md-7">
                                   <div class="img-responsive img-responsive-3x1 rounded-3 border"
-                                            style="background-image: url({{ asset($brand->logo) }})"></div>
+                                            src="{{ asset($brand->logo) }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;"></div>
                                 <div class="form-label">Logo</div>
                                    <div class="col-auto"> <input type="file" name="logo" class="form-control"></div>
                                  <x-input-error :messages="$errors->get('logo')" class="mt-2 text-danger" />

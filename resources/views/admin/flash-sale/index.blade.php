@@ -67,23 +67,30 @@
 
 
                             <input type="hidden" name="flash_products" value="flash_products">
-                            <div class="col-md-5">
+                            <div class="col-md-7">
                                 <div class="form-label">Add Products</div>
-                                <select class="js-example-basic-multiple form-control" name="product_id[]"
-                                    multiple="multiple">
+                                <input type="text" id="product-search" class="form-control mb-2"
+                                       placeholder="Search products…" oninput="filterProducts()">
+                                <div id="product-list" style="height:260px; overflow-y:auto; border:1px solid #dee2e6; border-radius:6px; padding:8px;">
                                     @forelse ($products as $product)
-                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
+                                        <div class="product-item form-check py-1 border-bottom" style="margin:0;">
+                                            <input class="form-check-input" type="checkbox"
+                                                   name="product_id[]" value="{{ $product->id }}"
+                                                   id="prod_{{ $product->id }}">
+                                            <label class="form-check-label w-100" for="prod_{{ $product->id }}"
+                                                   style="cursor:pointer;">
+                                                {{ $product->name }}
+                                            </label>
+                                        </div>
                                     @empty
-                                        No Data Available
+                                        <p class="text-muted">No products available</p>
                                     @endforelse
-                                </select>
+                                </div>
                                 @if ($errors->has('product_id') || $errors->has('product_id.*'))
                                     <div class="mt-2 text-danger">
                                         {{ $errors->first('product_id') ?: $errors->first('product_id.*') }}
                                     </div>
                                 @endif
-
-
                             </div>
 
 
@@ -164,8 +171,12 @@
             });
         });
 
-        $(document).ready(function() {
-            $('.js-example-basic-multiple').select2();
-        });
+        function filterProducts() {
+            var search = document.getElementById('product-search').value.toLowerCase();
+            document.querySelectorAll('.product-item').forEach(function(item) {
+                var label = item.querySelector('label').textContent.toLowerCase();
+                item.style.display = label.includes(search) ? '' : 'none';
+            });
+        }
     </script>
 @endpush

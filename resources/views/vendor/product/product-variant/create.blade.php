@@ -37,7 +37,7 @@
                                     <div class="form-label">Thumb Image</div>
                                     <div class="col-auto">
                                            <div class="img-responsive img-responsive-3x1 rounded-3 border"
-                                            style="background-image: url({{ asset($product->thumb_image) }})"></div>
+                                            src="{{ asset($product->thumb_image) }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;"></div>
                                             <br>
                                     </div>
                                 </div>

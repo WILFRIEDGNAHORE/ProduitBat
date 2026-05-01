@@ -17,7 +17,7 @@
                                 
                                 <div class="form-label">Banner</div>
                                  <div class="img-responsive img-responsive-3x1 rounded-3 border"
-                                            style="background-image: url({{ asset($slider->banner) }})"></div>
+                                            src="{{ asset($slider->banner) }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;"></div>
                                 <input type="file" name="banner" class="form-control mt-5">
                             </div>
 

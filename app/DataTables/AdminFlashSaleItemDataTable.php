@@ -75,8 +75,10 @@ class AdminFlashSaleItemDataTable extends DataTable
             })
 
                ->addColumn('product_image', function ($query) {
-                $imagePath = $query->product->thumb_image ? asset($query->product->thumb_image) : 'Image Not Updated';
-                return '<span class="avatar avatar-xl" style="background-image: url(\'' . $imagePath . '\')"></span>';
+                if ($query->product && $query->product->thumb_image) {
+                    return '<img src="' . asset($query->product->thumb_image) . '" style="height:50px;width:50px;object-fit:cover;border-radius:8px;" alt="img">';
+                }
+                return '<span class="text-muted">—</span>';
             })
 
               ->rawColumns(['action', 'status', 'product_image', 'show_at_home', 'product_name'])

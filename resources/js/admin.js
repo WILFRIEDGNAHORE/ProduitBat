@@ -5,6 +5,14 @@ import './datatables';
 
 var notyf = new Notyf();
 
+// Global AJAX headers — CSRF + ngrok interstitiel bypass
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'ngrok-skip-browser-warning': 'true',
+    },
+});
+
 var delete_url = null;
 
 $(document).on("click", ".delete-item", function (e) {

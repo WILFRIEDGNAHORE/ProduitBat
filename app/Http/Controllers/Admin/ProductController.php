@@ -61,8 +61,8 @@ class ProductController extends Controller
 
             $file = $request->thumb_image;
             $fileName = rand() . '.' . $file->getClientOriginalExtension();
-            $path = '/uploads/' . $fileName;
-            $file->move(public_path('uploads'), $fileName);
+            $path = '/uploads/products/' . $fileName;
+            $file->move(public_path('uploads/products'), $fileName);
             $product->thumb_image = $path;
             //dd($path);
         }
@@ -84,8 +84,8 @@ class ProductController extends Controller
         $product->sku = $request->sku;
         $product->price = $request->price;
         $product->offer_price = $request->offer_price;
-        $product->offer_start_date = $request->offer_start_date;
-        $product->offer_end_date = $request->offer_end_date;
+        $product->offer_start_date = $request->offer_start_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_start_date)->format('Y-m-d') : null;
+        $product->offer_end_date   = $request->offer_end_date   ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_end_date)->format('Y-m-d')   : null;
         $product->product_type = $request->product_type;
         $product->status = $request->status;
         $product->is_approved = 1;
@@ -148,8 +148,8 @@ class ProductController extends Controller
 
             $file = $request->thumb_image;
             $fileName = rand() . '.' . $file->getClientOriginalExtension();
-            $path = '/uploads/' . $fileName;
-            $file->move(public_path('uploads'), $fileName);
+            $path = '/uploads/products/' . $fileName;
+            $file->move(public_path('uploads/products'), $fileName);
             $product->thumb_image = $path;
             //dd($path);
         }
@@ -171,8 +171,8 @@ class ProductController extends Controller
         $product->sku = $request->sku;
         $product->price = $request->price;
         $product->offer_price = $request->offer_price;
-        $product->offer_start_date = $request->offer_start_date;
-        $product->offer_end_date = $request->offer_end_date;
+        $product->offer_start_date = $request->offer_start_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_start_date)->format('Y-m-d') : null;
+        $product->offer_end_date   = $request->offer_end_date   ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_end_date)->format('Y-m-d')   : null;
         $product->product_type = $request->product_type;
         $product->status = $request->status;
         $product->is_approved = 1;

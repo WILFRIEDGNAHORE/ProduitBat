@@ -141,7 +141,7 @@
                             <td class="text-center text-muted">{{ $loop->iteration }}</td>
                             <td>
                                 <span class="avatar avatar-md rounded"
-                                    style="background-image: url('{{ asset($product->product->thumb_image ?? 'admin_assets/images/placeholder.jpg') }}')">
+                                    src="{{ asset($product->product->thumb_image ?? 'admin_assets/images/placeholder.jpg') }}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;">
                                 </span>
                             </td>
                             <td>

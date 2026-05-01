@@ -50,6 +50,13 @@ class CategoryDataTable extends DataTable
 
 
 
+            ->addColumn('image', function ($query) {
+                if ($query->image) {
+                    return '<img src="' . asset($query->image) . '" alt="' . e($query->name) . '" style="height:50px;width:50px;object-fit:cover;border-radius:8px;">';
+                }
+                return '<i class="' . e($query->icon) . '" style="font-size:2rem;"></i>';
+            })
+
             ->addColumn('status', function ($query) {
                 if ($query->status === 1) {
                     return '<span class="badge bg-green-lt">Active</span>';
@@ -58,7 +65,7 @@ class CategoryDataTable extends DataTable
                 }
             })
 
-            ->rawColumns(['action', 'status', 'icon'])
+            ->rawColumns(['action', 'status', 'icon', 'image'])
 
             ->setRowId('id');
     }
@@ -102,6 +109,7 @@ class CategoryDataTable extends DataTable
         return [
 
             Column::make('id'),
+            Column::computed('image')->exportable(false)->printable(false),
             Column::make('name'),
             Column::make('icon'),
             Column::make('status'),
