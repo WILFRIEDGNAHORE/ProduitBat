@@ -92,24 +92,7 @@
                                     </span>
                                 @endif
 
-                                <div class="product-btn-actions absolute bottom-0 right-0 left-0 flex justify-center z-9 transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 group-hover:bottom-3">
-                                    <ul class="flex items-center gap-x-px">
-                                        <li>
-                                            <a aria-label="Ajouter aux favoris"
-                                                class="product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tl-sm rounded-bl-sm"
-                                                href="#">
-                                                <i class="hgi hgi-stroke hgi-favourite text-2xl leading-6 text-light-secondary-text"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a aria-label="Aperçu rapide"
-                                                class="quick-view-sidebar-btn product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tr-sm rounded-br-sm"
-                                                href="#">
-                                                <i class="hgi hgi-stroke hgi-view text-2xl leading-6 text-light-primary-text"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                
                             </div>
 
                             {{-- Content --}}
@@ -135,24 +118,32 @@
                                     @endif
                                 </div>
 
-                                <form action="{{ route('add-to-cart') }}" method="POST" class="shopping_cart_form">
-                                    @csrf
-                                    @foreach($item->product->variants->where('status', 1) as $variant)
-                                        <select name="variants_items[]" hidden>
-                                            @foreach($variant->variantItem->where('status', 1) as $variantItem)
-                                                <option value="{{ $variantItem->id }}" @selected($variantItem->is_default === 1)>
-                                                    {{ $variantItem->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    @endforeach
-                                    <input type="hidden" name="product_id" value="{{ $item->product_id }}">
-                                    <input type="hidden" name="qty" value="1">
-                                    <button type="submit" class="btn btn-primary rounded-full text-sm w-full py-2 flex items-center justify-center gap-x-2">
-                                        <i class="hgi hgi-stroke hgi-shopping-cart-02 text-white"></i>
-                                        <span>Ajouter</span>
+                                @if($product->qty <= 0)
+                                    <button type="button" onclick="notifyProduct(this, {{ $product->id }})"
+                                        class="btn btn-error rounded-full text-sm w-full py-2 flex items-center justify-center gap-x-2">
+                                        <i class="hgi hgi-stroke hgi-notification-01 text-white"></i>
+                                        <span>Notifier</span>
                                     </button>
-                                </form>
+                                @else
+                                    <form action="{{ route('add-to-cart') }}" method="POST" class="shopping_cart_form">
+                                        @csrf
+                                        @foreach($item->product->variants->where('status', 1) as $variant)
+                                            <select name="variants_items[]" hidden>
+                                                @foreach($variant->variantItem->where('status', 1) as $variantItem)
+                                                    <option value="{{ $variantItem->id }}" @selected($variantItem->is_default === 1)>
+                                                        {{ $variantItem->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        @endforeach
+                                        <input type="hidden" name="product_id" value="{{ $item->product_id }}">
+                                        <input type="hidden" name="qty" value="1">
+                                        <button type="submit" class="btn btn-primary rounded-full text-sm w-full py-2 flex items-center justify-center gap-x-2">
+                                            <i class="hgi hgi-stroke hgi-shopping-cart-02 text-white"></i>
+                                            <span>Ajouter</span>
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
 
                         </div>

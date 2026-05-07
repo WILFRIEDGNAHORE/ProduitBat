@@ -61,4 +61,24 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function storeUsers()
+    {
+        return $this->hasMany(StoreUser::class);
+    }
+
+    public function stores()
+    {
+        return $this->hasManyThrough(Store::class, StoreUser::class, 'user_id', 'id', 'id', 'store_id');
+    }
+
+    public function hasPermission(string $slug): bool
+    {
+        return $this->storeUsers()
+            ->with('role.permissions')
+            ->get()
+            ->flatMap(fn($su) => $su->role->permissions)
+            ->pluck('slug')
+            ->contains($slug);
+    }
 }

@@ -56,24 +56,7 @@
                       {{ $pct }}% OFF
                     </span>
                   @endif
-                  <div class="product-btn-actions absolute bottom-0 right-0 left-0 flex justify-center z-9 transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 group-hover:bottom-3">
-                    <ul class="flex items-center gap-x-px">
-                      <li>
-                        <a aria-label="Add to Wishlist"
-                          class="product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tl-sm rounded-bl-sm"
-                          href="#">
-                          <i class="hgi hgi-stroke hgi-favourite text-2xl leading-6 text-light-secondary-text"></i>
-                        </a>
-                      </li>
-                      <li>
-                        <a aria-label="Quick view"
-                          class="quick-view-sidebar-btn product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tr-sm rounded-br-sm"
-                          href="#">
-                          <i class="hgi hgi-stroke hgi-view text-2xl leading-6 text-light-primary-text"></i>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                  
                 </div>
                 <div class="product-content">
                   <h5 class="text-base leading-6 font-semibold font-dm-sans mb-2 line-clamp-2">
@@ -95,18 +78,24 @@
                     @endif
                   </div>
                   <div class="btn-section flex items-center gap-x-4">
-                    <a class="size-11 flex flex-none items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 border border-gray-300" href="#">
-                      <i class="hgi hgi-stroke hgi-favourite text-xl text-light-secondary-text"></i>
-                    </a>
-                    <form action="{{ route('add-to-cart') }}" method="POST" class="flex-1 shopping_cart_form">
-                      @csrf
-                      <input type="hidden" name="product_id" value="{{ $product->id }}">
-                      <input type="hidden" name="qty" value="1">
-                      <button type="submit" class="btn btn-primary rounded-full font-semibold text-sm leading-6 px-6.5 py-2 w-full flex items-center justify-center gap-x-2">
-                        <i class="hgi hgi-stroke hgi-shopping-cart-02 text-xl text-white"></i>
-                        <span>Add to Cart</span>
+                    @include('frontend.partials.wishlist-btn')
+                    @if($product->qty <= 0)
+                      <button type="button" onclick="notifyProduct(this, {{ $product->id }})"
+                        class="btn btn-error rounded-full font-semibold text-sm leading-6 px-4 py-2 flex-1 flex items-center justify-center gap-x-2">
+                        <i class="hgi hgi-stroke hgi-notification-01 text-xl text-white"></i>
+                        <span>Notifier</span>
                       </button>
-                    </form>
+                    @else
+                      <form action="{{ route('add-to-cart') }}" method="POST" class="flex-1 shopping_cart_form">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="qty" value="1">
+                        <button type="submit" class="btn btn-primary rounded-full font-semibold text-sm leading-6 px-4 py-2 w-full flex items-center justify-center gap-x-2">
+                          <i class="hgi hgi-stroke hgi-shopping-cart-02 text-xl text-white"></i>
+                          <span>Ajouter</span>
+                        </button>
+                      </form>
+                    @endif
                   </div>
                 </div>
               </div>
@@ -146,16 +135,25 @@
                     <div class="product-btn-actions absolute bottom-0 right-0 left-0 flex justify-center z-9 transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 group-hover:bottom-3">
                       <ul class="flex items-center gap-x-px">
                         <li>
-                          <a aria-label="Add to Wishlist"
-                            class="product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tl-sm rounded-bl-sm"
-                            href="#">
-                            <i class="hgi hgi-stroke hgi-favourite text-2xl leading-6 text-light-secondary-text"></i>
-                          </a>
+                          @auth
+                            @php $isWl = in_array($product->id, $wishlistIds ?? []); @endphp
+                            <button type="button"
+                              class="wishlist-btn product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tl-sm rounded-bl-sm"
+                              data-product="{{ $product->id }}"
+                              aria-label="Ajouter aux favoris">
+                              <i class="hgi text-2xl leading-6 {{ $isWl ? 'hgi-fill hgi-favourite text-error' : 'hgi-stroke hgi-favourite text-light-secondary-text' }}"></i>
+                            </button>
+                          @else
+                            <a aria-label="Favoris" href="{{ route('login') }}"
+                              class="product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tl-sm rounded-bl-sm">
+                              <i class="hgi hgi-stroke hgi-favourite text-2xl leading-6 text-light-secondary-text"></i>
+                            </a>
+                          @endauth
                         </li>
                         <li>
                           <a aria-label="Quick view"
                             class="quick-view-sidebar-btn product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tr-sm rounded-br-sm"
-                            href="#">
+                            href="{{ route('product-details.show', $product->id) }}">
                             <i class="hgi hgi-stroke hgi-view text-2xl leading-6 text-light-primary-text"></i>
                           </a>
                         </li>
@@ -182,18 +180,24 @@
                       @endif
                     </div>
                     <div class="btn-section flex items-center gap-x-4">
-                      <a class="size-11 flex flex-none items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 border border-gray-300" href="#">
-                        <i class="hgi hgi-stroke hgi-favourite text-xl text-light-secondary-text"></i>
-                      </a>
-                      <form action="{{ route('add-to-cart') }}" method="POST" class="flex-1 shopping_cart_form">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="qty" value="1">
-                        <button type="submit" class="btn btn-primary rounded-full font-semibold text-sm leading-6 px-6.5 py-2 w-full flex items-center justify-center gap-x-2">
-                          <i class="hgi hgi-stroke hgi-shopping-cart-02 text-xl text-white"></i>
-                          <span>Add to Cart</span>
+                      @include('frontend.partials.wishlist-btn')
+                      @if($product->qty <= 0)
+                        <button type="button" onclick="notifyProduct(this, {{ $product->id }})"
+                          class="btn btn-error rounded-full font-semibold text-sm leading-6 px-4 py-2 flex-1 flex items-center justify-center gap-x-2">
+                          <i class="hgi hgi-stroke hgi-notification-01 text-xl text-white"></i>
+                          <span>Notifier</span>
                         </button>
-                      </form>
+                      @else
+                        <form action="{{ route('add-to-cart') }}" method="POST" class="flex-1 shopping_cart_form">
+                          @csrf
+                          <input type="hidden" name="product_id" value="{{ $product->id }}">
+                          <input type="hidden" name="qty" value="1">
+                          <button type="submit" class="btn btn-primary rounded-full font-semibold text-sm leading-6 px-4 py-2 w-full flex items-center justify-center gap-x-2">
+                            <i class="hgi hgi-stroke hgi-shopping-cart-02 text-xl text-white"></i>
+                            <span>Ajouter</span>
+                          </button>
+                        </form>
+                      @endif
                     </div>
                   </div>
                 </div>

@@ -9,10 +9,17 @@ class UserAddressSeeder extends Seeder
 {
     public function run(): void
     {
+        $vendor = DB::table('users')->where('email', 'vendor@gmail.com')->first();
+        $user   = DB::table('users')->where('email', 'user@gmail.com')->first();
+
+        if (! $vendor || ! $user) {
+            $this->command->warn('UserAddressSeeder: users not found — run UserSeeder first.');
+            return;
+        }
+
         $addresses = [
-            // Adresses du vendor (user_id = 1)
             [
-                'user_id' => 1,
+                'user_id' => $vendor->id,
                 'name'    => 'Dupont Martin',
                 'email'   => 'vendor@gmail.com',
                 'phone'   => '0612345678',
@@ -23,7 +30,7 @@ class UserAddressSeeder extends Seeder
                 'address' => '15 Avenue des Champs-Élysées',
             ],
             [
-                'user_id' => 1,
+                'user_id' => $vendor->id,
                 'name'    => 'Entrepôt Dupont & Fils',
                 'email'   => 'depot@gmail.com',
                 'phone'   => '0698765432',
@@ -33,10 +40,8 @@ class UserAddressSeeder extends Seeder
                 'zip'     => '93000',
                 'address' => '42 Rue de l\'Industrie, Zone Commerciale Nord',
             ],
-
-            // Adresses du user (user_id = 2)
             [
-                'user_id' => 2,
+                'user_id' => $user->id,
                 'name'    => 'Sophie Bernard',
                 'email'   => 'user@gmail.com',
                 'phone'   => '0756789012',
@@ -47,7 +52,7 @@ class UserAddressSeeder extends Seeder
                 'address' => '8 Rue de la République',
             ],
             [
-                'user_id' => 2,
+                'user_id' => $user->id,
                 'name'    => 'Chantier Bernard — Site Marseille',
                 'email'   => 'user@gmail.com',
                 'phone'   => '0756789012',
@@ -59,6 +64,11 @@ class UserAddressSeeder extends Seeder
             ],
         ];
 
-        DB::table('user_addresses')->insert($addresses);
+        foreach ($addresses as $addr) {
+            DB::table('user_addresses')->updateOrInsert(
+                ['user_id' => $addr['user_id'], 'address' => $addr['address']],
+                $addr
+            );
+        }
     }
 }

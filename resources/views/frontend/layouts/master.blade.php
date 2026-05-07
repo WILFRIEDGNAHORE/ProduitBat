@@ -17,40 +17,19 @@
     <!-- ========== Favicon ========== -->
     <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon" />
 
-    <!-- ========== Google Fonts ========== -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&amp;display=swap"
-        rel="stylesheet" />
+    <!-- Preconnect Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
-    <!-- ========== Huge Icons CSS ========== -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendor/hugeicons/hgi-stroke-rounded.css') }}" />
-
-    <!-- ========== Slick CSS ========== -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendor/slick.min.css') }}" />
-
-    <!-- ========== Nice Select CSS ========== -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendor/nice-select.css') }}" />
-
-    <!-- ========== Animate CSS ========== -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/vendor/animate.min.css') }}" />
-
-    <!-- ========== Custom CSS ========== -->
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style.css') }}" />
-
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <!-- Notyf CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
-    {{-- select 2 css --}}
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/select2.min.css') }}">
-    {{-- select 2 css --}}
-
-
-    <!-- Summernote Lite CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
 </head>
 
@@ -1591,7 +1570,9 @@
 
     @yield('content')
 
-    @include('frontend.layouts.footer')
+    <div class="hidden md:block">
+        @include('frontend.layouts.footer')
+    </div>
 
     <!-- Delete Confirmation Modal -->
     <div class="modal modal-blur fade" id="modal-danger" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -1652,31 +1633,18 @@
 
     <!-- ========== Plugins JS ========== -->
     <script src="{{ asset('frontend/assets/js/vendor/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/vendor/slick.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/vendor/jquery.countdown.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/vendor/jquery.nice-select.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/vendor/jquery.counterup-2.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/vendor/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/vendor/nouislider.min.js') }}"></script>
-    <script src="{{ asset('frontend/assets/js/vendor/wow.min.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/vendor/slick.min.js') }}" defer></script>
+    <script src="{{ asset('frontend/assets/js/vendor/jquery.countdown.min.js') }}" defer></script>
+    <script src="{{ asset('frontend/assets/js/vendor/jquery.nice-select.min.js') }}" defer></script>
+    <script src="{{ asset('frontend/assets/js/vendor/jquery.counterup-2.min.js') }}" defer></script>
+    <script src="{{ asset('frontend/assets/js/vendor/jquery.magnific-popup.min.js') }}" defer></script>
+    <script src="{{ asset('frontend/assets/js/vendor/nouislider.min.js') }}" defer></script>
+    <script src="{{ asset('frontend/assets/js/vendor/wow.min.js') }}" defer></script>
 
     <!-- ========== Custom JS ========== -->
-    <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/main.js') }}" defer></script>
     <!-- Notyf JS -->
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-
-    {{-- select 2 js --}}
-    <script src="{{ asset('frontend/assets/js/select2.min.js') }}"></script>
-    {{-- select 2 js --}}
-
-
-
-
-
-
-
-    <!-- Summernote Lite JS -->
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 
 
     <!-- Vite-bundled user.js -->
@@ -1708,6 +1676,79 @@
     </script>
 
     @stack('scripts')
+
+    <script>
+    function notifyProduct(btn, productId) {
+        var key = 'notified_' + productId;
+        if (localStorage.getItem(key)) return;
+        localStorage.setItem(key, '1');
+        btn.classList.remove('btn-error');
+        btn.classList.add('btn-disabled');
+        btn.querySelector('i').classList.remove('text-white');
+        btn.querySelector('i').classList.add('text-[#919EABCC]');
+        btn.querySelector('span').textContent = 'Notifié';
+        btn.onclick = null;
+        if (typeof notyf !== 'undefined') {
+            notyf.success('Vous serez notifié quand ce produit sera disponible.');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('[onclick^="notifyProduct"]').forEach(function(btn) {
+            var match = btn.getAttribute('onclick').match(/notifyProduct\(this,\s*(\d+)\)/);
+            if (match && localStorage.getItem('notified_' + match[1])) {
+                btn.classList.remove('btn-error');
+                btn.classList.add('btn-disabled');
+                btn.querySelector('i').classList.remove('text-white');
+                btn.querySelector('i').classList.add('text-[#919EABCC]');
+                btn.querySelector('span').textContent = 'Notifié';
+                btn.onclick = null;
+            }
+        });
+
+        // ── Wishlist toggle AJAX ──────────────────────────────
+        document.querySelectorAll('.wishlist-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var productId = this.dataset.product;
+                var self = this;
+                fetch('{{ route('wishlist.toggle') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ product_id: productId }),
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var icon = self.querySelector('i');
+                    if (data.wishlisted) {
+                        icon.className = 'hgi hgi-fill hgi-favourite text-xl text-error';
+                    } else {
+                        icon.className = 'hgi hgi-stroke hgi-favourite text-xl text-light-secondary-text';
+                    }
+                    // Mettre à jour tous les compteurs wishlist dans la page
+                    document.querySelectorAll('.wishlist-count-text').forEach(function(el) {
+                        el.textContent = data.count;
+                    });
+                    document.querySelectorAll('.wishlist-badge').forEach(function(el) {
+                        el.textContent = data.count;
+                        if (data.count > 0) {
+                            el.classList.remove('hidden');
+                            el.classList.add('flex');
+                        } else {
+                            el.classList.add('hidden');
+                            el.classList.remove('flex');
+                        }
+                    });
+                })
+                .catch(function() {
+                    window.location.href = '{{ route('login') }}';
+                });
+            });
+        });
+    });
+    </script>
 
 </body>
 

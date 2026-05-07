@@ -5,7 +5,10 @@ namespace App\Providers;
 use App\Models\GeniusPaySettings;
 use App\Models\MomoSettings;
 use App\Models\Settings;
+use App\Models\StoreStock;
+use App\Models\Wishlist;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\URL;
@@ -49,10 +52,23 @@ class AppServiceProvider extends ServiceProvider
 
         // ── View composer ──────────────────────────────────────
         View::composer('*', function ($view) use ($settings, $momoSettings, $geniusSettings) {
+            $wishlistIds   = [];
+            $wishlistCount = 0;
+            if (Auth::check()) {
+                $wishlistIds   = Wishlist::where('user_id', Auth::id())->pluck('product_id')->toArray();
+                $wishlistCount = count($wishlistIds);
+            }
+
+            // Compteur d'alertes stock pour le badge sidebar admin
+            $stockAlertCount = StoreStock::whereRaw('qty <= low_stock_threshold')->count();
+
             $view->with([
-                'settings'       => $settings,
-                'momoSettings'   => $momoSettings   ?? [],
-                'geniusSettings' => $geniusSettings ?? [],
+                'settings'        => $settings,
+                'momoSettings'    => $momoSettings    ?? [],
+                'geniusSettings'  => $geniusSettings  ?? [],
+                'wishlistIds'     => $wishlistIds,
+                'wishlistCount'   => $wishlistCount,
+                'stockAlertCount' => $stockAlertCount,
             ]);
         });
     }

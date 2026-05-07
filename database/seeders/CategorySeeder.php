@@ -14,15 +14,6 @@ class CategorySeeder extends Seeder
     {
         $data = [
             [
-                'name' => 'Accessoires',
-                'icon' => 'hgi hgi-stroke hgi-package-01',
-                'sub_categories' => [
-                    ['name' => 'Lampes & Bougies',    'children' => []],
-                    ['name' => 'Encens & Diffuseurs',  'children' => []],
-                    ['name' => 'Filtration & Eau',     'children' => []],
-                ],
-            ],
-            [
                 'name' => 'Alimentation BIO',
                 'icon' => 'hgi hgi-stroke hgi-leaf-01',
                 'sub_categories' => [

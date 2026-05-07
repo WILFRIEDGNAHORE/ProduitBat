@@ -209,24 +209,7 @@
                                             {{ $pct }}% OFF
                                         </span>
                                     @endif
-                                    <div class="product-btn-actions absolute bottom-0 right-0 left-0 flex justify-center z-9 transition-all duration-300 ease-in-out opacity-0 group-hover:opacity-100 group-hover:bottom-3">
-                                        <ul class="flex items-center gap-x-px">
-                                            <li>
-                                                <a aria-label="Add to Wishlist"
-                                                    class="product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tl-sm rounded-bl-sm before:absolute before:left-[calc(50%-8px)] before:bottom-full before:z-9 before:border-8 before:border-transparent before:border-t-black before:opacity-0 before:invisible before:-mb-3.5 hover:before:opacity-100 hover:before:visible before:transition-all before:duration-300 after:absolute after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rounded-sm after:bg-gray-800 after:whitespace-nowrap after:text-white after:text-xs after:leading-[18px] after:py-[3px] after:px-2 after:content-[attr(aria-label)] after:opacity-0 after:invisible after:transition-all after:duration-300 hover:after:opacity-100 hover:after:visible hover:after:-translate-y-2.5 hover:before:-translate-y-2.5"
-                                                    href="#">
-                                                    <i class="hgi hgi-stroke hgi-favourite text-2xl leading-6 text-light-secondary-text"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a aria-label="Quick view"
-                                                    class="quick-view-sidebar-btn product-btn-action-item relative size-11 bg-white inline-flex items-center justify-center rounded-tr-sm rounded-br-sm before:absolute before:left-[calc(50%-8px)] before:bottom-full before:z-9 before:border-8 before:border-transparent before:border-t-black before:opacity-0 before:invisible before:-mb-3.5 hover:before:opacity-100 hover:before:visible before:transition-all before:duration-300 after:absolute after:bottom-full after:left-1/2 after:-translate-x-1/2 after:rounded-sm after:bg-gray-800 after:whitespace-nowrap after:text-white after:text-xs after:leading-[18px] after:py-[3px] after:px-2 after:content-[attr(aria-label)] after:opacity-0 after:invisible after:transition-all after:duration-300 hover:after:opacity-100 hover:after:visible hover:after:-translate-y-2.5 hover:before:-translate-y-2.5"
-                                                    href="#">
-                                                    <i class="hgi hgi-stroke hgi-view text-2xl leading-6 text-light-primary-text"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    
                                 </div>
                                 <div class="product-content flex flex-col flex-1">
                                     <h5 class="text-base leading-6 font-semibold font-dm-sans mb-2 line-clamp-2 flex-1">
@@ -246,18 +229,24 @@
                                         @endif
                                     </div>
                                     <div class="btn-section flex items-center gap-x-3">
-                                        <a class="size-11 flex flex-none items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 border border-gray-300" href="#">
-                                            <i class="hgi hgi-stroke hgi-favourite text-xl text-light-secondary-text"></i>
-                                        </a>
-                                        <form action="{{ route('add-to-cart') }}" method="POST" class="flex-1 shopping_cart_form">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <input type="hidden" name="qty" value="1">
-                                            <button type="submit" class="btn btn-primary rounded-full font-semibold text-sm leading-6 px-4 py-2 w-full flex items-center justify-center gap-x-2">
-                                                <i class="hgi hgi-stroke hgi-shopping-cart-02 text-base text-white"></i>
-                                                <span>Ajouter</span>
+                                        @include('frontend.partials.wishlist-btn')
+                                        @if($product->qty <= 0)
+                                            <button type="button" onclick="notifyProduct(this, {{ $product->id }})"
+                                                class="btn btn-error rounded-full font-semibold text-sm leading-6 px-4 py-2 flex-1 flex items-center justify-center gap-x-2">
+                                                <i class="hgi hgi-stroke hgi-notification-01 text-base text-white"></i>
+                                                <span>Notifier</span>
                                             </button>
-                                        </form>
+                                        @else
+                                            <form action="{{ route('add-to-cart') }}" method="POST" class="flex-1 shopping_cart_form">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <input type="hidden" name="qty" value="1">
+                                                <button type="submit" class="btn btn-primary rounded-full font-semibold text-sm leading-6 px-4 py-2 w-full flex items-center justify-center gap-x-2">
+                                                    <i class="hgi hgi-stroke hgi-shopping-cart-02 text-base text-white"></i>
+                                                    <span>Ajouter</span>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

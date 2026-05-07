@@ -149,29 +149,110 @@
                 @empty
                 @endforelse
 
-                <div class="product-add-to-cart-btn-section">
-                  <p class="font-semibold text-light-primary-text mb-4">Quantity:</p>
-                  <div class="flex items-center justify-between gap-x-4 gap-y-4 flex-wrap md:flex-nowrap md:gap-y-0">
-                    <div class="quantity-section flex-1 max-w-[185px] border border-gray-300 rounded-[80px] px-4 py-[11px] flex items-center justify-between">
-                      <button class="quantity-btn inline-flex items-center justify-center hover:text-primary">
-                        <i class="hgi hgi-stroke hgi-minus-sign text-xl leading-5"></i>
-                      </button>
-                      <input 
-                        type="number" 
-                        class="quantity-input text-center w-full focus:outline-none font-semibold text-base leading-6 text-light-primary-text" 
-                        value="1"
-                        min="1"
-                      >
-                      <button class="quantity-btn inline-flex items-center justify-center hover:text-primary">
-                        <i class="hgi hgi-stroke hgi-plus-sign text-xl leading-5"></i>
-                      </button>
-                    </div>
-                    <button class="btn btn-warning btn-large rounded-[80px] flex-1">Buy Now</button>
-                    <button class="btn btn-primary btn-large rounded-[80px] flex-1">
-                      <i class="hgi hgi-stroke hgi-shopping-cart-add-02 leading-6 text-2xl text-white"></i>
-                      Add to Cart
-                    </button>
+                {{-- ── Disponibilité par boutique ────────────────── --}}
+                @if($storeStocks->isNotEmpty())
+                <div class="store-availability-section mb-6">
+                  <p class="font-semibold text-light-primary-text mb-3 flex items-center gap-x-2">
+                    <i class="hgi hgi-stroke hgi-store-01 text-lg"></i>
+                    Disponibilité en boutique :
+                  </p>
+                  <div class="flex flex-col gap-y-2" id="store-radio-group">
+                    @foreach($storeStocks as $ss)
+                      @php $hasStock = $ss->qty > 0; @endphp
+                      <label class="store-radio-label flex items-center gap-x-3 cursor-pointer p-3 rounded-xl border transition-colors
+                        {{ !$hasStock ? 'opacity-50 cursor-not-allowed border-gray-200 bg-gray-50' : 'border-gray-300 hover:border-primary hover:bg-primary/5' }}
+                        {{ $ss->store_id == $defaultStoreId ? 'border-primary bg-primary/5 store-radio-selected' : '' }}"
+                        data-store-id="{{ $ss->store_id }}"
+                        data-store-qty="{{ $ss->qty }}">
+                        <input
+                          type="radio"
+                          name="store_choice"
+                          value="{{ $ss->store_id }}"
+                          class="store-radio accent-primary"
+                          {{ $ss->store_id == $defaultStoreId ? 'checked' : '' }}
+                          {{ !$hasStock ? 'disabled' : '' }}>
+                        <span class="flex-1 flex items-center justify-between">
+                          <span class="font-medium text-sm text-light-primary-text">
+                            {{ $ss->store->name }}
+                            @if($ss->store->isCentrale())
+                              <span class="ml-1 text-xs bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full">Centrale</span>
+                            @endif
+                          </span>
+                          <span class="text-sm font-semibold
+                            {{ $ss->qty <= 0 ? 'text-error' : ($ss->isLow() ? 'text-warning' : 'text-success') }}">
+                            @if($ss->qty <= 0)
+                              Épuisé
+                            @elseif($ss->isLow())
+                              Plus que {{ $ss->qty }} en stock
+                            @else
+                              {{ $ss->qty }} en stock
+                            @endif
+                          </span>
+                        </span>
+                      </label>
+                    @endforeach
                   </div>
+                  {{-- Message boutique épuisée sélectionnée --}}
+                  <p id="store-out-of-stock-msg" class="mt-2 text-sm text-error hidden flex items-center gap-x-1">
+                    <i class="hgi hgi-stroke hgi-alert-circle text-base"></i>
+                    Ce produit est épuisé dans cette boutique.
+                  </p>
+                </div>
+                @endif
+                {{-- ── /Disponibilité par boutique ───────────────── --}}
+
+                <div class="product-add-to-cart-btn-section">
+                  <p class="font-semibold text-light-primary-text mb-4">Quantité :</p>
+                  @if($product->qty <= 0)
+                    <div class="flex items-center gap-x-4">
+                      <button type="button" onclick="notifyProduct(this, {{ $product->id }})"
+                        class="btn btn-error btn-large rounded-[80px] flex-1 flex items-center justify-center gap-x-2">
+                        <i class="hgi hgi-stroke hgi-notification-01 text-2xl text-white"></i>
+                        <span>Me notifier</span>
+                      </button>
+                      @include('frontend.partials.wishlist-btn')
+                    </div>
+                  @else
+                    <form action="{{ route('add-to-cart') }}" method="POST" class="shopping_cart_form" id="add-to-cart-form">
+                      @csrf
+                      @foreach($product->variants->where('status', 1) as $variant)
+                        <select name="variants_items[]" hidden>
+                          @foreach($variant->variantItem->where('status', 1) as $variantItem)
+                            <option value="{{ $variantItem->id }}" @selected($variantItem->is_default === 1)>
+                              {{ $variantItem->name }}
+                            </option>
+                          @endforeach
+                        </select>
+                      @endforeach
+                      <input type="hidden" name="product_id" value="{{ $product->id }}">
+                      <input type="hidden" name="store_id" id="selected-store-id" value="{{ $defaultStoreId }}">
+                      <div class="flex items-center justify-between gap-x-4 gap-y-4 flex-wrap md:flex-nowrap md:gap-y-0">
+                        <div class="quantity-section flex-1 max-w-[185px] border border-gray-300 rounded-[80px] px-4 py-[11px] flex items-center justify-between">
+                          <button type="button" class="quantity-btn inline-flex items-center justify-center hover:text-primary">
+                            <i class="hgi hgi-stroke hgi-minus-sign text-xl leading-5"></i>
+                          </button>
+                          <input
+                            type="number"
+                            name="qty"
+                            id="qty-input"
+                            class="quantity-input text-center w-full focus:outline-none font-semibold text-base leading-6 text-light-primary-text"
+                            value="1"
+                            min="1"
+                            max="{{ $storeStocks->firstWhere('store_id', $defaultStoreId)?->qty ?? $product->qty }}"
+                          >
+                          <button type="button" class="quantity-btn inline-flex items-center justify-center hover:text-primary">
+                            <i class="hgi hgi-stroke hgi-plus-sign text-xl leading-5"></i>
+                          </button>
+                        </div>
+                        <button type="submit" id="add-to-cart-btn"
+                          class="btn btn-primary btn-large rounded-[80px] flex-1 flex items-center justify-center gap-x-2">
+                          <i class="hgi hgi-stroke hgi-shopping-cart-add-02 leading-6 text-2xl text-white"></i>
+                          <span>Ajouter au panier</span>
+                        </button>
+                        @include('frontend.partials.wishlist-btn')
+                      </div>
+                    </form>
+                  @endif
                 </div>
               </div>
 
@@ -1555,3 +1636,50 @@
       </div>
     <!-- ========== Subscribe Section End ========== --></section>
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    var radios    = document.querySelectorAll('.store-radio');
+    var labels    = document.querySelectorAll('.store-radio-label');
+    var storeIdInput  = document.getElementById('selected-store-id');
+    var qtyInput      = document.getElementById('qty-input');
+    var addBtn        = document.getElementById('add-to-cart-btn');
+    var outMsg        = document.getElementById('store-out-of-stock-msg');
+
+    if (!radios.length) return;
+
+    function applySelection(radio) {
+        var qty      = parseInt(radio.closest('label').dataset.storeQty, 10);
+        var storeId  = radio.value;
+
+        // Mettre à jour la sélection visuelle
+        labels.forEach(function(l) { l.classList.remove('border-primary', 'bg-primary\\/5', 'store-radio-selected'); });
+        radio.closest('label').classList.add('border-primary', 'bg-primary\\/5', 'store-radio-selected');
+
+        if (storeIdInput) storeIdInput.value = storeId;
+
+        if (qty <= 0) {
+            // Boutique épuisée
+            if (qtyInput) { qtyInput.value = 1; qtyInput.max = 0; qtyInput.disabled = true; }
+            if (addBtn)   { addBtn.disabled = true; addBtn.classList.add('opacity-50', 'cursor-not-allowed'); }
+            if (outMsg)   { outMsg.classList.remove('hidden'); }
+        } else {
+            if (qtyInput) {
+                qtyInput.disabled = false;
+                qtyInput.max = qty;
+                if (parseInt(qtyInput.value, 10) > qty) qtyInput.value = qty;
+            }
+            if (addBtn)   { addBtn.disabled = false; addBtn.classList.remove('opacity-50', 'cursor-not-allowed'); }
+            if (outMsg)   { outMsg.classList.add('hidden'); }
+        }
+    }
+
+    radios.forEach(function(radio) {
+        radio.addEventListener('change', function() { applySelection(this); });
+        // Appliquer l'état initial pour la boutique présélectionnée
+        if (radio.checked) applySelection(radio);
+    });
+})();
+</script>
+@endpush

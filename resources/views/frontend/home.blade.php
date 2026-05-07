@@ -7,7 +7,7 @@
 
     @include('frontend.sections.hero')
 
-    {{-- @include('frontend.sections.category') --}}
+    @include('frontend.sections.category')
 
     @include('frontend.sections.our-products')
     

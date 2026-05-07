@@ -8,9 +8,6 @@ use Illuminate\Support\Str;
 
 class BrandSeeder extends Seeder
 {
-    /**
-     * Seed construction material brands.
-     */
     public function run(): void
     {
         $brands = [
@@ -25,13 +22,15 @@ class BrandSeeder extends Seeder
         ];
 
         foreach ($brands as $brand) {
-            Brand::create([
-                'name'        => $brand['name'],
-                'slug'        => Str::slug($brand['name']),
-                'logo'        => 'images/brands/default.png',
-                'is_featured' => $brand['is_featured'],
-                'status'      => 1,
-            ]);
+            Brand::firstOrCreate(
+                ['slug' => Str::slug($brand['name'])],
+                [
+                    'name'        => $brand['name'],
+                    'logo'        => 'images/brands/default.png',
+                    'is_featured' => $brand['is_featured'],
+                    'status'      => 1,
+                ]
+            );
         }
     }
 }

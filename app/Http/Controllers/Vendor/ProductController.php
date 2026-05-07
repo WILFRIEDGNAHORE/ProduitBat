@@ -90,8 +90,8 @@ class ProductController extends Controller
         $product->sku = $request->sku;
         $product->price = $request->price;
         $product->offer_price = $request->offer_price;
-        $product->offer_start_date = $request->offer_start_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_start_date)->format('Y-m-d') : null;
-        $product->offer_end_date   = $request->offer_end_date   ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_end_date)->format('Y-m-d')   : null;
+        $product->offer_start_date = $this->parseDate($request->offer_start_date);
+        $product->offer_end_date   = $this->parseDate($request->offer_end_date);
         $product->product_type = $request->product_type;
         $product->status = $request->status;
         $product->is_approved = 0;
@@ -184,8 +184,8 @@ class ProductController extends Controller
         $product->sku = $request->sku;
         $product->price = $request->price;
         $product->offer_price = $request->offer_price;
-        $product->offer_start_date = $request->offer_start_date ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_start_date)->format('Y-m-d') : null;
-        $product->offer_end_date   = $request->offer_end_date   ? \Carbon\Carbon::createFromFormat('d/m/Y', $request->offer_end_date)->format('Y-m-d')   : null;
+        $product->offer_start_date = $this->parseDate($request->offer_start_date);
+        $product->offer_end_date   = $this->parseDate($request->offer_end_date);
         $product->product_type = $request->product_type;
         $product->status = $request->status;
         $product->seo_title = $request->seo_title;
@@ -227,5 +227,15 @@ class ProductController extends Controller
         //dd($request->all());
         $childCategories = ChildCategory::where(['sub_category_id' => $request->sub_category_id, 'status' => '1'])->get();
         return response(['status' => 'success', 'childCategories' => $childCategories]);
+    }
+
+    private function parseDate(?string $date): ?string
+    {
+        if (!$date) return null;
+        try {
+            return \Carbon\Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+        } catch (\Exception $e) {
+            return \Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('Y-m-d');
+        }
     }
 }

@@ -17,7 +17,7 @@ use App\Http\Controllers\Admin\VendorProductVariantItem;
 use App\Http\Controllers\Admin\FlashSaleController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductImageGalleryController;
-use App\Http\Controllers\Admin\VendorProductImageGalleryController;
+// use App\Http\Controllers\Admin\VendorProductImageGalleryController; // désactivé
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\MomoSettingsController;
 
@@ -33,6 +33,14 @@ use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\GeniusPaySettingsController;
 use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\StoreController;
+use App\Http\Controllers\Admin\StoreStockController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\StoreUserController;
+use App\Http\Controllers\Admin\StockEntryController;
+use App\Http\Controllers\Admin\StockTransferController;
+use App\Http\Controllers\Admin\StockInventoryController;
+use App\Http\Controllers\Admin\StockReportController;
 use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
@@ -85,7 +93,7 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.
     Route::resource('flash-sale', FlashSaleController::class);
 
 
-    Route::resource('vendor/product/vendor-image-gallery', VendorProductImageGalleryController::class);
+    // Route::resource('vendor/product/vendor-image-gallery', VendorProductImageGalleryController::class); // désactivé
 
     Route::resource('product/image-gallery', ProductImageGalleryController::class);
 
@@ -152,6 +160,48 @@ Route::group(['middleware' => 'auth:admin', 'prefix' => 'admin', 'as' => 'admin.
     Route::resource('sub-category', SubCategoryController::class);
     Route::resource('brand', BrandController::class);
     Route::resource('category', CategoryController::class);
+    Route::resource('store', StoreController::class);
+    Route::get('stock', [StoreStockController::class, 'index'])->name('stock.index');
+    Route::post('stock/update', [StoreStockController::class, 'update'])->name('stock.update');
+    Route::post('stock/adjust', [StoreStockController::class, 'adjustOne'])->name('stock.adjust');
+
+    Route::resource('role', RoleController::class);
+
+    Route::get('store-users', [StoreUserController::class, 'index'])->name('store-user.index');
+    Route::post('store-users', [StoreUserController::class, 'store'])->name('store-user.store');
+    Route::put('store-users/{storeUser}', [StoreUserController::class, 'update'])->name('store-user.update');
+    Route::delete('store-users/{storeUser}', [StoreUserController::class, 'destroy'])->name('store-user.destroy');
+
+    // ── Entrées de stock ──────────────────────────────────
+    Route::get('stock-entry', [StockEntryController::class, 'index'])->name('stock-entry.index');
+    Route::get('stock-entry/create', [StockEntryController::class, 'create'])->name('stock-entry.create');
+    Route::post('stock-entry', [StockEntryController::class, 'store'])->name('stock-entry.store');
+    Route::get('stock-entry/{stockEntry}', [StockEntryController::class, 'show'])->name('stock-entry.show');
+
+    // ── Transferts inter-boutiques ────────────────────────
+    Route::get('stock-transfer', [StockTransferController::class, 'index'])->name('stock-transfer.index');
+    Route::get('stock-transfer/create', [StockTransferController::class, 'create'])->name('stock-transfer.create');
+    Route::post('stock-transfer', [StockTransferController::class, 'store'])->name('stock-transfer.store');
+    Route::get('stock-transfer/{stockTransfer}', [StockTransferController::class, 'show'])->name('stock-transfer.show');
+    Route::post('stock-transfer/{stockTransfer}/approve', [StockTransferController::class, 'approve'])->name('stock-transfer.approve');
+    Route::post('stock-transfer/{stockTransfer}/receive', [StockTransferController::class, 'receive'])->name('stock-transfer.receive');
+    Route::post('stock-transfer/{stockTransfer}/cancel', [StockTransferController::class, 'cancel'])->name('stock-transfer.cancel');
+
+    // ── Inventaire physique ───────────────────────────────
+    Route::get('stock-inventory', [StockInventoryController::class, 'index'])->name('stock-inventory.index');
+    Route::get('stock-inventory/create', [StockInventoryController::class, 'create'])->name('stock-inventory.create');
+    Route::post('stock-inventory', [StockInventoryController::class, 'store'])->name('stock-inventory.store');
+    Route::get('stock-inventory/{stockInventory}/edit', [StockInventoryController::class, 'edit'])->name('stock-inventory.edit');
+    Route::put('stock-inventory/{stockInventory}', [StockInventoryController::class, 'update'])->name('stock-inventory.update');
+    Route::post('stock-inventory/{stockInventory}/validate', [StockInventoryController::class, 'validate'])->name('stock-inventory.validate');
+    Route::get('stock-inventory/{stockInventory}', [StockInventoryController::class, 'show'])->name('stock-inventory.show');
+
+    // ── Reporting & Alertes ───────────────────────────────
+    Route::get('stock-report/dashboard', [StockReportController::class, 'dashboard'])->name('stock-report.dashboard');
+    Route::get('stock-report/alerts',    [StockReportController::class, 'alerts'])->name('stock-report.alerts');
+    Route::get('stock-report/export/entries',   [StockReportController::class, 'exportEntries'])->name('stock-report.export.entries');
+    Route::get('stock-report/export/transfers', [StockReportController::class, 'exportTransfers'])->name('stock-report.export.transfers');
+    Route::get('stock-report/export/inventory/{stockInventory}', [StockReportController::class, 'exportInventory'])->name('stock-report.export.inventory');
     Route::resource('slider', SliderController::class);
     Route::resource('manage-admin', ManageAdminController::class);
     Route::resource('manage-user', ManageUserController::class);

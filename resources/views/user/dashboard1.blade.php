@@ -26,28 +26,6 @@
 </div>
 <!-- ========== Breadcrumb Section End ========== -->
 
-<!-- ========== Alerts ========== -->
-@if ($user->role === 'user' && $user->vendor_request == 1 && $user->vendor_status === 'pending' && $user->user_status === 'active')
-  <div class="container mb-4">
-    <div class="bg-yellow-50 border border-yellow-300 text-yellow-800 rounded-xl px-5 py-3 text-center font-semibold">
-      Your vendor request is under review.
-    </div>
-  </div>
-@endif
-@if ($user->role === 'user' && $user->vendor_request == 1 && $user->vendor_status === 'rejected')
-  <div class="container mb-4">
-    <div class="bg-red-50 border border-red-300 text-red-800 rounded-xl px-5 py-3 text-center font-semibold">
-      Your vendor request was rejected. Please contact support.
-    </div>
-  </div>
-@endif
-@if ($user->role === 'user' && $user->vendor_request == 1 && $user->vendor_status === 'banned')
-  <div class="container mb-4">
-    <div class="bg-red-50 border border-red-300 text-red-800 rounded-xl px-5 py-3 text-center font-semibold">
-      Your vendor account has been banned.
-    </div>
-  </div>
-@endif
 
 <!-- ========== Flash Messages ========== -->
 @if (session('success'))
@@ -82,7 +60,7 @@
                 <span class="inline-flex items-center justify-center">
                   <i class="hgi hgi-stroke hgi-delete-01 text-2xl leading-6 font-normal"></i>
                 </span>
-                Orders
+                Mes commandes
                 @if($orders->count() > 0)
                   <span class="ml-auto bg-primary text-white text-xs rounded-full px-2 py-0.5">{{ $orders->count() }}</span>
                 @endif
@@ -94,7 +72,7 @@
                 <span class="inline-flex items-center justify-center">
                   <i class="hgi hgi-stroke hgi-location-01 text-2xl leading-6 font-normal"></i>
                 </span>
-                My Address
+                Mes Addresses
               </button>
             </li>
             <li class="group">
@@ -103,7 +81,7 @@
                 <span class="inline-flex items-center justify-center">
                   <i class="hgi hgi-stroke hgi-user text-2xl leading-6 font-normal"></i>
                 </span>
-                My Account
+                Mon compte
               </button>
             </li>
             <li class="group">
@@ -114,7 +92,7 @@
                   <span class="inline-flex items-center justify-center">
                     <i class="hgi hgi-stroke hgi-login-circle-02 text-2xl leading-6 font-normal"></i>
                   </span>
-                  Log Out
+                  Se déconnecter
                 </button>
               </form>
             </li>

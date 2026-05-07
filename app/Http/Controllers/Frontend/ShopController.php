@@ -43,18 +43,29 @@ class ShopController extends Controller
             default      => $query->latest(),
         };
 
-        $products   = $query->paginate(12)->withQueryString();
-        $categories = Category::where('status', 1)->get()->map(function ($cat) {
-            $cat->products_count = Product::where('status', 1)->where('is_approved', 1)->where('category_id', $cat->id)->count();
-            return $cat;
+        $products = $query->paginate(12)->withQueryString();
+
+        // Counts en 1 seule requête GROUP BY au lieu de N requêtes
+        $catCounts   = Product::where('status', 1)->where('is_approved', 1)
+            ->selectRaw('category_id, count(*) as total')
+            ->groupBy('category_id')->pluck('total', 'category_id');
+
+        $brandCounts = Product::where('status', 1)->where('is_approved', 1)
+            ->selectRaw('brand_id, count(*) as total')
+            ->groupBy('brand_id')->pluck('total', 'brand_id');
+
+        $categories = Category::where('status', 1)->get()->each(function ($cat) use ($catCounts) {
+            $cat->products_count = $catCounts[$cat->id] ?? 0;
         });
-        $brands = Brand::where('status', 1)->get()->map(function ($brand) {
-            $brand->products_count = Product::where('status', 1)->where('is_approved', 1)->where('brand_id', $brand->id)->count();
-            return $brand;
+        $brands = Brand::where('status', 1)->get()->each(function ($brand) use ($brandCounts) {
+            $brand->products_count = $brandCounts[$brand->id] ?? 0;
         });
 
-        $minPrice = Product::where('status', 1)->where('is_approved', 1)->min('price') ?? 0;
-        $maxPrice = Product::where('status', 1)->where('is_approved', 1)->max('price') ?? 100000;
+        $priceRange = Product::where('status', 1)->where('is_approved', 1)
+            ->selectRaw('min(price) as min_p, max(price) as max_p')
+            ->first();
+        $minPrice = $priceRange->min_p ?? 0;
+        $maxPrice = $priceRange->max_p ?? 100000;
 
         return view('frontend.pages.nos-produits', compact(
             'products',

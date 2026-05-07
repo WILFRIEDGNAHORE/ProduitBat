@@ -72,6 +72,11 @@ class CouponSeeder extends Seeder
             ],
         ];
 
-        DB::table('coupons')->insert($coupons);
+        foreach ($coupons as $coupon) {
+            DB::table('coupons')->updateOrInsert(
+                ['code' => $coupon['code']],
+                $coupon
+            );
+        }
     }
 }

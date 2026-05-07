@@ -37,4 +37,20 @@ class Product extends Model
     public function admin(){
         return $this->belongsTo(Admin::class);
     }
+
+    public function storeStocks()
+    {
+        return $this->hasMany(StoreStock::class);
+    }
+
+    public function totalStock(): int
+    {
+        return $this->storeStocks()->sum('qty');
+    }
+
+    public function syncQtyFromStores(): void
+    {
+        $this->qty = $this->totalStock();
+        $this->saveQuietly();
+    }
 }

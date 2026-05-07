@@ -1,5 +1,7 @@
 @php
-    $menuCategories = App\Models\Category::where('status', 1)->with(['subCategories.childCategories'])->get();
+    $menuCategories = \Illuminate\Support\Facades\Cache::remember('menu_categories', 600, fn() =>
+        App\Models\Category::where('status', 1)->with(['subCategories.childCategories'])->get()
+    );
 @endphp
 
 <div class="border border-gray-300 hidden xl:flex header-bottom sticky-header border-r-0 border-l-0">
@@ -85,7 +87,7 @@
 
             {{-- ===== Support ===== --}}
             <div>
-                <p class="xl:flex lg:items-center gap-x-4 hidden">
+                {{-- <p class="xl:flex lg:items-center gap-x-4 hidden">
                     <span class="size-12 inline-flex items-center justify-center rounded-full transition-colors duration-300 bg-[rgba(145,158,171,0.08)]">
                         <i class="hgi hgi-stroke hgi-customer-support text-2xl text-light-primary-text"></i>
                     </span>
@@ -93,7 +95,7 @@
                         Support 24/7
                         <span class="text-base leading-6 text-light-primary-text font-semibold">Service client</span>
                     </span>
-                </p>
+                </p> --}}
             </div>
 
         </div>

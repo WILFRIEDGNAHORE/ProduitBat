@@ -1,5 +1,7 @@
 @php
-    $mobileCategories = App\Models\Category::where('status', 1)->with('subCategories')->get();
+    $mobileCategories = \Illuminate\Support\Facades\Cache::remember('mobile_menu_categories', 600, fn() =>
+        App\Models\Category::where('status', 1)->with('subCategories')->get()
+    );
 @endphp
 
 <!-- SIDEBAR START -->

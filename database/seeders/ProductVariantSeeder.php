@@ -246,25 +246,27 @@ class ProductVariantSeeder extends Seeder
             }
 
             foreach ($variants as $variantDef) {
-                $variant = ProductVariant::create([
-                    'admin_id'   => $adminId,
-                    'vendor_id'  => $vendorId,
-                    'product_id' => $product->id,
-                    'name'       => $variantDef['name'],
-                    'status'     => 1,
-                ]);
+                $variant = ProductVariant::firstOrCreate(
+                    ['product_id' => $product->id, 'name' => $variantDef['name']],
+                    [
+                        'admin_id'  => $adminId,
+                        'vendor_id' => $vendorId,
+                        'status'    => 1,
+                    ]
+                );
 
                 foreach ($variantDef['items'] as $itemDef) {
-                    ProductVariantItem::create([
-                        'product_variant_id' => $variant->id,
-                        'product_id'         => $product->id,
-                        'admin_id'           => $adminId,
-                        'vendor_id'          => $vendorId,
-                        'name'               => $itemDef['name'],
-                        'price'              => $itemDef['price'],
-                        'is_default'         => $itemDef['is_default'],
-                        'status'             => 1,
-                    ]);
+                    ProductVariantItem::firstOrCreate(
+                        ['product_variant_id' => $variant->id, 'name' => $itemDef['name']],
+                        [
+                            'product_id'  => $product->id,
+                            'admin_id'    => $adminId,
+                            'vendor_id'   => $vendorId,
+                            'price'       => $itemDef['price'],
+                            'is_default'  => $itemDef['is_default'],
+                            'status'      => 1,
+                        ]
+                    );
                 }
             }
         }
